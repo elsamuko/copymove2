@@ -1,24 +1,24 @@
-#ifndef IMAGE_H
-#define IMAGE_H
+#ifndef FDIMAGE_H
+#define FDIMAGE_H
 
 #include <Magick++.h>
 
-class Image {
+#include "block.hpp"
+
+class FDImage {
 public:
-    Image();
-    Image( int width, int height );
-    Image( const std::string filename );
+    FDImage();
+    FDImage( int width, int height );
+    FDImage( const std::string filename );
 
 public:
     static void Initialize();
-    static void Destroy();
     std::string toString();
-    friend std::ostream& operator << ( std::ostream& stream, const Image& p );
+    friend std::ostream& operator << ( std::ostream& stream, const FDImage& p );
     static bool initialized;
 
 public:
-    void getImage( void* data, bool hasAlpha, bool is16Bit );
-    void setImage( void* data, bool hasAlpha, bool is16Bit );
+    void getBlock( Block& block, int x, int y );
 
     int  width() const;
     int  height() const;
@@ -38,4 +38,4 @@ private:
     bool fileExists( const std::string& filename ) const;
 };
 
-#endif // IMAGE_H
+#endif // FDIMAGE_H

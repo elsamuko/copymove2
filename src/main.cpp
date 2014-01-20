@@ -3,21 +3,26 @@
 #include <vector>
 
 #include "block.hpp"
+#include "fdimage.hpp"
 
 int main( int /*argc*/, char** /*argv*/ ) {
 
-    std::vector<std::vector<double> > d1 = std::vector<std::vector<double>>( 16, std::vector<double>( 16 ) );
-    std::vector<std::vector<double> > d2 = std::vector<std::vector<double>>( 16, std::vector<double>( 16 ) );
+    FDImage image;
+    image.load( "cat.jpg" );
 
-    d1[0][0] = 3;
-    d2[0][0] = 4;
 
     Block b1;
-    b1.setData( d1 );
-    Block b2;
-    b2.setData( d2 );
+    image.getBlock( b1, 222, 208);
 
-    std::cout << ( b2 < b1 ) << std::endl;
+    b1.dct();
+
+
+    for( int i = 0; i< Block::size; ++i ) {
+        for( int j = 0; j< Block::size; ++j ) {
+            std::cout << b1[i][j] << " ";
+        }
+        std::cout << std::endl;
+    }
 
     return 0;
 }

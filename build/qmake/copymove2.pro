@@ -4,13 +4,13 @@ TEMPLATE = app
 CONFIG += console
 CONFIG -= app_bundle
 CONFIG -= qt
-DESTDIR = bin
 
 macx:       PLATFORM=mac
 win32:      PLATFORM=win
 unix:!macx: PLATFORM=linux
 
 MAIN_DIR = ../..
+DESTDIR  = $${MAIN_DIR}/bin
 PRI_DIR  = $${MAIN_DIR}/build/qmake
 SRC_DIR  = $${MAIN_DIR}/src
 

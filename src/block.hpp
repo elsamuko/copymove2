@@ -11,6 +11,7 @@ public:
     void idct();
     bool operator <( const Block& b ) const;
     bool operator >( const Block& b ) const;
+    std::vector<double>& operator[]( size_t pos );
 
     std::vector<std::vector<double>> data() const;
     void setData( const std::vector<std::vector<double>>& data );

@@ -1,10 +1,10 @@
-#include "Image.hpp"
+#include "fdimage.hpp"
 
 #include <sstream>
 #include <fstream>
 #include <iostream>
 
-bool Image::initialized = false;
+bool FDImage::initialized = false;
 
 template <class T, int lower, int upper>
 T CLAMP( T in ) {
@@ -20,7 +20,7 @@ T CLAMP( T in ) {
 }
 
 
-std::string Image::colorSpace() const {
+std::string FDImage::colorSpace() const {
     switch( mImage.colorSpace() ) {
     case Magick::UndefinedColorspace:
         return "UndefinedColorspace";
@@ -36,7 +36,7 @@ std::string Image::colorSpace() const {
     }
 }
 
-std::string Image::renderingIntent() const {
+std::string FDImage::renderingIntent() const {
     switch( mImage.renderingIntent() ) {
     case Magick::UndefinedIntent:
         return "UndefinedIntent";
@@ -58,7 +58,7 @@ std::string Image::renderingIntent() const {
     }
 }
 
-std::string Image::type() const {
+std::string FDImage::type() const {
     switch( mImage.type() ) {
     case Magick::UndefinedType:
         return "UndefinedType";
@@ -99,30 +99,26 @@ std::string Image::type() const {
 }
 
 //! \brief Initializes Magick, needed before any image operations
-void Image::Initialize() {
+void FDImage::Initialize() {
 
-    if( !Image::initialized ) {
+    if( !FDImage::initialized ) {
         Magick::InitializeMagick( 0 );
-        Image::initialized = true;
+        FDImage::initialized = true;
     }
 
 }
 
-void Image::Destroy() {
-    Image::initialized = false;
+FDImage::FDImage() {
+    FDImage::Initialize();
 }
 
-Image::Image() {
-    Image::Initialize();
-}
-
-Image::Image( int width, int height ) {
-    Image::Initialize();
+FDImage::FDImage( int width, int height ) {
+    FDImage::Initialize();
     mImage  = Magick::Image( Magick::Geometry( width, height ), Magick::Color() );
 }
 
-Image::Image( const std::string filename ) {
-    Image::Initialize();
+FDImage::FDImage( const std::string filename ) {
+    FDImage::Initialize();
 
     std::ifstream file( filename.c_str() );
 
@@ -133,7 +129,7 @@ Image::Image( const std::string filename ) {
     }
 }
 
-int Image::width() const {
+int FDImage::width() const {
     if( mImage.isValid() ) {
         return mImage.columns();
     } else {
@@ -141,7 +137,7 @@ int Image::width() const {
     }
 }
 
-int Image::height() const {
+int FDImage::height() const {
     if( mImage.isValid() ) {
         return mImage.rows();
     } else {
@@ -150,16 +146,16 @@ int Image::height() const {
 }
 
 //! \return true, if image is not valid
-bool Image::isNull() const {
+bool FDImage::isNull() const {
     return ! mImage.isValid();
 }
 
 //! \return true, if depth is 16 bit
-bool Image::is16Bit() const {
+bool FDImage::is16Bit() const {
     return mImage.depth() == 16;
 }
 
-bool Image::fileExists( const std::string& filename ) const {
+bool FDImage::fileExists( const std::string& filename ) const {
     std::ifstream file( filename.c_str() );
     return file.is_open();
     // destructor closes file
@@ -169,29 +165,21 @@ bool Image::fileExists( const std::string& filename ) const {
 //! \param filename e.g. "cat.jpg"
 //! \returns true, if loaded successfully
 //! \sa http://www.imagemagick.org/Magick++/Exception.html
-bool Image::load( const std::string filename ) {
+bool FDImage::load( const std::string filename ) {
+
     if( fileExists( filename ) ) {
 
         try {
             try {
-                // Try reading image file
                 mImage.read( filename );
             } catch( Magick::WarningCoder& warning ) {
-                // Process coder warning while loading file (e.g. TIFF warning)
-                // Maybe the user will be interested in these warnings (or not).
-                // If a warning is produced while loading an image, the image
-                // can normally still be used (but not if the warning was about
-                // something important!)
                 std::cerr << "Coder Warning: " << warning.what() << std::endl;
             } catch( Magick::Warning& warning ) {
-                // Handle any other Magick++ warning.
                 std::cerr << "Warning: " << warning.what() << std::endl;
             } catch( Magick::ErrorFileOpen& error ) {
-                // Process Magick++ file open error
                 std::cerr << "Error: " << error.what() << std::endl;
             }
         } catch( std::exception& error ) {
-            // Process any other exceptions derived from standard C++ exception
             std::cerr << "Caught C++ STD exception: " << error.what() << std::endl;
         }
 
@@ -205,12 +193,10 @@ bool Image::load( const std::string filename ) {
 
 //! \brief Save image
 //! \param filename e.g. "cat.jpg"
-//! \param quality, default is 75
+//! \param quality, default is 95
 //! \returns true, if saved successfully
-bool Image::save( const std::string filename, int quality ) {
+bool FDImage::save( const std::string filename, int quality ) {
     if( mImage.isValid() ) {
-        /* doesn't work, because Magick ignores this: */
-        // mImage.attribute("software","FD Imaging - Black Silk");
 
         /* no alpha */
         mImage.matte( false );
@@ -229,14 +215,15 @@ bool Image::save( const std::string filename, int quality ) {
 }
 
 //! \brief debug info
-std::string Image::toString() {
+std::string FDImage::toString() {
     std::stringstream s;
     s << *this;
     return s.str();
 }
 
-std::ostream& operator << ( std::ostream& out, const Image& f ) {
-    out << " ******** Image ******** " << std::endl;
+std::ostream& operator << ( std::ostream& out, const FDImage& f ) {
+
+    out << " ******** FDImage ******** " << std::endl;
     out << "  filename:   " << f.mImage.fileName() << std::endl;
     out << "  width :     " << f.mImage.columns() << std::endl;
     out << "  height:     " << f.mImage.rows() << std::endl;
@@ -247,100 +234,24 @@ std::ostream& operator << ( std::ostream& out, const Image& f ) {
     out << "  quantize:   " << f.mImage.quantizeColors() << std::endl;
     out << " ************************* ";
 
-    // std::auto_ptr<ImageStatistics> stats( new ImageStatistics );
-    // f.mImage.statistics( stats.get() );
-
     return out;
 }
 
-//! \brief Request all pixels
-//! \param data RGBA pixel buffer to fill
-//! \param is16Bit if true, offset is ushort
-void Image::getImage( void* data, bool hasAlpha, bool is16Bit ) {
+//! \brief Request 16x16 block pixels
+//! \param Block to fill
+//! \param x vert. position
+//! \param y horiz. position
+void FDImage::getBlock( Block& block, int x, int y ) {
     mImage.modifyImage();
     mImage.type( Magick::TrueColorType );
 
     // Request pixel region
-    int w = mImage.columns();
-    int h = mImage.rows();
-    Magick::PixelPacket* pixel_cache = ( Magick::PixelPacket* ) mImage.getPixels( 0, 0, w, h );
+    Magick::PixelPacket* pixel_cache = ( Magick::PixelPacket* ) mImage.getPixels( x, y, Block::size, Block::size );
 
-    if( is16Bit ) {
-        uint16_t* bits = ( uint16_t* ) data;
-
-        for( int i = 0; i < h * w; i++ ) {
-            *bits++ = pixel_cache->red;
-            *bits++ = pixel_cache->green;
-            *bits++ = pixel_cache->blue;
-
-            if( hasAlpha ) {
-                *bits++ = pixel_cache->opacity;
-            }
-
-            pixel_cache++;
-        }
-    } else {
-        uint8_t* bits = ( uint8_t* ) data;
-
-        for( int i = 0; i < h * w; i++ ) {
-            *bits++ = CLAMP<int, 0, 255>( pixel_cache->red   / 256 );
-            *bits++ = CLAMP<int, 0, 255>( pixel_cache->green / 256 );
-            *bits++ = CLAMP<int, 0, 255>( pixel_cache->blue  / 256 );
-
-            if( hasAlpha ) {
-                *bits++ = pixel_cache->opacity;
-            }
-
-            pixel_cache++;
-        }
-    }
-
-    mImage.syncPixels();
-}
-
-//! \brief Request all pixels
-//! \param data RGBA pixel buffer to read from
-//! \param is16Bit if true, offset is ushort
-void Image::setImage( void* data, bool hasAlpha, bool is16Bit ) {
-    mImage.modifyImage();
-    mImage.type( Magick::TrueColorType );
-
-    // Request pixel region
-    int w = mImage.columns();
-    int h = mImage.rows();
-    Magick::PixelPacket* pixel_cache = mImage.getPixels( 0, 0, w, h );
-
-    if( is16Bit ) {
-        uint16_t* bits = ( uint16_t* ) data;
-
-        for( int i = 0; i < h * w; i++ ) {
-            pixel_cache->red     = *bits++;
-            pixel_cache->green   = *bits++;
-            pixel_cache->blue    = *bits++;
-
-            if( hasAlpha ) {
-                pixel_cache->opacity = *bits++;
-            } else {
-                pixel_cache->opacity = 65535;
-            }
-
-            pixel_cache++;
-        }
-    } else {
-        uint8_t* bits = ( uint8_t* ) data;
-
-        for( int i = 0; i < h * w; i++ ) {
-            pixel_cache->red     = 256 * *bits++;
-            pixel_cache->green   = 256 * *bits++;
-            pixel_cache->blue    = 256 * *bits++;
-
-            if( hasAlpha ) {
-                pixel_cache->opacity = *bits++;
-            } else {
-                pixel_cache->opacity = 255;
-            }
-
-            pixel_cache++;
+    for( int i = 0; i< Block::size; ++i ) {
+        for( int j = 0; j< Block::size; ++j ) {
+            block[i][j] = pixel_cache->green;
+            ++pixel_cache;
         }
     }
 

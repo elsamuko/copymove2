@@ -28,6 +28,10 @@ bool Block::operator >(const Block& b) const {
     return !(*this < b);
 }
 
+std::vector<double>&Block::operator[](size_t pos) {
+    return mData[pos];
+}
+
 std::vector<std::vector<double> > Block::data() const {
     return mData;
 }
