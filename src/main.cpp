@@ -10,19 +10,18 @@ int main( int /*argc*/, char** /*argv*/ ) {
     FDImage image;
     image.load( "cat.jpg" );
 
-
     Block b1;
-    image.getBlock( b1, 222, 208);
 
-    b1.dct();
-
-
-    for( int i = 0; i< Block::size; ++i ) {
-        for( int j = 0; j< Block::size; ++j ) {
-            std::cout << b1[i][j] << " ";
+    for( size_t i = 0; i < image.width(); i += Block::size ) {
+        for( size_t j = 0; j < image.height(); j += Block::size ) {
+            image.getBlock( b1, i, j);
+            b1.dct();
+            // b1.idct();
+            image.setBlock( b1, i, j);
         }
-        std::cout << std::endl;
     }
+
+    image.save( "out.jpg" );
 
     return 0;
 }

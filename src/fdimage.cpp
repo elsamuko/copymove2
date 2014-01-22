@@ -3,6 +3,7 @@
 #include <sstream>
 #include <fstream>
 #include <iostream>
+#include <thread>
 
 bool FDImage::initialized = false;
 
@@ -19,93 +20,12 @@ T CLAMP( T in ) {
     return in;
 }
 
-
-std::string FDImage::colorSpace() const {
-    switch( mImage.colorSpace() ) {
-    case Magick::UndefinedColorspace:
-        return "UndefinedColorspace";
-
-    case Magick::RGBColorspace:
-        return "RGBColorspace";
-
-    case Magick::GRAYColorspace:
-        return "GRAYColorspace";
-
-    default:
-        return "UndefinedColorspace";
-    }
-}
-
-std::string FDImage::renderingIntent() const {
-    switch( mImage.renderingIntent() ) {
-    case Magick::UndefinedIntent:
-        return "UndefinedIntent";
-
-    case Magick::SaturationIntent:
-        return "SaturationIntent";
-
-    case Magick::PerceptualIntent:
-        return "PerceptualIntent";
-
-    case Magick::AbsoluteIntent:
-        return "AbsoluteIntent";
-
-    case Magick::RelativeIntent:
-        return "RelativeIntent";
-
-    default:
-        return "UndefinedIntent";
-    }
-}
-
-std::string FDImage::type() const {
-    switch( mImage.type() ) {
-    case Magick::UndefinedType:
-        return "UndefinedType";
-
-    case Magick::BilevelType:
-        return "BilevelType";
-
-    case Magick::GrayscaleType:
-        return "GrayscaleType";
-
-    case Magick::GrayscaleMatteType:
-        return "GrayscaleMatteType";
-
-    case Magick::PaletteType:
-        return "PaletteType";
-
-    case Magick::PaletteMatteType:
-        return "PaletteMatteType";
-
-    case Magick::TrueColorType:
-        return "TrueColorType";
-
-    case Magick::TrueColorMatteType:
-        return "TrueColorMatteType";
-
-    case Magick::ColorSeparationType:
-        return "ColorSeparationType";
-
-    case Magick::ColorSeparationMatteType:
-        return "ColorSeparationMatteType";
-
-    case Magick::OptimizeType:
-        return "OptimizeType";
-
-    default:
-        return "UndefinedType";
-    }
-}
-
 //! \brief Initializes Magick, needed before any image operations
 void FDImage::Initialize() {
-
     if( !FDImage::initialized ) {
         Magick::InitializeMagick( 0 );
         FDImage::initialized = true;
     }
-
 }
 
 FDImage::FDImage() {
@@ -119,17 +39,10 @@ FDImage::FDImage( int width, int height ) {
 
 FDImage::FDImage( const std::string filename ) {
     FDImage::Initialize();
-
-    std::ifstream file( filename.c_str() );
-
-    if( file ) {
-        mImage.read( filename );
-    } else {
-        std::cout << "Image " << filename << " is not valid" << std::endl;
-    }
+    this->load( filename );
 }
 
-int FDImage::width() const {
+size_t FDImage::width() const {
     if( mImage.isValid() ) {
         return mImage.columns();
     } else {
@@ -137,7 +50,7 @@ int FDImage::width() const {
     }
 }
 
-int FDImage::height() const {
+size_t FDImage::height() const {
     if( mImage.isValid() ) {
         return mImage.rows();
     } else {
@@ -161,6 +74,52 @@ bool FDImage::fileExists( const std::string& filename ) const {
     // destructor closes file
 }
 
+void FDImage::cacheGreys() {
+
+    size_t w = width();
+    size_t h = height();
+
+    mGreys = std::vector<std::vector<double>>( w, std::vector<double>( h ) );
+
+    mImage.modifyImage();
+    mImage.type( Magick::TrueColorType );
+
+    // Request pixel region
+    Magick::PixelPacket* pixel_cache = ( Magick::PixelPacket* ) mImage.getPixels( 0, 0, w, h );
+
+    for( size_t i = 0; i < w; ++i ) {
+        for( size_t j = 0; j < h; ++j ) {
+            mGreys[i][j] = pixel_cache->green;
+            ++pixel_cache;
+        }
+    }
+
+    mImage.syncPixels();
+}
+
+void FDImage::setGreys() {
+
+    size_t w = width();
+    size_t h = height();
+
+    mImage.modifyImage();
+    mImage.type( Magick::TrueColorType );
+
+    // Request pixel region
+    Magick::PixelPacket* pixel_cache = ( Magick::PixelPacket* ) mImage.getPixels( 0, 0, w, h );
+
+    for( size_t i = 0; i < w; ++i ) {
+        for( size_t j = 0; j < h; ++j ) {
+            pixel_cache->red = CLAMP<int, 0, 65535>( mGreys[i][j] );
+            pixel_cache->green = CLAMP<int, 0, 65535>( mGreys[i][j] );
+            pixel_cache->blue = CLAMP<int, 0, 65535>( mGreys[i][j] );
+            ++pixel_cache;
+        }
+    }
+
+    mImage.syncPixels();
+}
+
 //! \brief Load image
 //! \param filename e.g. "cat.jpg"
 //! \returns true, if loaded successfully
@@ -168,22 +127,14 @@ bool FDImage::fileExists( const std::string& filename ) const {
 bool FDImage::load( const std::string filename ) {
 
     if( fileExists( filename ) ) {
-
         try {
-            try {
-                mImage.read( filename );
-            } catch( Magick::WarningCoder& warning ) {
-                std::cerr << "Coder Warning: " << warning.what() << std::endl;
-            } catch( Magick::Warning& warning ) {
-                std::cerr << "Warning: " << warning.what() << std::endl;
-            } catch( Magick::ErrorFileOpen& error ) {
-                std::cerr << "Error: " << error.what() << std::endl;
-            }
-        } catch( std::exception& error ) {
-            std::cerr << "Caught C++ STD exception: " << error.what() << std::endl;
+            mImage.read( filename );
+        } catch( Magick::Exception& error ) {
+            std::cerr << "Error: " << error.what() << std::endl;
         }
 
         if( mImage.isValid() ) {
+            this->cacheGreys();
             return true;
         }
     }
@@ -196,13 +147,24 @@ bool FDImage::load( const std::string filename ) {
 //! \param quality, default is 95
 //! \returns true, if saved successfully
 bool FDImage::save( const std::string filename, int quality ) {
+    if( filename.empty() ) {
+        std::cerr << "Filename is empty";
+        return false;
+    }
     if( mImage.isValid() ) {
+
+        // write grey cache to magick image
+        this->setGreys();
 
         /* no alpha */
         mImage.matte( false );
-
         mImage.quality( quality );
-        mImage.write( filename );
+
+        try {
+            mImage.write( filename );
+        } catch( Magick::Exception& error ) {
+            std::cerr << "Error: " << error.what() << std::endl;
+        }
 
         if( fileExists( filename ) ) {
             return true;
@@ -214,46 +176,30 @@ bool FDImage::save( const std::string filename, int quality ) {
     return false;
 }
 
-//! \brief debug info
-std::string FDImage::toString() {
-    std::stringstream s;
-    s << *this;
-    return s.str();
-}
-
-std::ostream& operator << ( std::ostream& out, const FDImage& f ) {
-
-    out << " ******** FDImage ******** " << std::endl;
-    out << "  filename:   " << f.mImage.fileName() << std::endl;
-    out << "  width :     " << f.mImage.columns() << std::endl;
-    out << "  height:     " << f.mImage.rows() << std::endl;
-    out << "  depth:      " << f.mImage.depth() << std::endl;
-    out << "  colorspace: " << f.colorSpace() << std::endl;
-    out << "  intent:     " << f.renderingIntent() << std::endl;
-    out << "  type:       " << f.type() << std::endl;
-    out << "  quantize:   " << f.mImage.quantizeColors() << std::endl;
-    out << " ************************* ";
-
-    return out;
-}
-
-//! \brief Request 16x16 block pixels
+//! \brief Request 16x16 block to grey cache
 //! \param Block to fill
 //! \param x vert. position
 //! \param y horiz. position
-void FDImage::getBlock( Block& block, int x, int y ) {
-    mImage.modifyImage();
-    mImage.type( Magick::TrueColorType );
+void FDImage::getBlock( Block& block, int x, int y ) const {
 
-    // Request pixel region
-    Magick::PixelPacket* pixel_cache = ( Magick::PixelPacket* ) mImage.getPixels( x, y, Block::size, Block::size );
-
-    for( int i = 0; i< Block::size; ++i ) {
-        for( int j = 0; j< Block::size; ++j ) {
-            block[i][j] = pixel_cache->green;
-            ++pixel_cache;
+    for( int i = 0; i < Block::size; ++i ) {
+        for( int j = 0; j < Block::size; ++j ) {
+            block[i][j] = mGreys[x+i][y+j];
         }
     }
 
-    mImage.syncPixels();
+}
+
+//! \brief Write 16x16 block to grey cache
+//! \param Block to insert
+//! \param x vert. position
+//! \param y horiz. position
+void FDImage::setBlock( const Block& block, int x, int y ) {
+
+    for( int i = 0; i < Block::size; ++i ) {
+        for( int j = 0; j < Block::size; ++j ) {
+            mGreys[x+i][y+j] = block[i][j];
+        }
+    }
+
 }

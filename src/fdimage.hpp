@@ -13,29 +13,27 @@ public:
 
 public:
     static void Initialize();
-    std::string toString();
-    friend std::ostream& operator << ( std::ostream& stream, const FDImage& p );
     static bool initialized;
 
 public:
-    void getBlock( Block& block, int x, int y );
+    void getBlock( Block& block, int x, int y ) const;
+    void setBlock( const Block& block, int x, int y );
 
-    int  width() const;
-    int  height() const;
+    size_t width() const;
+    size_t height() const;
     bool isNull() const;
     bool is16Bit() const;
     bool load( const std::string filename );
     bool save( const std::string filename, int quality = 95 );
 
-    std::string colorSpace() const;
-    std::string renderingIntent() const;
-    std::string type() const;
-
 private:
     /* the wrapped image */
     Magick::Image mImage;
+    std::vector<std::vector<double>> mGreys; // cache the luma values
 
     bool fileExists( const std::string& filename ) const;
+    void cacheGreys();
+    void setGreys();
 };
 
 #endif // FDIMAGE_H

@@ -24,11 +24,15 @@ bool Block::operator <( const Block& that ) const {
     return b;
 }
 
-bool Block::operator >(const Block& b) const {
-    return !(*this < b);
+bool Block::operator >( const Block& b ) const {
+    return !( *this < b );
 }
 
-std::vector<double>&Block::operator[](size_t pos) {
+std::vector<double>& Block::operator[]( const size_t pos ) {
+    return mData[pos];
+}
+
+const std::vector<double>& Block::operator[]( const size_t pos ) const {
     return mData[pos];
 }
 
@@ -38,8 +42,8 @@ std::vector<std::vector<double> > Block::data() const {
 
 //! \brief Set image data
 void Block::setData( const std::vector<std::vector<double> >& data ) {
-    assert ( data.size() == Block::size );
-    assert ( data[0].size() == Block::size );
+    assert( data.size() == Block::size );
+    assert( data[0].size() == Block::size );
     mData = data;
     mTransformed = false;
 }
