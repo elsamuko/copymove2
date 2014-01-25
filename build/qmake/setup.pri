@@ -17,3 +17,4 @@ RCC_DIR = $${MAIN_DIR}/tmp/$${TARGET}/$${COMPILE_MODE}/rcc
 
 INCLUDEPATH += $${SRC_DIR}
 
+message($${TARGET} $${PLATFORM} $${COMPILE_MODE})

@@ -17,6 +17,7 @@ SRC_DIR  = $${MAIN_DIR}/src
 
 include( $${PRI_DIR}/setup.pri )
 macx: include( $${PRI_DIR}/mac.pri )
+unix: !macx: include( $${PRI_DIR}/linux.pri )
 
 HEADERS += $${SRC_DIR}/block.hpp
 SOURCES += $${SRC_DIR}/block.cpp
