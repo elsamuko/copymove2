@@ -10,12 +10,12 @@ Block::Block() {
 }
 
 void Block::dct() {
-    ooura::ddct16x16s( 1, ( double** ) mData.data() );
+    ooura::ddct16x16s( 1, mData );
     mTransformed = true;
 }
 
 void Block::idct() {
-    ooura::ddct16x16s( -1, ( double** ) mData.data() );
+    ooura::ddct16x16s( -1, mData );
     mTransformed = false;
 }
 

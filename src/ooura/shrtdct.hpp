@@ -40,6 +40,8 @@ Copyright
                                a[k1][k2] = C[k1][k2], 0<=k1<16, 0<=k2<16
 */
 
+#include <vector>
+
 namespace ooura {
-    void ddct16x16s( int isgn, double** a );
+    void ddct16x16s(int isgn, std::vector<std::vector<double> > &a );
 }

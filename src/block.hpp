@@ -2,6 +2,7 @@
 #define BLOCK_HPP
 
 #include <vector>
+#include <iostream>
 
 class Block {
 public:

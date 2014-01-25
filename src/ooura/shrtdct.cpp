@@ -25,7 +25,7 @@
 #define W16_8R   0.70710678118654752440
 
 
-void ooura::ddct16x16s( int isgn, double** a ) {
+void ooura::ddct16x16s( int isgn, std::vector<std::vector<double>>& a ) {
 
     int j;
     double x0r, x0i, x1r, x1i, x2r, x2i, x3r, x3i;
