@@ -13,6 +13,7 @@ public:
 
 private Q_SLOTS:
     void testComparison();
+    void testDCT();
 };
 
 Block_test::Block_test() {
@@ -30,6 +31,14 @@ void Block_test::testComparison() {
 
     b2[0][0] = 2;
     QVERIFY( b2 < b1 );
+}
+
+void Block_test::testDCT() {
+
+    Block b1;
+    b1.dct();
+
+    QVERIFY( true );
 }
 
 QTEST_MAIN( Block_test )
