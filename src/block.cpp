@@ -6,7 +6,7 @@
 
 Block::Block() {
     mTransformed = false;
-    mData = std::vector<std::vector<double>>( Block::size, std::vector<double>( Block::size ) );
+    mData = std::vector<std::vector<double>>( Block::size, std::vector<double>( Block::size, 0 ) );
 }
 
 void Block::dct() {
