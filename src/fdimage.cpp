@@ -3,7 +3,6 @@
 #include <sstream>
 #include <fstream>
 #include <iostream>
-#include <thread>
 
 bool FDImage::initialized = false;
 
