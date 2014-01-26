@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <iostream>
+#include <cmath>
 
 class Block {
 public:
@@ -39,7 +40,7 @@ constexpr int power10( int digits ) {
 template< int digits >
 double Block::roundBy( double in ) {
     in *= power10( digits );
-    in = (int) in;
+    in = round( in );
     in /= power10( digits );
     return in;
 }

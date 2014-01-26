@@ -36,13 +36,15 @@ void Block_test::testComparison() {
 void Block_test::testDCT() {
 
     Block b1;
-    b1[1][2] = 1;
+    b1[2][1] = 1;
     b1.dct();
 
-    double fromOoura = b1[1][2];
-    double fromOctave = 0.0664559;
-
-    QVERIFY( Block::roundBy<7>( fromOoura ) == fromOctave );
+    // compare with Octave:
+    // clear; data=zeros(16,16); data(2,3)=1; dct2(data)
+    QVERIFY( Block::roundBy<7>( b1[2][1] ) == 0.0664559 );
+    QVERIFY( Block::roundBy<7>( b1[2][2] ) == 0.0577425 );
+    QVERIFY( Block::roundBy<7>( b1[2][3] ) == 0.0440563 );
+    QVERIFY( Block::roundBy<7>( b1[15][15] ) == -0.0171049 );
 }
 
 QTEST_MAIN( Block_test )

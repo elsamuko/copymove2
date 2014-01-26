@@ -10,12 +10,12 @@ Block::Block() {
 }
 
 void Block::dct() {
-    ooura::ddct16x16s( 1, mData );
+    ooura::ddct16x16s( -1, mData );
     mTransformed = true;
 }
 
 void Block::idct() {
-    ooura::ddct16x16s( -1, mData );
+    ooura::ddct16x16s( 1, mData );
     mTransformed = false;
 }
 
@@ -39,7 +39,7 @@ const std::vector<double>& Block::operator[]( const size_t pos ) const {
 std::ostream& operator<< ( std::ostream& stream, const Block& b ) {
     for( auto& v : b.mData ) {
         for( auto& d : v ) {
-            stream.width( 7 );
+            stream.width( 10 );
             stream << Block::roundBy( d ) << " ";
         }
         stream << std::endl;
