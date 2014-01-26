@@ -20,7 +20,7 @@ void Block::idct() {
 }
 
 bool Block::operator <( const Block& that ) const {
-    bool b = this->mData[0][0] < that.mData[0][0];
+    bool b = this->mData[1][0] < that.mData[1][0];
     return b;
 }
 
@@ -34,6 +34,17 @@ std::vector<double>& Block::operator[]( const size_t pos ) {
 
 const std::vector<double>& Block::operator[]( const size_t pos ) const {
     return mData[pos];
+}
+
+std::ostream& operator<< ( std::ostream& stream, const Block& b ) {
+    for( auto& v : b.mData ) {
+        for( auto& d : v ) {
+            stream.width( 7 );
+            stream << Block::roundBy( d ) << " ";
+        }
+        stream << std::endl;
+    }
+    return stream;
 }
 
 std::vector<std::vector<double> > Block::data() const {
