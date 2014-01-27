@@ -9,6 +9,8 @@ Block::Block() {
     mQuality = 10;
     mData = std::vector<std::vector<double>>( Block::size, std::vector<double>( Block::size, 0 ) );
     mFrequencies = std::vector<int>( Block::frequencies, 0 );
+    mX = 0;
+    mY = 0;
 }
 
 void Block::dct() {
@@ -93,6 +95,22 @@ void Block::setData( const std::vector<std::vector<double> >& data ) {
     assert( data[0].size() == Block::size );
     mData = data;
     mTransformed = false;
+}
+
+void Block::setX(int x) {
+    mX = x;
+}
+
+int Block::x() const {
+    return mX;
+}
+
+void Block::setY(int y) {
+    mY = y;
+}
+
+int Block::y() const {
+    return mY;
 }
 
 bool Block::transformed() const {

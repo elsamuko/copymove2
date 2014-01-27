@@ -23,6 +23,11 @@ public:
     std::vector<std::vector<double>> data() const;
     void setData( const std::vector<std::vector<double>>& data );
 
+    void setX( int x );
+    int x() const;
+    void setY( int y );
+    int y() const;
+
     bool transformed() const;
 
     template< int digits = 4 >
@@ -31,6 +36,8 @@ public:
 private:
     bool mTransformed;
     int mQuality;
+    int mX;
+    int mY;
     std::vector<std::vector<double>> mData;
     std::vector<int> mFrequencies;
 };
