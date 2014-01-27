@@ -7,7 +7,7 @@
 
 class Block {
 public:
-    enum { size = 16 };
+    enum { size = 16, frequencies = 10 };
     Block();
 
     void dct();
@@ -30,7 +30,9 @@ public:
 
 private:
     bool mTransformed;
+    int mQuality;
     std::vector<std::vector<double>> mData;
+    std::vector<int> mFrequencies;
 };
 
 constexpr int power10( int digits ) {

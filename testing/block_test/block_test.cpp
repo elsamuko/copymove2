@@ -24,13 +24,10 @@ void Block_test::testComparison() {
     Block b1;
     Block b2;
 
-    b1[1][0] = 3;
-    b2[1][0] = 4;
+    b2[1][2] = 255;
+    b2.dct();
 
-    QVERIFY( b2 > b1 );
-
-    b2[1][0] = 2;
-    QVERIFY( b2 < b1 );
+    QVERIFY( b1 < b2 );
 }
 
 void Block_test::testDCT() {

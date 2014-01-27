@@ -6,12 +6,36 @@
 
 Block::Block() {
     mTransformed = false;
+    mQuality = 10;
     mData = std::vector<std::vector<double>>( Block::size, std::vector<double>( Block::size, 0 ) );
+    mFrequencies = std::vector<int>( Block::frequencies, 0 );
 }
 
 void Block::dct() {
-    ooura::ddct16x16s( -1, mData );
+
     mTransformed = true;
+    ooura::ddct16x16s( -1, mData );
+
+    int x = 0;
+    int y = 0;
+
+    // order of the first ten frequencies:
+    //  1  2  6  7
+    //  3  5  8
+    //  4  9
+    // 10
+    static int frequency_order[Block::frequencies][2] = {
+        {0, 0}, {0, 1}, {1, 0}, {2, 0}, {1, 1},
+        {0, 2}, {0, 3}, {1, 2}, {2, 1}, {3, 0}
+    };
+
+    // get first 10 frequencies and cache them in mFrequencies
+    for( int i = 0; i < Block::frequencies; ++i ) {
+        x = frequency_order[i][0];
+        y = frequency_order[i][1];
+        mFrequencies[i] = this->mData[x][y]/mQuality;
+    }
+
 }
 
 void Block::idct() {
@@ -20,8 +44,20 @@ void Block::idct() {
 }
 
 bool Block::operator <( const Block& that ) const {
-    bool b = this->mData[1][0] < that.mData[1][0];
-    return b;
+
+    // check only frequencies 2-10
+    for( int i = 1; i < Block::frequencies; ++i ) {
+
+        if( this->mFrequencies[i] < that.mFrequencies[i] ) {
+            return true;
+        }
+
+        if( this->mFrequencies[i] > that.mFrequencies[i] ) {
+            return false;
+        }
+    }
+
+    return false;
 }
 
 bool Block::operator >( const Block& b ) const {
