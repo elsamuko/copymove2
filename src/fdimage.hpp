@@ -4,6 +4,7 @@
 #include <Magick++.h>
 
 #include "block.hpp"
+#include "greyimage.hpp"
 
 class FDImage {
 public:
@@ -16,8 +17,8 @@ public:
     static bool initialized;
 
 public:
-    void getBlock( Block& block, int x, int y ) const;
-    void setBlock( const Block& block, int x, int y );
+    GreyImage getGrey();
+    void setGrey( const GreyImage& grey );
 
     size_t width() const;
     size_t height() const;
@@ -29,11 +30,8 @@ public:
 private:
     /* the wrapped image */
     Magick::Image mImage;
-    std::vector<std::vector<double>> mGreys; // cache the luma values
 
     bool fileExists( const std::string& filename ) const;
-    void cacheGreys();
-    void setGreys();
 };
 
 #endif // FDIMAGE_H

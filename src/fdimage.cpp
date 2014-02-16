@@ -73,12 +73,12 @@ bool FDImage::fileExists( const std::string& filename ) const {
     // destructor closes file
 }
 
-void FDImage::cacheGreys() {
+GreyImage FDImage::getGrey() {
 
     size_t w = width();
     size_t h = height();
 
-    mGreys = std::vector<std::vector<double>>( w, std::vector<double>( h ) );
+    GreyImage grey( w, h );
 
     mImage.modifyImage();
     mImage.type( Magick::TrueColorType );
@@ -88,15 +88,17 @@ void FDImage::cacheGreys() {
 
     for( size_t i = 0; i < w; ++i ) {
         for( size_t j = 0; j < h; ++j ) {
-            mGreys[i][j] = pixel_cache->green;
+            grey[i][j] = pixel_cache->green;
             ++pixel_cache;
         }
     }
 
     mImage.syncPixels();
+
+    return grey;
 }
 
-void FDImage::setGreys() {
+void FDImage::setGrey( const GreyImage& grey ) {
 
     size_t w = width();
     size_t h = height();
@@ -109,9 +111,9 @@ void FDImage::setGreys() {
 
     for( size_t i = 0; i < w; ++i ) {
         for( size_t j = 0; j < h; ++j ) {
-            pixel_cache->red = CLAMP<int, 0, 65535>( mGreys[i][j] );
-            pixel_cache->green = CLAMP<int, 0, 65535>( mGreys[i][j] );
-            pixel_cache->blue = CLAMP<int, 0, 65535>( mGreys[i][j] );
+            pixel_cache->red = CLAMP<int, 0, 65535>( grey[i][j] );
+            pixel_cache->green = CLAMP<int, 0, 65535>( grey[i][j] );
+            pixel_cache->blue = CLAMP<int, 0, 65535>( grey[i][j] );
             ++pixel_cache;
         }
     }
@@ -133,7 +135,6 @@ bool FDImage::load( const std::string filename ) {
         }
 
         if( mImage.isValid() ) {
-            this->cacheGreys();
             return true;
         }
     }
@@ -150,10 +151,8 @@ bool FDImage::save( const std::string filename, int quality ) {
         std::cerr << "Filename is empty";
         return false;
     }
-    if( mImage.isValid() ) {
 
-        // write grey cache to magick image
-        this->setGreys();
+    if( mImage.isValid() ) {
 
         /* no alpha */
         mImage.matte( false );
@@ -173,32 +172,4 @@ bool FDImage::save( const std::string filename, int quality ) {
     }
 
     return false;
-}
-
-//! \brief Request 16x16 block to grey cache
-//! \param Block to fill
-//! \param x vert. position
-//! \param y horiz. position
-void FDImage::getBlock( Block& block, int x, int y ) const {
-
-    for( int i = 0; i < Block::size; ++i ) {
-        for( int j = 0; j < Block::size; ++j ) {
-            block[i][j] = mGreys[x+i][y+j];
-        }
-    }
-
-}
-
-//! \brief Write 16x16 block to grey cache
-//! \param Block to insert
-//! \param x vert. position
-//! \param y horiz. position
-void FDImage::setBlock( const Block& block, int x, int y ) {
-
-    for( int i = 0; i < Block::size; ++i ) {
-        for( int j = 0; j < Block::size; ++j ) {
-            mGreys[x+i][y+j] = block[i][j];
-        }
-    }
-
 }

@@ -28,6 +28,8 @@ public:
     void setY( int y );
     int y() const;
 
+    int manhattanDistance( const Block& that ) const;
+
     bool transformed() const;
 
     template< int digits = 4 >

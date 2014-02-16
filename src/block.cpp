@@ -35,7 +35,7 @@ void Block::dct() {
     for( int i = 0; i < Block::frequencies; ++i ) {
         x = frequency_order[i][0];
         y = frequency_order[i][1];
-        mFrequencies[i] = this->mData[x][y]/mQuality;
+        mFrequencies[i] = this->mData[x][y] / mQuality;
     }
 
 }
@@ -75,13 +75,15 @@ const std::vector<double>& Block::operator[]( const size_t pos ) const {
 }
 
 std::ostream& operator<< ( std::ostream& stream, const Block& b ) {
-    for( auto& v : b.mData ) {
-        for( auto& d : v ) {
+for( auto & v : b.mData ) {
+for( auto & d : v ) {
             stream.width( 10 );
             stream << Block::roundBy( d ) << " ";
         }
+
         stream << std::endl;
     }
+
     return stream;
 }
 
@@ -97,7 +99,7 @@ void Block::setData( const std::vector<std::vector<double> >& data ) {
     mTransformed = false;
 }
 
-void Block::setX(int x) {
+void Block::setX( int x ) {
     mX = x;
 }
 
@@ -105,12 +107,18 @@ int Block::x() const {
     return mX;
 }
 
-void Block::setY(int y) {
+void Block::setY( int y ) {
     mY = y;
 }
 
 int Block::y() const {
     return mY;
+}
+
+int Block::manhattanDistance( const Block& that ) const {
+    int dx = std::abs( this->x() - that.x() );
+    int dy = std::abs( this->y() - that.y() );
+    return dx + dy;
 }
 
 bool Block::transformed() const {
