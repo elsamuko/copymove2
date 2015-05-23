@@ -4,6 +4,8 @@
 #include <fstream>
 #include <iostream>
 
+#include <log/log.hpp>
+
 bool FDImage::initialized = false;
 
 template <class T, int lower, int upper>
@@ -168,7 +170,7 @@ bool FDImage::save( const std::string filename, int quality ) {
             return true;
         }
     } else {
-        std::cout << "save: Image is not valid" << std::endl;
+        LOG( "Save: Image is not valid" );
     }
 
     return false;
