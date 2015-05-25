@@ -1,4 +1,5 @@
 #include "shift.hpp"
+#include <sstream>
 
 Shift::Shift()
 {
@@ -19,5 +20,15 @@ void Shift::setX( size_t x ) {
 
 void Shift::setY( size_t y ) {
     mY = y;
+}
+
+std::ostream& operator <<(std::ostream &stream, const Shift &b) {
+    stream << "[" << b.mX << ", " << b.mY << "]";
+}
+
+std::string Shift::toString() const {
+    std::stringstream ss;
+    ss << *this;
+    return ss.str();
 }
 

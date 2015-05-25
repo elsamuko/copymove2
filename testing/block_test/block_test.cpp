@@ -14,6 +14,7 @@ public:
 private Q_SLOTS:
     void testComparison();
     void testDCT();
+    void testSort();
 };
 
 Block_test::Block_test() {
@@ -42,6 +43,26 @@ void Block_test::testDCT() {
     QVERIFY( Block::roundBy<7>( b1[2][2] ) == 0.0577425 );
     QVERIFY( Block::roundBy<7>( b1[2][3] ) == 0.0440563 );
     QVERIFY( Block::roundBy<7>( b1[15][15] ) == -0.0171049 );
+
+    b1.idct();
+    QVERIFY( Block::roundBy<7>( b1[2][1] ) == 1 );
+    QVERIFY( Block::roundBy<7>( b1[2][2] ) == 0 );
+}
+
+void Block_test::testSort() {
+
+    std::vector<Block> blocks( 3 );
+    blocks[0][1][1] = 4;
+    blocks[0].setX( 4 );
+
+    for( Block& b : blocks ) {
+        b.dct();
+    }
+
+    std::sort( blocks.begin(), blocks.end() );
+
+    QVERIFY( blocks[2].x() == 4 );
+
 }
 
 QTEST_MAIN( Block_test )

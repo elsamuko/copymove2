@@ -1,4 +1,4 @@
-#include "greyimage.hpp"
+    #include "greyimage.hpp"
 
 #include <sstream>
 #include <fstream>
@@ -48,11 +48,11 @@ GreyImage::GreyImage() {
 //! \param Block to fill
 //! \param x vert. position
 //! \param y horiz. position
-void GreyImage::getBlock( Block& block, int x, int y ) const {
+void GreyImage::getBlock( Block& block, int x0, int y0 ) const {
 
-    for( int i = 0; i < Block::size; ++i ) {
-        for( int j = 0; j < Block::size; ++j ) {
-            block[i][j] = mPixels[x + i][y + j];
+    for( int y = 0; y < Block::size; ++y ) {
+        for( int x = 0; x < Block::size; ++x ) {
+            block[x][y] = mPixels[x0 + x][y0 + y];
         }
     }
 
@@ -62,11 +62,11 @@ void GreyImage::getBlock( Block& block, int x, int y ) const {
 //! \param Block to insert
 //! \param x vert. position
 //! \param y horiz. position
-void GreyImage::setBlock( const Block& block, int x, int y ) {
+void GreyImage::setBlock( const Block& block, int x0, int y0 ) {
 
-    for( int i = 0; i < Block::size; ++i ) {
-        for( int j = 0; j < Block::size; ++j ) {
-            mPixels[x + i][y + j] = block[i][j];
+    for( int y = 0; y < Block::size; ++y ) {
+        for( int x = 0; x < Block::size; ++x ) {
+            mPixels[x0 + x][y0 + y] = block[x][y];
         }
     }
 

@@ -12,6 +12,7 @@ class DCTSorter {
 public:
     DCTSorter();
     void setGrey( const GreyImage& grey );
+    GreyImage getGrey() const;
     void work();
 
 private:

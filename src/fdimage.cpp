@@ -88,9 +88,9 @@ GreyImage FDImage::getGrey() {
     // Request pixel region
     Magick::PixelPacket* pixel_cache = ( Magick::PixelPacket* ) mImage.getPixels( 0, 0, w, h );
 
-    for( size_t i = 0; i < w; ++i ) {
-        for( size_t j = 0; j < h; ++j ) {
-            grey[i][j] = pixel_cache->green;
+    for( size_t y = 0; y < h; ++y ) {
+        for( size_t x = 0; x < w; ++x ) {
+            grey[x][y] = pixel_cache->green;
             ++pixel_cache;
         }
     }
@@ -111,11 +111,11 @@ void FDImage::setGrey( const GreyImage& grey ) {
     // Request pixel region
     Magick::PixelPacket* pixel_cache = ( Magick::PixelPacket* ) mImage.getPixels( 0, 0, w, h );
 
-    for( size_t i = 0; i < w; ++i ) {
-        for( size_t j = 0; j < h; ++j ) {
-            pixel_cache->red = CLAMP<int, 0, 65535>( grey[i][j] );
-            pixel_cache->green = CLAMP<int, 0, 65535>( grey[i][j] );
-            pixel_cache->blue = CLAMP<int, 0, 65535>( grey[i][j] );
+    for( size_t y = 0; y < h; ++y ) {
+        for( size_t x = 0; x < w; ++x ) {
+            pixel_cache->red = CLAMP<int, 0, 65535>( grey[x][y] );
+            pixel_cache->green = CLAMP<int, 0, 65535>( grey[x][y] );
+            pixel_cache->blue = CLAMP<int, 0, 65535>( grey[x][y] );
             ++pixel_cache;
         }
     }

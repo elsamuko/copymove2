@@ -1,26 +1,20 @@
 #include "block.hpp"
 
 #include <cassert>
+#include <sstream>
 
 #include "ooura/shrtdct.hpp"
 
 Block::Block() {
     mTransformed = false;
-    mQuality = 10;
+    mQuality = 1000;
     mData = std::vector<std::vector<double>>( Block::size, std::vector<double>( Block::size, 0 ) );
     mFrequencies = std::vector<int>( Block::frequencies, 0 );
     mX = 0;
     mY = 0;
 }
 
-void Block::dct() {
-
-    mTransformed = true;
-    ooura::ddct16x16s( -1, mData );
-
-    int x = 0;
-    int y = 0;
-
+void Block::assignFrequencies() {
     // order of the first ten frequencies:
     //  1  2  6  7
     //  3  5  8
@@ -31,18 +25,30 @@ void Block::dct() {
         {0, 2}, {0, 3}, {1, 2}, {2, 1}, {3, 0}
     };
 
+    int x = 0;
+    int y = 0;
+
     // get first 10 frequencies and cache them in mFrequencies
     for( int i = 0; i < Block::frequencies; ++i ) {
         x = frequency_order[i][0];
         y = frequency_order[i][1];
-        mFrequencies[i] = this->mData[x][y] / mQuality;
+        mFrequencies[i] = this->mData[x][y]/mQuality/(i+1);
     }
+}
 
+void Block::dct() {
+
+    assert( !mTransformed );
+    mTransformed = true;
+    ooura::ddct16x16s( -1, mData );
+
+    assignFrequencies();
 }
 
 void Block::idct() {
-    ooura::ddct16x16s( 1, mData );
+    assert( mTransformed );
     mTransformed = false;
+    ooura::ddct16x16s( 1, mData );
 }
 
 bool Block::operator <( const Block& that ) const {
@@ -74,14 +80,33 @@ const std::vector<double>& Block::operator[]( const size_t pos ) const {
     return mData[pos];
 }
 
-std::ostream& operator<< ( std::ostream& stream, const Block& b ) {
-for( auto & v : b.mData ) {
-for( auto & d : v ) {
-            stream.width( 10 );
-            stream << Block::roundBy( d ) << " ";
-        }
+std::string Block::toString() const {
+    std::stringstream ss;
+    ss << *this;
+    return ss.str();
+}
 
-        stream << std::endl;
+std::ostream& operator<< ( std::ostream& stream, const Block& b ) {
+//    for( auto & v : b.mData ) {
+//        for( auto & d : v ) {
+//            stream.width( 10 );
+//            stream << Block::roundBy( d ) << " ";
+//        }
+
+//        stream << std::endl;
+//    }
+
+    stream << "[" ;
+
+    stream.width( 3 );
+    stream << b.x() << ",";
+
+    stream.width( 3 );
+    stream << b.y() << "] ";
+
+    for( auto& f : b.mFrequencies ) {
+        stream.width( 5  );
+        stream << Block::roundBy<0>( f ) << " ";
     }
 
     return stream;
@@ -125,3 +150,6 @@ bool Block::transformed() const {
     return mTransformed;
 }
 
+bool Block::interesting() const {
+    return mInteresting;
+}

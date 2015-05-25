@@ -9,8 +9,8 @@ public:
     GreyImage( int width, int height );
 
 public:
-    void getBlock( Block& block, int x, int y ) const;
-    void setBlock( const Block& block, int x, int y );
+    void getBlock( Block& block, int x0, int y0 ) const;
+    void setBlock(const Block& block, int x0, int y0 );
 
     std::vector<double>& operator[]( const size_t pos );
     const std::vector<double>& operator[]( const size_t pos ) const;
