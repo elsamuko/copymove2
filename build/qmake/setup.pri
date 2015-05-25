@@ -10,6 +10,11 @@ CONFIG(release, debug|release) {
     IM_FLAG=RL
 }
 
+macx:       PLATFORM=mac
+win32:      PLATFORM=win
+unix:!macx: PLATFORM=linux
+unix:!macx: CONFIG += linux
+
 OBJECTS_DIR = $${MAIN_DIR}/tmp/$${TARGET}/$${COMPILE_MODE}/objects
 MOC_DIR = $${MAIN_DIR}/tmp/$${TARGET}/$${COMPILE_MODE}/moc
 UI_DIR = $${MAIN_DIR}/tmp/$${TARGET}/$${COMPILE_MODE}/uic
