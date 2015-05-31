@@ -1,10 +1,12 @@
 #include <algorithm>
+#include <utility>
 
 #include "dctsorter.hpp"
 #include "log/log.hpp"
 #include <sstream>
 
-DCTSorter::DCTSorter() {
+DCTSorter::DCTSorter() :
+    mMinimum( 20 ) {
 }
 
 void DCTSorter::setGrey( const GreyImage& grey ) {
@@ -17,28 +19,30 @@ GreyImage DCTSorter::getGrey() const {
 
 void DCTSorter::work() {
     readGreyToBlocks();
+    // for( Block& b : mBlocks ) { LOG( b.toString() ); }
     dctBlocks();
+    // for( Block& b : mBlocks ) { LOG( b.toString() ); }
     sortBlocks();
+    // for( Block& b : mBlocks ) { LOG( b.toString() ); }
     findDuplicates();
+    sortShifts();
 
-    for( auto& count : mShiftCount ) {
-        LOG( count.first.toString() + " : " + std::to_string( count.second ) );
-    }
 }
 
 void DCTSorter::readGreyToBlocks() {
+    LOG("Read image...");
 
     const size_t width = mGrey.width();
     const size_t height = mGrey.height();
-    const size_t h16 = height - 16 + 1;
-    const size_t w16 = width  - 16 + 1;
+    const size_t h8 = height - Block::size + 1;
+    const size_t w8 = width  - Block::size + 1;
 
-    mBlocks = std::vector<Block>( h16 * w16 );
+    mBlocks = std::vector<Block>( h8 * w8 );
     int i = 0;
 
     // read
-    for( size_t y = 0; y < h16; ++y ) {
-        for( size_t x = 0; x < w16; ++x ) {
+    for( size_t y = 0; y < h8; ++y ) {
+        for( size_t x = 0; x < w8; ++x ) {
             mBlocks[i].setY( y );
             mBlocks[i].setX( x );
             mGrey.getBlock( mBlocks[i], x, y );
@@ -48,9 +52,18 @@ void DCTSorter::readGreyToBlocks() {
 }
 
 void DCTSorter::dctBlocks() {
+    LOG("DCT...");
+
+    int max = 1;
+    int freq = 1;
 
     for( Block& block : mBlocks ) {
         block.dct();
+        max = std::max( max, block.frequency( freq ) );
+    }
+
+    for( Block& block : mBlocks ) {
+        mGrey[block.x()+Block::size/2][block.y()+Block::size/2] = block.frequency( freq ) * 65536 / max;
     }
 
 }
@@ -76,23 +89,54 @@ void DCTSorter::dctBlocks() {
 //}
 
 void DCTSorter::sortBlocks() {
+    LOG("Sorting...");
     std::sort( mBlocks.begin(), mBlocks.end() );
 }
 
+void DCTSorter::sortShifts() {
+
+    std::vector<std::pair<int,Shift>> sorted;
+    sorted.reserve( mShifts.size() );
+
+    for( auto& count : mShifts ) {
+        sorted.push_back( std::make_pair( count.second, count.first ) );
+    }
+
+    std::sort( sorted.begin(), sorted.end() );
+
+    for( auto& count : sorted ) {
+        if( count.first > mMinimum ) {
+            LOG( count.second.toString() + " : " + std::to_string( count.first )  + " @ " + mOffsets[count.second].toString() );
+        }
+    }
+
+}
+
 void DCTSorter::findDuplicates() {
-    Block tmp = mBlocks[0];
+    LOG("Collecting shifts...");
+
+    std::vector<Block>::iterator tmp = mBlocks.begin();
+    std::vector<Block>::iterator b = tmp + 1;
     Shift shift;
 
-    for( Block & b : mBlocks ) {
-        if( tmp.manhattanDistance( b ) > Block::size ) {
-            if( b.hasSimilarFreqs( tmp ) ) {
-                size_t dx = std::abs( b.x() - tmp.x() );
-                size_t dy = std::abs( b.y() - tmp.y() );
+    for( ; b!= mBlocks.end(); ++b ) {
 
-                shift.setX( dx );
-                shift.setY( dy );
+        std::vector<Block>::iterator c = b;
 
-                mShiftCount[ shift ]++;
+        while( tmp->hasSimilarFreqs( *c ) ) {
+            if( tmp->manhattanDistance( *c ) > Block::size ) {
+                size_t dx = std::abs( c->x() - tmp->x() );
+                size_t dy = std::abs( c->y() - tmp->y() );
+
+                shift.setDx( dx );
+                shift.setDy( dy );
+
+                mShifts[ shift ]++;
+                mOffsets[ shift ] = *c;
+            }
+            ++c;
+            if( c == mBlocks.end()) {
+                break;
             }
         }
 

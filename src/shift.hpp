@@ -12,14 +12,14 @@ class Shift
         bool operator <( const Shift& b ) const;
         bool operator >( const Shift& b ) const;
 
-        void setX( size_t x );
-        void setY( size_t y );
+        void setDx( size_t dx );
+        void setDy( size_t dy );
         friend std::ostream& operator << ( std::ostream& stream, const Shift& b );
         std::string toString() const;
 
 private:
-        size_t mX;
-        size_t mY;
+        size_t mDx;
+        size_t mDy;
 };
 
 #endif // SHIFT_HPP

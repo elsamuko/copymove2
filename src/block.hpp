@@ -4,10 +4,11 @@
 #include <vector>
 #include <iostream>
 #include <cmath>
+#include <cassert>
 
 class Block {
 public:
-    enum { size = 16, frequencies = 10 };
+    enum { size = 8, frequencies = 9 };
     Block();
 
     void dct();
@@ -29,9 +30,14 @@ public:
     void setY( int y );
     int y() const;
 
+    int frequency( size_t position ) const;
+
     int manhattanDistance( const Block& that ) const;
 
-    template<int from = 1, int to = 5>
+    template<class T>
+    static double cosineSimilarity( const T& a, const T&b );
+
+    template<int from = 0, int to = 4>
     bool hasSimilarFreqs( Block& other );
 
     bool transformed() const;
@@ -53,14 +59,32 @@ private:
     std::vector<int> mFrequencies;
 };
 
+template<class T>
+double Block::cosineSimilarity( const T& a, const T& b ) {
+
+    assert( a.size() == b.size() );
+
+    double dotP = 0;
+    double sumA = 0;
+    double sumB = 0;
+
+    for( size_t i = 0; i < a.size(); ++i ) {
+        dotP += a[i] * b[i];
+        sumA += a[i] * a[i];
+        sumB += b[i] * b[i];
+    }
+
+    double similarity = dotP/( std::sqrt( sumA ) * std::sqrt( sumB ) );
+    return similarity;
+}
+
+// TODO: replace with cosine similarity
 template<int from, int to>
 bool Block::hasSimilarFreqs( Block &other ) {
-    for( int i = from; i <= to; ++i ) {
-        if( this->mFrequencies[i] != other.mFrequencies[i] ) {
-            return false;
-        }
-    }
-    return true;
+    assert( mTransformed );
+
+    bool similar = cosineSimilarity( this->mFrequencies, other.mFrequencies ) > 0.9;
+    return similar;
 }
 
 constexpr int power10( int digits ) {

@@ -6,7 +6,7 @@ Shift::Shift()
 }
 
 bool Shift::operator <( const Shift& that ) const {
-    bool smaller = (this->mX + this->mY) < (that.mX + that.mY);
+    bool smaller = (this->mDx + this->mDy) < (that.mDx + that.mDy);
     return smaller;
 }
 
@@ -14,16 +14,17 @@ bool Shift::operator >( const Shift& b ) const {
     return !( *this < b );
 }
 
-void Shift::setX( size_t x ) {
-    mX = x;
+void Shift::setDx(size_t dx ) {
+    mDx = dx;
 }
 
-void Shift::setY( size_t y ) {
-    mY = y;
+void Shift::setDy(size_t dy ) {
+    mDy = dy;
 }
 
 std::ostream& operator <<(std::ostream &stream, const Shift &b) {
-    stream << "[" << b.mX << ", " << b.mY << "]";
+    stream << "[" << b.mDx << ", " << b.mDy << "]";
+    return stream;
 }
 
 std::string Shift::toString() const {

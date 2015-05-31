@@ -90,7 +90,7 @@ GreyImage FDImage::getGrey() {
 
     for( size_t y = 0; y < h; ++y ) {
         for( size_t x = 0; x < w; ++x ) {
-            grey[x][y] = pixel_cache->green;
+            grey[x][y] = pixel_cache->green/256;
             ++pixel_cache;
         }
     }
@@ -113,9 +113,9 @@ void FDImage::setGrey( const GreyImage& grey ) {
 
     for( size_t y = 0; y < h; ++y ) {
         for( size_t x = 0; x < w; ++x ) {
-            pixel_cache->red = CLAMP<int, 0, 65535>( grey[x][y] );
-            pixel_cache->green = CLAMP<int, 0, 65535>( grey[x][y] );
-            pixel_cache->blue = CLAMP<int, 0, 65535>( grey[x][y] );
+            pixel_cache->red = 256 * CLAMP<int, 0, 256>( grey[x][y] );
+            pixel_cache->green = 256 * CLAMP<int, 0, 256>( grey[x][y] );
+            pixel_cache->blue = 256 * CLAMP<int, 0, 256>( grey[x][y] );
             ++pixel_cache;
         }
     }

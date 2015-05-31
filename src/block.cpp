@@ -2,12 +2,13 @@
 
 #include <cassert>
 #include <sstream>
+#include <array>
 
 #include "ooura/shrtdct.hpp"
 
 Block::Block() {
     mTransformed = false;
-    mQuality = 1000;
+    mQuality = 20;
     mData = std::vector<std::vector<double>>( Block::size, std::vector<double>( Block::size, 0 ) );
     mFrequencies = std::vector<int>( Block::frequencies, 0 );
     mX = 0;
@@ -15,32 +16,48 @@ Block::Block() {
 }
 
 void Block::assignFrequencies() {
-    // order of the first ten frequencies:
-    //  1  2  6  7
-    //  3  5  8
-    //  4  9
-    // 10
+    // order of the used frequencies:
+    //  X  X  X  X
+    //  X  1  3  9
+    //  X  2  4  6
+    //  X  8  5  7
     static int frequency_order[Block::frequencies][2] = {
-        {0, 0}, {0, 1}, {1, 0}, {2, 0}, {1, 1},
-        {0, 2}, {0, 3}, {1, 2}, {2, 1}, {3, 0}
+        {1, 1}, // 1
+        {1, 2}, // 2
+        {2, 1}, // 3
+        {2, 2}, // 4
+        {2, 3}, // 5
+        {3, 2}, // 6
+        {3, 3}, // 7
+        {1, 3}, // 8
+        {3, 1}, // 9
     };
 
     int x = 0;
     int y = 0;
+    double amp = 0;
+    double max = 0.01;
+
+    std::array<double,Block::frequencies> tmp;
 
     // get first 10 frequencies and cache them in mFrequencies
     for( int i = 0; i < Block::frequencies; ++i ) {
         x = frequency_order[i][0];
         y = frequency_order[i][1];
-        mFrequencies[i] = this->mData[x][y]/mQuality/(i+1);
+        amp = this->mData[x][y];
+        max = std::max( max, std::abs( amp ) );
+        tmp[i] = amp;
+    }
+
+    for( int i = 0; i < Block::frequencies; ++i ) {
+        mFrequencies[i] = std::round( tmp[i] * 8.f / max );
     }
 }
 
 void Block::dct() {
-
     assert( !mTransformed );
     mTransformed = true;
-    ooura::ddct16x16s( -1, mData );
+    ooura::ddct8x8s( -1, mData );
 
     assignFrequencies();
 }
@@ -48,13 +65,12 @@ void Block::dct() {
 void Block::idct() {
     assert( mTransformed );
     mTransformed = false;
-    ooura::ddct16x16s( 1, mData );
+    ooura::ddct8x8s( 1, mData );
 }
 
 bool Block::operator <( const Block& that ) const {
 
-    // check only frequencies 2-10
-    for( int i = 1; i < Block::frequencies; ++i ) {
+    for( int i = 0; i < Block::frequencies; ++i ) {
 
         if( this->mFrequencies[i] < that.mFrequencies[i] ) {
             return true;
@@ -87,15 +103,6 @@ std::string Block::toString() const {
 }
 
 std::ostream& operator<< ( std::ostream& stream, const Block& b ) {
-//    for( auto & v : b.mData ) {
-//        for( auto & d : v ) {
-//            stream.width( 10 );
-//            stream << Block::roundBy( d ) << " ";
-//        }
-
-//        stream << std::endl;
-//    }
-
     stream << "[" ;
 
     stream.width( 3 );
@@ -108,6 +115,17 @@ std::ostream& operator<< ( std::ostream& stream, const Block& b ) {
         stream.width( 5  );
         stream << Block::roundBy<0>( f ) << " ";
     }
+
+    stream << std::endl;
+
+//    for( auto & v : b.mData ) {
+//        for( auto & d : v ) {
+//            stream.width( 10 );
+//            stream << Block::roundBy( d ) << " ";
+//        }
+
+//        stream << std::endl;
+//    }
 
     return stream;
 }
@@ -138,6 +156,12 @@ void Block::setY( int y ) {
 
 int Block::y() const {
     return mY;
+}
+
+int Block::frequency( size_t position ) const {
+    assert( mTransformed );
+    assert( position < mFrequencies.size() );
+    return mFrequencies[position];
 }
 
 int Block::manhattanDistance( const Block& that ) const {

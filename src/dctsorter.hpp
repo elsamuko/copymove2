@@ -7,6 +7,7 @@
 #include "greyimage.hpp"
 #include "block.hpp"
 #include "shift.hpp"
+#include "offset.hpp"
 
 class DCTSorter {
 public:
@@ -18,11 +19,18 @@ public:
 private:
     GreyImage mGrey;
     std::vector<Block> mBlocks;
-    std::map<Shift, int> mShiftCount;
+    std::map<Shift, int> mShifts;
+    std::map<Shift, Block> mOffsets;
+
+    std::vector<Block> mOriginals;
+    std::vector<Block> mCopies;
+
+    int mMinimum;
 
     void readGreyToBlocks();
     void dctBlocks();
     void sortBlocks();
+    void sortShifts();
     void findDuplicates();
 };
 

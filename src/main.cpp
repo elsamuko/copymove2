@@ -16,8 +16,8 @@ int main( int /*argc*/, char** /*argv*/ ) {
 
     DCTSorter sorter;
     sorter.setGrey( image.getGrey() );
-    // image.setGrey( sorter.getGrey() );
     sorter.work();
+    image.setGrey( sorter.getGrey() );
 
     image.save( "out.jpg" );
     LOG("End");
