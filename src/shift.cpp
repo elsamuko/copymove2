@@ -14,11 +14,11 @@ bool Shift::operator >( const Shift& b ) const {
     return !( *this < b );
 }
 
-void Shift::setDx(size_t dx ) {
+void Shift::setDx(int dx ) {
     mDx = dx;
 }
 
-void Shift::setDy(size_t dy ) {
+void Shift::setDy(int dy ) {
     mDy = dy;
 }
 
