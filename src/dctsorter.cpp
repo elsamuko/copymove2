@@ -6,15 +6,21 @@
 #include <sstream>
 
 DCTSorter::DCTSorter() :
-    mMinimum( 20 ) {
+    mMaxHits( 5 ) {
 }
 
 void DCTSorter::setGrey( const GreyImage& grey ) {
     mGrey = grey;
+    mResult.from = GreyImage( grey.width(), grey.height() );
+    mResult.to   = GreyImage( grey.width(), grey.height() );
 }
 
 GreyImage DCTSorter::getGrey() const {
     return mGrey;
+}
+
+DCTSorter::ShiftImages DCTSorter::getShifts() const {
+    return mResult;
 }
 
 void DCTSorter::work() {
@@ -26,7 +32,6 @@ void DCTSorter::work() {
     // for( Block& b : mBlocks ) { LOG( b.toString() ); }
     findDuplicates();
     sortShifts();
-
 }
 
 void DCTSorter::readGreyToBlocks() {
@@ -34,38 +39,79 @@ void DCTSorter::readGreyToBlocks() {
 
     const size_t width = mGrey.width();
     const size_t height = mGrey.height();
-    const size_t h8 = height - Block::size + 1;
-    const size_t w8 = width  - Block::size + 1;
+    const size_t hB = height - Block::size;
+    const size_t wB = width  - Block::size;
 
-    mBlocks = std::vector<Block>( h8 * w8 );
-    int i = 0;
+    mBlocks = std::vector<Block>( hB * wB );
+    std::atomic_int i(0);
 
     // read
-    for( size_t y = 0; y < h8; ++y ) {
-        for( size_t x = 0; x < w8; ++x ) {
-            mBlocks[i].setY( y );
-            mBlocks[i].setX( x );
-            mGrey.getBlock( mBlocks[i], x, y );
-            i++;
+    for( size_t y = 0; y < hB; ++y ) {
+        for( size_t x = 0; x < wB; ++x ) {
+            int current = i++;
+            mThreadPool.add( [this,current,x,y] {
+                mBlocks[current].setX( x );
+                mBlocks[current].setY( y );
+                mGrey.getBlock( mBlocks[current], x, y );
+                mBlocks[current].calculateStandardDeviation();
+            });
         }
     }
+
+    mThreadPool.waitForAllJobs();
 }
 
 void DCTSorter::dctBlocks() {
     LOG("DCT...");
 
-    int max = 1;
-    int freq = 1;
+    size_t blocks  = mBlocks.size();
+    size_t threads = mThreadPool.size();
+    size_t parts   = blocks / threads;
+    size_t rest    = blocks % threads;
 
-    for( Block& block : mBlocks ) {
-        block.dct();
-        max = std::max( max, block.frequency( freq ) );
+    LOG( "blocks  : " + std::to_string( blocks ) );
+    LOG( "threads : " + std::to_string( threads ) );
+    LOG( "parts   : " + std::to_string( parts ) );
+    LOG( "rest    : " + std::to_string( rest ) );
+
+    for( size_t thread = 0; thread < threads; ++thread ) {
+        std::this_thread::sleep_for( std::chrono::milliseconds( 1 ) );
+        mThreadPool.add( [thread,parts,this] {
+            size_t from = thread*parts;
+            size_t to   = (thread+1)*parts;
+            LOG( std::to_string( from ) + " to " + std::to_string( to ) );
+            for( size_t i = from; i<to; ++i ) {
+                mBlocks[i].dct();
+            }
+        });
     }
 
-    for( Block& block : mBlocks ) {
-        mGrey[block.x()+Block::size/2][block.y()+Block::size/2] = block.frequency( freq ) * 65536 / max;
+    if( rest > 0 ) {
+        LOG( "rest : " + std::to_string( rest ) );
+        std::this_thread::sleep_for( std::chrono::milliseconds( 1 ) );
+        mThreadPool.add( [blocks,rest,this] {
+            size_t from = blocks - rest;
+            size_t to   = blocks;
+            LOG( std::to_string( from ) + " to " + std::to_string( to ) );
+            for( size_t i = from; i<to; ++i ) {
+                mBlocks[i].dct();
+            }
+        });
     }
 
+    mThreadPool.waitForAllJobs();
+
+
+    // some stats
+    std::atomic_int max( 20 );
+    int freq = 0;
+
+    for( Block& block : mBlocks ) {
+        max.store( std::max( max.load(), block.frequency( freq ) ) );
+    }
+    for( Block& block : mBlocks ) {
+        mGrey[block.x()+Block::size/2][block.y()+Block::size/2] = ( max.load() + block.frequency( freq ) ) * 256 / max;
+    }
 }
 
 // http://codereview.stackexchange.com/questions/22744/multi-threaded-sort
@@ -93,25 +139,6 @@ void DCTSorter::sortBlocks() {
     std::sort( mBlocks.begin(), mBlocks.end() );
 }
 
-void DCTSorter::sortShifts() {
-
-    std::vector<std::pair<int,Shift>> sorted;
-    sorted.reserve( mShifts.size() );
-
-    for( auto& count : mShifts ) {
-        sorted.push_back( std::make_pair( count.second, count.first ) );
-    }
-
-    std::sort( sorted.begin(), sorted.end() );
-
-    for( auto& count : sorted ) {
-        if( count.first > mMinimum ) {
-            LOG( count.second.toString() + " : " + std::to_string( count.first )  + " @ " + mOffsets[count.second].toString() );
-        }
-    }
-
-}
-
 void DCTSorter::findDuplicates() {
     LOG("Collecting shifts...");
 
@@ -121,17 +148,22 @@ void DCTSorter::findDuplicates() {
 
     for( ; b!= mBlocks.end(); ++b ) {
 
+        if( !b->interesting() ) {
+            tmp = b;
+            continue;
+        }
+
         std::vector<Block>::iterator c = b;
 
-        while( tmp->hasSimilarFreqs( *c ) ) {
-            if( tmp->manhattanDistance( *c ) > Block::size ) {
-                size_t dx = std::abs( c->x() - tmp->x() );
-                size_t dy = std::abs( c->y() - tmp->y() );
+        if( tmp->hasSimilarFreqs( *c ) ) {
+            if( tmp->manhattanDistance( *c ) > 10 * Block::size ) {
+                size_t dx = ( c->x() - tmp->x() );
+                size_t dy = ( c->y() - tmp->y() );
 
                 shift.setDx( dx );
                 shift.setDy( dy );
 
-                mShifts[ shift ]++;
+                mShifts[ shift ].push_back( std::make_pair(*tmp,*c) );
                 mOffsets[ shift ] = *c;
             }
             ++c;
@@ -144,3 +176,35 @@ void DCTSorter::findDuplicates() {
     }
 }
 
+void DCTSorter::sortShifts() {
+    LOG("Sorting shifts...");
+
+    std::vector<std::pair<int,Shift>> sorted;
+    sorted.reserve( mShifts.size() );
+
+    for( auto& count : mShifts ) {
+        sorted.push_back( std::make_pair( count.second.size(), count.first ) );
+    }
+
+    std::sort( sorted.begin(), sorted.end() );
+
+    Block white;
+    for( int y = 0; y<Block::size; ++y ){
+        for( int x = 0; x<Block::size; ++x ){
+            white[x][y] = 255;
+        }
+    }
+
+    int i = sorted.size();
+
+    for( int k = i; k > i-mMaxHits ; --k ) {
+        std::pair<int,Shift>& count = sorted[k-1];
+        std::vector<std::pair<Block,Block>>& pairs = mShifts[count.second];
+        for( std::pair<Block,Block>& pair : pairs ) {
+            mResult.from.setBlock( white, pair.first.x(), pair.first.y() );
+            mResult.to.setBlock( white, pair.second.x(), pair.second.y() );
+        }
+        LOG( count.second.toString() + " : " + std::to_string( count.first )  + " @ " + mOffsets[count.second].toString() );
+    }
+
+}

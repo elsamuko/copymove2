@@ -17,9 +17,17 @@ int main( int /*argc*/, char** /*argv*/ ) {
     DCTSorter sorter;
     sorter.setGrey( image.getGrey() );
     sorter.work();
-    image.setGrey( sorter.getGrey() );
 
-    image.save( "out.jpg" );
+    DCTSorter::ShiftImages shifts = sorter.getShifts();
+    image.setGrey( shifts.from );
+    image.save( "z_from.jpg" );
+    image.setGrey( shifts.to );
+    image.save( "z_to.jpg" );
+
+    GreyImage grey = sorter.getGrey();
+    image.setGrey( grey );
+    image.save( "grey.jpg" );
+
     LOG("End");
 
     return 0;

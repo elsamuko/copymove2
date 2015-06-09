@@ -6,6 +6,8 @@
 #include <cmath>
 #include <cassert>
 
+#include "log/log.hpp"
+
 class Block {
 public:
     enum { size = 16, frequencies = 9 };
@@ -35,13 +37,14 @@ public:
     int manhattanDistance( const Block& that ) const;
 
     template<class T>
-    static double cosineSimilarity( const T& a, const T&b );
+    static double cosineSimilarity( const T& a, const T&b, double normA, double normB );
 
     template<int from = 0, int to = 4>
-    bool hasSimilarFreqs( Block& other );
+    bool hasSimilarFreqs( const Block& other );
 
     bool transformed() const;
     bool interesting() const;
+    void calculateStandardDeviation();
 
     template< int digits = 4 >
     static double roundBy( double in );
@@ -49,8 +52,12 @@ public:
 private:
     void assignFrequencies();
     bool mTransformed;
-    int mQuality;
-    bool mInteresting;
+    bool mMeanCalculated;
+    bool mDataReceived;
+    double mQuantization;
+    double mMean;
+    double mStandardDeviation; // contrast
+    double mFrequencyNorm; // ||a||
     //! \brief X coordinate in image
     int mX;
     //! \brief Y coordinate in image
@@ -60,30 +67,29 @@ private:
 };
 
 template<class T>
-double Block::cosineSimilarity( const T& a, const T& b ) {
+double Block::cosineSimilarity( const T& a, const T& b, double normA, double normB ) {
 
     assert( a.size() == b.size() );
+    if( normA <= 0 ) return 0.f;
+    if( normB <= 0 ) return 0.f;
 
     double dotP = 0;
-    double sumA = 0;
-    double sumB = 0;
 
     for( size_t i = 0; i < a.size(); ++i ) {
         dotP += a[i] * b[i];
-        sumA += a[i] * a[i];
-        sumB += b[i] * b[i];
     }
 
-    double similarity = dotP/( std::sqrt( sumA ) * std::sqrt( sumB ) );
+    double similarity = dotP/( normA * normB );
     return similarity;
 }
 
 // TODO: replace with cosine similarity
 template<int from, int to>
-bool Block::hasSimilarFreqs( Block &other ) {
+bool Block::hasSimilarFreqs( const Block &other ) {
     assert( mTransformed );
 
-    bool similar = cosineSimilarity( this->mFrequencies, other.mFrequencies ) > 0.9;
+    double similarity = cosineSimilarity( this->mFrequencies, other.mFrequencies, this->mFrequencyNorm, other.mFrequencyNorm );
+    bool similar = similarity > 0.90;
     return similar;
 }
 
