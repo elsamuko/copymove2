@@ -16,7 +16,7 @@ endfunction
 function retval = dfreqs0(block)
     retval = selection(block);
     mx = max(abs(retval));
-    retval = round(8*retval./mx);
+    retval = round(20*retval./mx);
 endfunction
 
 function retval = cosine_similarity(a,b)
