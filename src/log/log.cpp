@@ -11,6 +11,42 @@
 
 static std::mutex mutex;
 
+std::string logging::logFilename() {
+
+#ifdef WIN32
+    std::string filename( std::string( getenv( "temp" ) ) + "\\copymove.log" );
+#elif __APPLE__
+    std::string filename = std::string( getenv( "HOME" ) ) + "/Library/Caches/com.fd-imaging.copymove/copymove.log";
+#else
+    std::string filename( "/tmp/copymove.log" );
+#endif // WIN32
+
+    return filename;
+}
+
+static void rotateLog() {
+    std::string filename = logging::logFilename();
+    std::string backup1  = filename + ".1";
+    std::string backup2  = filename + ".2";
+
+    std::remove( backup2.c_str() );
+    std::rename( backup1.c_str(),  backup2.c_str() );
+    std::rename( filename.c_str(), backup1.c_str() );
+}
+
+void initLogFile() {
+    static bool initialized = false;
+    if( !initialized ) {
+        initialized = true;
+
+#if __APPLE__
+        std::string cache = std::string( getenv( "HOME" ) ) + "/Library/Caches/com.fd-imaging.copymove";
+        mkdir( cache.c_str(), 0777 );
+#endif
+        rotateLog();
+    }
+}
+
 std::string threadId() {
     std::stringstream ss;
     ss << std::this_thread::get_id();
@@ -34,7 +70,7 @@ std::string indent( const std::string& s, int count ) {
 }
 
 
-bool writeLog( const char* level, const char * /*file*/, int sourceline, const char* function, std::string content ) {
+bool logging::writeLog( const char* level, const char* cfile, int sourceline, const char* function, std::string content ) {
 
     std::stringstream logline;
 
@@ -43,6 +79,17 @@ bool writeLog( const char* level, const char * /*file*/, int sourceline, const c
     logline << datetime::now();
     logline << level;
     // logline << " T" << threadId();
+
+    std::string file( cfile );
+#ifndef _WIN32
+    file = file.substr( file.find_last_of( "/" ) + 1 );
+#else
+    file = file.substr( file.find_last_of( "\\" ) + 1 );
+#endif // _WIN32
+    file = file.substr( 0, file.find_last_of( "." ) );
+
+    logline.width( 15 );
+    logline << file << " ";
 
     logline.width( 30 );
     logline << function << "(";
@@ -58,12 +105,9 @@ bool writeLog( const char* level, const char * /*file*/, int sourceline, const c
 
     std::cout << logline.str();
 
-#ifdef WIN32
-    std::string temp = getenv( "temp" );
-    std::ofstream ofs( temp + "/copymove.log", std::ios::out | std::ios::app );
-#else
-    std::ofstream ofs( "/tmp/copymove.log", std::ios::out | std::ios::app );
-#endif // WIN32
+    initLogFile();
+
+    std::ofstream ofs( logFilename(), std::ios::out | std::ios::app );
 
     if( ofs.is_open() ) {
         ofs << logline.str();
