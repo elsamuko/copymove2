@@ -9,6 +9,13 @@ Copyright
 #include <vector>
 
 namespace ooura {
-    void ddct8x8s( int isgn, std::vector<std::vector<double>>& a );
-    void ddct16x16s( int isgn, std::vector<std::vector<double>>& a );
+
+    template<int i>
+    void ddct( int isgn, std::vector<std::vector<double>>& a ) = delete;
+
+    template<>
+    void ddct<8>( int isgn, std::vector<std::vector<double>>& a );
+
+    template<>
+    void ddct<16>( int isgn, std::vector<std::vector<double>>& a );
 }

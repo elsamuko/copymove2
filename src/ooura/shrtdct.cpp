@@ -14,7 +14,8 @@
 #define C8_4R   0.35355339059327376220
 #define W8_4R   0.70710678118654752440
 
-void ooura::ddct8x8s( int isgn, std::vector<std::vector<double>>& a ) {
+template<>
+void ooura::ddct<8>( int isgn, std::vector<std::vector<double>>& a ) {
     int j;
     double x0r, x0i, x1r, x1i, x2r, x2i, x3r, x3i;
     double xr, xi;
@@ -160,7 +161,8 @@ void ooura::ddct8x8s( int isgn, std::vector<std::vector<double>>& a ) {
 #define W16_8R   0.70710678118654752440
 
 
-void ooura::ddct16x16s( int isgn, std::vector<std::vector<double>>& a ) {
+template<>
+void ooura::ddct<16>( int isgn, std::vector<std::vector<double>>& a ) {
 
     int j;
     double x0r, x0i, x1r, x1i, x2r, x2i, x3r, x3i;
