@@ -2,7 +2,7 @@
 QMAKE_CXXFLAGS += -std=c++0x
 QMAKE_CXXFLAGS += -gdwarf-3
 
-QMAKE_CXXFLAGS_RELEASE += -msse2 -O3 -finline
+QMAKE_CXXFLAGS_RELEASE += -msse2 -Ofast -finline
 QMAKE_CXXFLAGS_DEBUG += -pg
 
 QMAKE_LFLAGS_RELEASE += -flto
