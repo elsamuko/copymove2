@@ -34,4 +34,6 @@ SOURCES += $${SRC_DIR}/dctsorter.cpp
 HEADERS += $${SRC_DIR}/dctsorter.hpp
 SOURCES += $${SRC_DIR}/ooura/shrtdct.cpp
 HEADERS += $${SRC_DIR}/ooura/shrtdct.hpp
+SOURCES += $${SRC_DIR}/threadpool.cpp
+HEADERS += $${SRC_DIR}/threadpool.hpp
 
