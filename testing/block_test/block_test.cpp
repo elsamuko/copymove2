@@ -45,11 +45,19 @@ void Block_test::testDCT() {
     b1.dct();
 
     // compare with Octave:
-    // clear; data=zeros(8,8); data(2,3)=1; dct2(data)
-    QVERIFY( Block::roundBy<7>( b1[2][1] ) == -0.0795474 );
-    QVERIFY( Block::roundBy<7>( b1[2][2] ) == -0.0366117 );
-    QVERIFY( Block::roundBy<7>( b1[2][3] ) == 0.0186645 );
-    QVERIFY( Block::roundBy<7>( b1[7][7] ) == -0.1154849 );
+    if( Block::size == 8 ) {
+        // clear; data=zeros(8,8); data(2,3)=1; dct2(data)
+        QVERIFY( Block::roundBy<7>( b1[2][1] ) == -0.0795474 );
+        QVERIFY( Block::roundBy<7>( b1[2][2] ) == -0.0366117 );
+        QVERIFY( Block::roundBy<7>( b1[2][3] ) == 0.0186645 );
+        QVERIFY( Block::roundBy<7>( b1[7][7] ) == -0.1154849 );
+    } else if( Block::size == 16 ) {
+        // clear; data=zeros(16,16); data(2,3)=1; dct2(data)
+        QVERIFY( Block::roundBy<7>( b1[2][1] ) == 0.0664559 );
+        QVERIFY( Block::roundBy<7>( b1[2][2] ) == 0.0577425 );
+        QVERIFY( Block::roundBy<7>( b1[2][3] ) == 0.0440563 );
+        QVERIFY( Block::roundBy<7>( b1[15][15] ) == -0.0171049 );
+    }
 
     b1.idct();
     QVERIFY( Block::roundBy<7>( b1[2][1] ) == 1 );
@@ -91,16 +99,29 @@ void Block_test::testOctave() {
     b.dct();
     LOG( b.toString() );
 
-    // -6   0  -1  -4  -3  -8   5  -0   3
-    QVERIFY( b.frequency(0) == -6 );
-    QVERIFY( b.frequency(1) ==  0 );
-    QVERIFY( b.frequency(2) == -1 );
-    QVERIFY( b.frequency(3) == -4 );
-    QVERIFY( b.frequency(4) == -3 );
-    QVERIFY( b.frequency(5) == -8 );
-    QVERIFY( b.frequency(6) ==  5 );
-    QVERIFY( b.frequency(7) ==  0 );
-    QVERIFY( b.frequency(8) ==  3 );
+    if( Block::size == 8 ) {
+        // -20    2  -17   -3   -8    0   -6   13   12
+        QVERIFY( b.frequency(0) == -20 );
+        QVERIFY( b.frequency(1) ==   2 );
+        QVERIFY( b.frequency(2) == -17 );
+        QVERIFY( b.frequency(3) ==  -3 );
+        QVERIFY( b.frequency(4) ==  -8 );
+        QVERIFY( b.frequency(5) ==   0 );
+        QVERIFY( b.frequency(6) ==  -6 );
+        QVERIFY( b.frequency(7) ==  13 );
+        QVERIFY( b.frequency(8) ==  12 );
+    } else if( Block::size == 16 ) {
+        // 11  -20    1  -12    1   -7    3    3   -9
+        QVERIFY( b.frequency(0) ==  11 );
+        QVERIFY( b.frequency(1) == -20 );
+        QVERIFY( b.frequency(2) ==   1 );
+        QVERIFY( b.frequency(3) == -12 );
+        QVERIFY( b.frequency(4) ==   1 );
+        QVERIFY( b.frequency(5) ==  -7 );
+        QVERIFY( b.frequency(6) ==   3 );
+        QVERIFY( b.frequency(7) ==   3 );
+        QVERIFY( b.frequency(8) ==  -9 );
+    }
 }
 
 

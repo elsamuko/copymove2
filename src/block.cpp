@@ -57,7 +57,7 @@ void Block::assignFrequencies() {
 void Block::dct() {
     assert( !mTransformed );
     mTransformed = true;
-    ooura::ddct8x8s( -1, mData );
+    ooura::ddct<Block::size>( -1, mData );
 
     assignFrequencies();
 }
@@ -65,7 +65,7 @@ void Block::dct() {
 void Block::idct() {
     assert( mTransformed );
     mTransformed = false;
-    ooura::ddct8x8s( 1, mData );
+    ooura::ddct<Block::size>( 1, mData );
 }
 
 bool Block::operator <( const Block& that ) const {

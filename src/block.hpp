@@ -8,7 +8,7 @@
 
 class Block {
 public:
-    enum { size = 8, frequencies = 9 };
+    enum { size = 16, frequencies = 9 };
     Block();
 
     void dct();
