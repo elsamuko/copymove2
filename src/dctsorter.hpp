@@ -31,6 +31,9 @@ private:
     std::map<Shift, std::vector<std::pair<Block,Block>>> mShifts;
     std::map<Shift, Block> mOffsets;
 
+    int mWidth;
+    int mHeight;
+
     std::vector<Block> mOriginals;
     std::vector<Block> mCopies;
 

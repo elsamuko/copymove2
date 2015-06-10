@@ -47,7 +47,7 @@ void Block::assignFrequencies() {
     for( int i = 0; i < Block::frequencies; ++i ) {
         int x = frequency_order[i][0];
         int y = frequency_order[i][1];
-        double amp = this->mData[x][y];
+        double amp = this->mData[x][y]/(1.f + i); // TODO!
         max = std::max( max, std::abs( amp ) );
         tmp[i] = amp;
     }

@@ -6,13 +6,15 @@
 #include <sstream>
 
 DCTSorter::DCTSorter() :
-    mMaxHits( 5 ) {
+    mMaxHits( 3 ) {
 }
 
 void DCTSorter::setGrey( const GreyImage& grey ) {
     mGrey = grey;
     mResult.from = GreyImage( grey.width(), grey.height() );
     mResult.to   = GreyImage( grey.width(), grey.height() );
+    mWidth = grey.width();
+    mHeight = grey.height();
 }
 
 GreyImage DCTSorter::getGrey() const {
@@ -156,9 +158,16 @@ void DCTSorter::findDuplicates() {
         std::vector<Block>::iterator c = b;
 
         if( tmp->hasSimilarFreqs( *c ) ) {
-            if( tmp->manhattanDistance( *c ) > 10 * Block::size ) {
-                size_t dx = ( c->x() - tmp->x() );
-                size_t dy = ( c->y() - tmp->y() );
+            if( tmp->manhattanDistance( *c ) > 3 * Block::size ) {
+                int dx = ( c->x() - tmp->x() );
+                int dy = ( c->y() - tmp->y() );
+
+                if( dx < 0 ) {
+                    dx = -dx;
+                    dy = -dy;
+                }
+
+                dy += mHeight;
 
                 shift.setDx( dx );
                 shift.setDy( dy );

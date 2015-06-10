@@ -15,11 +15,11 @@ bool Shift::operator >( const Shift& b ) const {
 }
 
 void Shift::setDx(int dx ) {
-    mDx = dx;
+    mDx = dx/3;
 }
 
 void Shift::setDy(int dy ) {
-    mDy = dy;
+    mDy = dy/3;
 }
 
 std::ostream& operator <<(std::ostream &stream, const Shift &b) {
