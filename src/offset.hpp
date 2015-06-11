@@ -9,10 +9,10 @@ class Offset
         Offset();
         Shift getShift() const;
     private:
-        size_t mX1;
-        size_t mX2;
-        size_t mY1;
-        size_t mY2;
+        int mX1;
+        int mX2;
+        int mY1;
+        int mY2;
 };
 
 #endif // OFFSET_HPP

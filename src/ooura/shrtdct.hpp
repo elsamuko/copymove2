@@ -11,7 +11,7 @@ Copyright
 namespace ooura {
 
     template<int i>
-    void ddct( int isgn, std::vector<std::vector<double>>& a ) = delete;
+    void ddct( int, std::vector<std::vector<double>>& );
 
     template<>
     void ddct<8>( int isgn, std::vector<std::vector<double>>& a );

@@ -8,6 +8,9 @@
 #include <thread>
 #include <mutex>
 #include <cstdlib>
+#if __APPLE__
+#include <sys/stat.h>
+#endif
 
 static std::mutex mutex;
 
