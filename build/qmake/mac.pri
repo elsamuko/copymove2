@@ -8,5 +8,7 @@ QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.7
 QMAKE_CXXFLAGS += -std=c++1y -stdlib=libc++
 QMAKE_MAC_SDK = macosx10.9
 
+QMAKE_CXXFLAGS_RELEASE += -msse2 -Ofast -finline -ffast-math -funsafe-math-optimizations
+
 QMAKE_CXXFLAGS_WARN_ON -= -Wall
 QMAKE_CXXFLAGS_WARN_ON += -Wall -Wno-unknown-pragmas
