@@ -7,14 +7,14 @@
 #include "ooura/shrtdct.hpp"
 #include "log/log.hpp"
 
-Block::Block() {
+Block::Block( double color ) {
     mTransformed = false;
     mMeanCalculated = false;
     mDataReceived = false;
     mMean = 0.f;
     mStandardDeviation = 0.f;
     mQuantization = 20.f;
-    mData = std::vector<std::vector<double>>( Block::size, std::vector<double>( Block::size, 0 ) );
+    mData = std::vector<std::vector<double>>( Block::size, std::vector<double>( Block::size, color ) );
     mFrequencies = std::vector<int>( Block::frequencies, 0 );
     mFrequencyNorm = 0;
     mX = 0;

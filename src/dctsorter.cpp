@@ -197,12 +197,7 @@ void DCTSorter::sortShifts() {
 
     std::sort( sorted.begin(), sorted.end() );
 
-    Block white;
-    for( int y = 0; y<Block::size; ++y ){
-        for( int x = 0; x<Block::size; ++x ){
-            white[x][y] = 255;
-        }
-    }
+    Block white( 255.f );
 
     int i = sorted.size();
 

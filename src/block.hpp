@@ -11,7 +11,7 @@
 class Block {
 public:
     enum { size = 16, frequencies = 9 };
-    Block();
+    explicit Block( double color = 0.f );
 
     void dct();
     void idct();
