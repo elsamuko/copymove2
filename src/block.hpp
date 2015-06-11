@@ -50,18 +50,30 @@ public:
     static double roundBy( double in );
 
 private:
+    // get freq values from dct'd block
     void assignFrequencies();
+
+    // state checks
+    bool mDataReceived;
     bool mTransformed;
     bool mMeanCalculated;
-    bool mDataReceived;
+
+    // quant steps of freqs
     double mQuantization;
+
+    // arithm average of block ~ dct[0][0]
     double mMean;
+    // stddev of block ~ contrast
     double mStandardDeviation; // contrast
+
+    // precalculated norm for cosine similarity
     double mFrequencyNorm; // ||a||
-    //! \brief X coordinate in image
+
+    // x/y position in image
     int mX;
-    //! \brief Y coordinate in image
     int mY;
+
+    // data at x/y
     std::vector<std::vector<double>> mData;
     std::vector<int> mFrequencies;
 };
