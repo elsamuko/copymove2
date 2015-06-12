@@ -8,14 +8,18 @@
 class Shift
 {
     public:
-        Shift();
+        Shift( int dx, int dy );
         bool operator <( const Shift& b ) const;
         bool operator >( const Shift& b ) const;
 
         void setDx( int dx );
         void setDy( int dy );
-        friend std::ostream& operator << ( std::ostream& stream, const Shift& b );
+        int dx() const;
+        int dy() const;
+
+        friend std::ostream& operator <<( std::ostream& stream, const Shift& b );
         std::string toString() const;
+        Shift operator -();
 
 private:
         int mDx;

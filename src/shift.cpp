@@ -1,8 +1,8 @@
 #include "shift.hpp"
 #include <sstream>
 
-Shift::Shift()
-{
+Shift::Shift( int dx, int dy ) :
+    mDx( dx), mDy( dy ) {
 }
 
 bool Shift::operator <( const Shift& that ) const {
@@ -22,6 +22,14 @@ void Shift::setDy(int dy ) {
     mDy = dy;
 }
 
+int Shift::dx() const {
+    return mDx;
+}
+
+int Shift::dy() const {
+    return mDy;
+}
+
 std::ostream& operator <<(std::ostream &stream, const Shift &b) {
     stream << "[" << b.mDx << ", " << b.mDy << "]";
     return stream;
@@ -31,5 +39,10 @@ std::string Shift::toString() const {
     std::stringstream ss;
     ss << *this;
     return ss.str();
+}
+
+Shift Shift::operator -() {
+    Shift s( -mDx, -mDy );
+    return s;
 }
 

@@ -146,7 +146,6 @@ void DCTSorter::findDuplicates() {
 
     std::vector<Block>::iterator tmp = mBlocks.begin();
     std::vector<Block>::iterator b = tmp + 1;
-    Shift shift;
 
     for( ; b!= mBlocks.end(); ++b ) {
 
@@ -162,18 +161,18 @@ void DCTSorter::findDuplicates() {
                 int dx = ( c->x() - tmp->x() );
                 int dy = ( c->y() - tmp->y() );
 
-                if( dx < 0 ) {
-                    dx = -dx;
-                    dy = -dy;
-                }
+                Shift shift( dx, dy );
 
-                dy += mHeight;
-
-                shift.setDx( dx );
-                shift.setDy( dy );
-
+                // if already exists as negative shift
+                if( mShifts.find( -shift ) != mShifts.end() ) {
+                    shift = -shift;
+                    mShifts[ shift ].push_back( std::make_pair(*c,*tmp) );
+                    mOffsets[ shift ] = *tmp;
+                } else {
                 mShifts[ shift ].push_back( std::make_pair(*tmp,*c) );
                 mOffsets[ shift ] = *c;
+            }
+
             }
             ++c;
             if( c == mBlocks.end()) {
@@ -195,14 +194,12 @@ void DCTSorter::sortShifts() {
         sorted.push_back( std::make_pair( count.second.size(), count.first ) );
     }
 
-    std::sort( sorted.begin(), sorted.end() );
+    std::sort( sorted.rbegin(), sorted.rend() );
 
-    Block white( 255.f );
 
-    int i = sorted.size();
-
-    for( int k = i; k > i-mMaxHits ; --k ) {
-        std::pair<int,Shift>& count = sorted[k-1];
+    for( int i = mMaxHits; i > 0 ; --i ) {
+        Block white( 255.f - 75*i );
+        std::pair<int,Shift>& count = sorted[i-1];
         std::vector<std::pair<Block,Block>>& pairs = mShifts[count.second];
         for( std::pair<Block,Block>& pair : pairs ) {
             mResult.from.setBlock( white, pair.first.x(), pair.first.y() );
