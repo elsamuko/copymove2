@@ -24,10 +24,6 @@ int main( int /*argc*/, char** /*argv*/ ) {
     image.setGrey( shifts.to );
     image.save( "z_to.jpg" );
 
-    GreyImage grey = sorter.getGrey();
-    image.setGrey( grey );
-    image.save( "grey.jpg" );
-
     LOG("End");
 
     return 0;
