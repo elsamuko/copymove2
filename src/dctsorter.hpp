@@ -10,6 +10,7 @@
 #include "shift.hpp"
 #include "offset.hpp"
 #include "threadpool.hpp"
+#include "shifthit.hpp"
 
 class DCTSorter {
 public:
@@ -29,7 +30,7 @@ private:
     ShiftImages mResult;
     std::vector<Block> mBlocks;
     std::map<Shift, std::vector<std::pair<Block,Block>>> mShifts;
-    std::map<Shift, Block> mOffsets;
+    std::vector<ShiftHit> mShiftHits;
 
     int mWidth;
     int mHeight;

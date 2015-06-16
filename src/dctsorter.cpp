@@ -103,17 +103,16 @@ void DCTSorter::dctBlocks() {
 
     mThreadPool.waitForAllJobs();
 
+//    // some stats
+//    std::atomic_int max( 20 );
+//    int freq = 0;
 
-    // some stats
-    std::atomic_int max( 20 );
-    int freq = 0;
-
-    for( Block& block : mBlocks ) {
-        max.store( std::max( max.load(), block.frequency( freq ) ) );
-    }
-    for( Block& block : mBlocks ) {
-        mGrey[block.x()+Block::size/2][block.y()+Block::size/2] = ( max.load() + block.frequency( freq ) ) * 256 / max;
-    }
+//    for( Block& block : mBlocks ) {
+//        max.store( std::max( max.load(), block.frequency( freq ) ) );
+//    }
+//    for( Block& block : mBlocks ) {
+//        mGrey[block.x()+Block::size/2][block.y()+Block::size/2] = ( max.load() + block.frequency( freq ) ) * 256 / max;
+//    }
 }
 
 // http://codereview.stackexchange.com/questions/22744/multi-threaded-sort
@@ -157,7 +156,7 @@ void DCTSorter::findDuplicates() {
         std::vector<Block>::iterator c = b;
 
         if( tmp->hasSimilarFreqs( *c ) ) {
-            if( tmp->manhattanDistance( *c ) > 3 * Block::size ) {
+            if( tmp->manhattanDistance( *c ) > Block::size ) {
                 int dx = ( c->x() - tmp->x() );
                 int dy = ( c->y() - tmp->y() );
 
@@ -165,13 +164,10 @@ void DCTSorter::findDuplicates() {
 
                 // if already exists as negative shift
                 if( mShifts.find( -shift ) != mShifts.end() ) {
-                    shift = -shift;
-                    mShifts[ shift ].push_back( std::make_pair(*c,*tmp) );
-                    mOffsets[ shift ] = *tmp;
+                    mShifts[ -shift ].push_back( std::make_pair(*c,*tmp) );
                 } else {
-                mShifts[ shift ].push_back( std::make_pair(*tmp,*c) );
-                mOffsets[ shift ] = *c;
-            }
+                    mShifts[ shift ].push_back( std::make_pair(*tmp,*c) );
+                }
 
             }
             ++c;
@@ -187,25 +183,25 @@ void DCTSorter::findDuplicates() {
 void DCTSorter::sortShifts() {
     LOG("Sorting shifts...");
 
-    std::vector<std::pair<int,Shift>> sorted;
-    sorted.reserve( mShifts.size() );
+    mShiftHits.reserve( mShifts.size() );
 
     for( auto& count : mShifts ) {
-        sorted.push_back( std::make_pair( count.second.size(), count.first ) );
+        ShiftHit hit( count.first );
+        hit.setBlocks( count.second );
+        mShiftHits.push_back( hit );
     }
 
-    std::sort( sorted.rbegin(), sorted.rend() );
-
+    std::sort( mShiftHits.rbegin(), mShiftHits.rend() );
 
     for( int i = mMaxHits; i > 0 ; --i ) {
-        Block white( 255.f - 75*i );
-        std::pair<int,Shift>& count = sorted[i-1];
-        std::vector<std::pair<Block,Block>>& pairs = mShifts[count.second];
+        Block white( 255.f - 15*i );
+        ShiftHit& hit = mShiftHits[i-1];
+        LOG( "Found " + hit.toString() );
+        std::vector<std::pair<Block,Block>>& pairs = hit.getBlocks();
         for( std::pair<Block,Block>& pair : pairs ) {
             mResult.from.setBlock( white, pair.first.x(), pair.first.y() );
             mResult.to.setBlock( white, pair.second.x(), pair.second.y() );
         }
-        LOG( count.second.toString() + " : " + std::to_string( count.first )  + " @ " + mOffsets[count.second].toString() );
     }
 
 }
