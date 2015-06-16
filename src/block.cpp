@@ -104,12 +104,6 @@ const std::vector<double>& Block::operator[]( const size_t pos ) const {
     return mData[pos];
 }
 
-std::string Block::toString() const {
-    std::stringstream ss;
-    ss << *this;
-    return ss.str();
-}
-
 std::ostream& operator<< ( std::ostream& stream, const Block& b ) {
     stream << "[" ;
 
@@ -143,6 +137,12 @@ std::ostream& operator<< ( std::ostream& stream, const Block& b ) {
 //    }
 
     return stream;
+}
+
+std::string Block::toString() const {
+    std::stringstream ss;
+    ss << *this;
+    return ss.str();
 }
 
 std::vector<std::vector<double> > Block::data() const {
