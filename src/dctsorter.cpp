@@ -145,6 +145,7 @@ void DCTSorter::findDuplicates() {
 
     std::vector<Block>::iterator tmp = mBlocks.begin();
     std::vector<Block>::iterator b = tmp + 1;
+    std::vector<Block>::iterator c = b;
 
     for( ; b!= mBlocks.end(); ++b ) {
 
@@ -153,10 +154,10 @@ void DCTSorter::findDuplicates() {
             continue;
         }
 
-        std::vector<Block>::iterator c = b;
+        c = b;
 
-        if( tmp->hasSimilarFreqs( *c ) ) {
-            if( tmp->manhattanDistance( *c ) > Block::size ) {
+        while( tmp->hasSimilarFreqs( *c ) ) {
+            if( tmp->manhattanDistance( *c ) > 3 * Block::size ) {
                 int dx = ( c->x() - tmp->x() );
                 int dy = ( c->y() - tmp->y() );
 
