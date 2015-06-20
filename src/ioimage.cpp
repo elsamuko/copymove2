@@ -1,4 +1,4 @@
-#include "fdimage.hpp"
+#include "ioimage.hpp"
 
 #include <sstream>
 #include <fstream>
@@ -6,7 +6,7 @@
 
 #include <log/log.hpp>
 
-bool FDImage::initialized = false;
+bool IOImage::initialized = false;
 
 template <class T, int lower, int upper>
 T CLAMP( T in ) {
@@ -22,28 +22,28 @@ T CLAMP( T in ) {
 }
 
 //! \brief Initializes Magick, needed before any image operations
-void FDImage::Initialize() {
-    if( !FDImage::initialized ) {
+void IOImage::Initialize() {
+    if( !IOImage::initialized ) {
         Magick::InitializeMagick( 0 );
-        FDImage::initialized = true;
+        IOImage::initialized = true;
     }
 }
 
-FDImage::FDImage() {
-    FDImage::Initialize();
+IOImage::IOImage() {
+    IOImage::Initialize();
 }
 
-FDImage::FDImage( int width, int height ) {
-    FDImage::Initialize();
+IOImage::IOImage( int width, int height ) {
+    IOImage::Initialize();
     mImage  = Magick::Image( Magick::Geometry( width, height ), Magick::Color() );
 }
 
-FDImage::FDImage( const std::string filename ) {
-    FDImage::Initialize();
+IOImage::IOImage( const std::string filename ) {
+    IOImage::Initialize();
     this->load( filename );
 }
 
-size_t FDImage::width() const {
+size_t IOImage::width() const {
     if( mImage.isValid() ) {
         return mImage.columns();
     } else {
@@ -51,7 +51,7 @@ size_t FDImage::width() const {
     }
 }
 
-size_t FDImage::height() const {
+size_t IOImage::height() const {
     if( mImage.isValid() ) {
         return mImage.rows();
     } else {
@@ -60,22 +60,22 @@ size_t FDImage::height() const {
 }
 
 //! \return true, if image is not valid
-bool FDImage::isNull() const {
+bool IOImage::isNull() const {
     return ! mImage.isValid();
 }
 
 //! \return true, if depth is 16 bit
-bool FDImage::is16Bit() const {
+bool IOImage::is16Bit() const {
     return mImage.depth() == 16;
 }
 
-bool FDImage::fileExists( const std::string& filename ) const {
+bool IOImage::fileExists( const std::string& filename ) const {
     std::ifstream file( filename.c_str() );
     return file.is_open();
     // destructor closes file
 }
 
-GreyImage FDImage::getGrey() {
+GreyImage IOImage::getGrey() {
 
     size_t w = width();
     size_t h = height();
@@ -100,7 +100,7 @@ GreyImage FDImage::getGrey() {
     return grey;
 }
 
-void FDImage::setGrey( const GreyImage& grey ) {
+void IOImage::setGrey( const GreyImage& grey ) {
 
     size_t w = width();
     size_t h = height();
@@ -127,7 +127,7 @@ void FDImage::setGrey( const GreyImage& grey ) {
 //! \param filename e.g. "cat.jpg"
 //! \returns true, if loaded successfully
 //! \sa http://www.imagemagick.org/Magick++/Exception.html
-bool FDImage::load( const std::string filename ) {
+bool IOImage::load( const std::string filename ) {
 
     if( fileExists( filename ) ) {
         try {
@@ -148,7 +148,7 @@ bool FDImage::load( const std::string filename ) {
 //! \param filename e.g. "cat.jpg"
 //! \param quality, default is 95
 //! \returns true, if saved successfully
-bool FDImage::save( const std::string filename, int quality ) {
+bool IOImage::save( const std::string filename, int quality ) {
     if( filename.empty() ) {
         std::cerr << "Filename is empty";
         return false;

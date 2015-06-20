@@ -3,7 +3,7 @@
 #include <vector>
 
 #include "block.hpp"
-#include "fdimage.hpp"
+#include "ioimage.hpp"
 #include "greyimage.hpp"
 #include "dctsorter.hpp"
 #include <log/log.hpp>
@@ -11,7 +11,7 @@
 int main( int /*argc*/, char** /*argv*/ ) {
 
     LOG("Start");
-    FDImage image;
+    IOImage image;
     image.load( "cat.jpg" );
 
     DCTSorter sorter;

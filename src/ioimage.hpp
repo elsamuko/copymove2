@@ -1,16 +1,15 @@
-#ifndef FDIMAGE_H
-#define FDIMAGE_H
+#pragma once
 
 #include <Magick++.h>
 
 #include "block.hpp"
 #include "greyimage.hpp"
 
-class FDImage {
+class IOImage {
 public:
-    FDImage();
-    FDImage( int width, int height );
-    FDImage( const std::string filename );
+    IOImage();
+    IOImage( int width, int height );
+    IOImage( const std::string filename );
 
 public:
     static void Initialize();
@@ -33,5 +32,3 @@ private:
 
     bool fileExists( const std::string& filename ) const;
 };
-
-#endif // FDIMAGE_H
