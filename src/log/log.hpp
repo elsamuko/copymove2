@@ -1,5 +1,4 @@
-#ifndef LOG_H
-#define LOG_H
+#pragma once
 
 #include <string>
 
@@ -17,6 +16,3 @@ namespace logging {
     bool            writeLog(const char* level, const char* cfile, int line, const char* function, std::string content );
     std::string     logFilename();
 }
-
-
-#endif // LOG_H

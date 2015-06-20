@@ -1,5 +1,4 @@
-#ifndef BLOCK_HPP
-#define BLOCK_HPP
+#pragma once
 
 #include <vector>
 #include <iostream>
@@ -116,6 +115,3 @@ double Block::roundBy( double in ) {
     in /= power10( digits );
     return in;
 }
-
-
-#endif // BLOCK_HPP

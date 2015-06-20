@@ -1,5 +1,4 @@
-#ifndef GREYIMAGE_H
-#define GREYIMAGE_H
+#pragma once
 
 #include "block.hpp"
 
@@ -24,5 +23,3 @@ private:
     size_t mWidth;
     size_t mHeight;
 };
-
-#endif // GREYIMAGE_H

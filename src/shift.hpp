@@ -1,5 +1,4 @@
-#ifndef SHIFT_HPP
-#define SHIFT_HPP
+#pragma once
 
 #include <cmath>
 #include <cstdlib>
@@ -25,5 +24,3 @@ private:
         int mDx;
         int mDy;
 };
-
-#endif // SHIFT_HPP

@@ -1,5 +1,4 @@
-#ifndef OFFSET_HPP
-#define OFFSET_HPP
+#pragma once
 
 #include "shift.hpp"
 
@@ -14,5 +13,3 @@ class Offset
         int mY1;
         int mY2;
 };
-
-#endif // OFFSET_HPP

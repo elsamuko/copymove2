@@ -1,10 +1,7 @@
-#ifndef DATETIME_H
-#define DATETIME_H
+#pragma once
 
 #include <string>
 
 namespace datetime {
     std::string now();
-    }
-
-#endif // DATETIME_H
+}

@@ -1,10 +1,8 @@
-#ifndef DCTSORTER_HPP
-#define DCTSORTER_HPP
+#pragma once
 
 #include <vector>
 #include <map>
 
-#include "fdimage.hpp"
 #include "greyimage.hpp"
 #include "block.hpp"
 #include "shift.hpp"
@@ -47,4 +45,3 @@ private:
     void findDuplicates();
 };
 
-#endif // DCTSORTER_HPP
