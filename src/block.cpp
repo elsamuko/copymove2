@@ -105,36 +105,32 @@ const std::vector<double>& Block::operator[]( const size_t pos ) const {
 }
 
 std::ostream& operator<< ( std::ostream& stream, const Block& b ) {
-    stream << "[" ;
 
-    stream.width( 3 );
+    if( b.interesting() ) {
+        stream << "[+] [";
+    } else {
+        stream << "[-] [";
+    }
+
+    stream.width( 4 );
     stream << b.x() << ",";
 
-    stream.width( 3 );
+    stream.width( 4 );
     stream << b.y() << "] ";
 
 
     stream.width( 3 );
-    stream << b.mMean << " +- ";
+    stream << std::round( b.mMean ) << " +- ";
 
     stream.width( 3 );
-    stream << b.mStandardDeviation << " ";
+    stream << std::round( b.mStandardDeviation ) << " ";
 
     for( auto& f : b.mFrequencies ) {
-        stream.width( 5  );
+        stream.width( 5 );
         stream << Block::roundBy<0>( f ) << " ";
     }
 
     stream << std::endl;
-
-//    for( auto & v : b.mData ) {
-//        for( auto & d : v ) {
-//            stream.width( 10 );
-//            stream << Block::roundBy( d ) << " ";
-//        }
-
-//        stream << std::endl;
-//    }
 
     return stream;
 }
