@@ -193,7 +193,7 @@ bool Block::transformed() const {
 bool Block::interesting() const {
     if( !mMeanCalculated ) LOG_ERROR( this->toString() );
     assert( mMeanCalculated );
-    return mStandardDeviation > 10.f;
+    return mStandardDeviation > ( mMean * 0.1 );
 }
 
 void Block::calculateStandardDeviation() {
