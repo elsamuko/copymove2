@@ -8,26 +8,32 @@
 #include "dctsorter.hpp"
 #include <log/log.hpp>
 
-int main( int /*argc*/, char** /*argv*/ ) {
+int main( int argc, char** argv ) {
+
+    if( argc < 2 ) {
+        LOG_WARNING( "No argument, exiting...");
+        return 1;
+    }
 
     LOG("Start");
     IOImage image;
-    image.load( "cat.jpg" );
+    std::string filename = argv[1];
+    image.load( filename );
 
     DCTSorter sorter;
     sorter.setGrey( image.getGrey() );
     sorter.work();
 
     image.setGrey( sorter.getGrey() );
-    image.save( "interesting.jpg" );
+    image.save( "z_interesting.jpg" );
 
     DCTSorter::ShiftImages shifts = sorter.getShiftImages();
     image.setGrey( shifts.from );
-    image.save( "z_from.jpg" );
+    image.save( "y_from.jpg" );
     image.setGrey( shifts.to );
-    image.save( "z_to.jpg" );
+    image.save( "y_to.jpg" );
 
-    image.load( "cat.jpg" );
+    image.load( filename );
     std::vector<ShiftHit> shiftHits = sorter.getShiftHits();
     for( ShiftHit& hit : shiftHits ) {
         image.drawHit( hit );
