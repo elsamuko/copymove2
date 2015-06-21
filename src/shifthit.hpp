@@ -1,6 +1,6 @@
 #pragma once
 
-#include <vector>
+#include <list>
 
 #include "shift.hpp"
 #include "block.hpp"
@@ -11,9 +11,9 @@ class ShiftHit {
         ~ShiftHit();
         bool operator <(const ShiftHit& b ) const;
         bool operator >( const Shift& b ) const;
-        void setBlocks( const std::vector<std::pair<Block,Block>>& blocks );
-        std::vector<std::pair<Block,Block>>& getBlocks();
-        std::vector<std::pair<Block,Block>> getGoodBlocks();
+        void setBlocks( const std::list<std::pair<Block,Block>>& blocks );
+        std::list<std::pair<Block,Block>>& getBlocks();
+        std::list<std::pair<Block,Block>> getGoodBlocks();
         bool looksGood() const;
 
         friend std::ostream& operator <<( std::ostream& stream, const ShiftHit& b );
@@ -32,7 +32,7 @@ class ShiftHit {
         void calculateStandardDeviation();
 
         Shift mShift;
-        std::vector<std::pair<Block,Block>> mBlocks;
+        std::list<std::pair<Block,Block>> mBlocks;
 
         // state checks
         bool mDataReceived;

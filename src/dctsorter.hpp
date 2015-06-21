@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <list>
 #include <map>
 
 #include "greyimage.hpp"
@@ -28,7 +29,7 @@ private:
     GreyImage mGrey;
     ShiftImages mResult;
     std::vector<Block> mBlocks;
-    std::map<Shift, std::vector<std::pair<Block,Block>>> mShifts;
+    std::map<Shift, std::list<std::pair<Block,Block>>> mShifts;
     std::vector<ShiftHit> mShiftHits;
 
     int mWidth;

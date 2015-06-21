@@ -63,7 +63,7 @@ void ShiftHit::calculateStandardDeviation() {
     mMeanCalculated = true;
 }
 
-void ShiftHit::setBlocks(const std::vector<std::pair<Block, Block> >& blocks ) {
+void ShiftHit::setBlocks(const std::list<std::pair<Block, Block> >& blocks ) {
     assert( !mDataReceived );
     mBlocks = blocks;
     mDataReceived = true;
@@ -71,12 +71,12 @@ void ShiftHit::setBlocks(const std::vector<std::pair<Block, Block> >& blocks ) {
     calculateStandardDeviation();
 }
 
-std::vector<std::pair<Block, Block> >&ShiftHit::getBlocks() {
+std::list<std::pair<Block, Block> >&ShiftHit::getBlocks() {
     return mBlocks;
 }
 
-std::vector<std::pair<Block, Block> > ShiftHit::getGoodBlocks() {
-    std::vector<std::pair<Block,Block>> blocks;
+std::list<std::pair<Block, Block> > ShiftHit::getGoodBlocks() {
+    std::list<std::pair<Block,Block>> blocks;
     for( std::pair<Block,Block>& pair : mBlocks ) {
         int dx = pair.first.x() - mMeanX;
         int dy = pair.first.y() - mMeanY;
@@ -91,4 +91,3 @@ bool ShiftHit::looksGood() const {
     assert( mMeanCalculated );
     return mStandardDeviation < 500 && mBlocks.size() > 80; // magic
 }
-
