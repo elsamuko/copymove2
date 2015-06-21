@@ -189,7 +189,8 @@ bool Block::transformed() const {
 bool Block::interesting() const {
     if( !mMeanCalculated ) LOG_ERROR( this->toString() );
     assert( mMeanCalculated );
-    return mStandardDeviation > ( mMean * 0.1 );
+    double tmp = std::max( ( double ) 3.f, mMean * 0.1 );
+    return mStandardDeviation > tmp;
 }
 
 void Block::calculateStandardDeviation() {
