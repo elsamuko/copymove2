@@ -7,14 +7,14 @@
 #include "ooura/shrtdct.hpp"
 #include "log/log.hpp"
 
-Block::Block( double color ) {
+Block::Block( float color ) {
     mTransformed = false;
     mMeanCalculated = false;
     mDataReceived = false;
     mMean = 0.f;
     mStandardDeviation = 0.f;
     mQuantization = 20.f;
-    mData = std::vector<std::vector<double>>( Block::size, std::vector<double>( Block::size, color ) );
+    mData = std::vector<std::vector<float>>( Block::size, std::vector<float>( Block::size, color ) );
     mFrequencies = std::vector<int>( Block::frequencies, 0 );
     mFrequencyNorm = 0;
     mX = 0;
@@ -39,21 +39,21 @@ void Block::assignFrequencies() {
         {3, 1}, // 9
     };
 
-    double max = 0.01;
+    float max = 0.01;
 
-    std::array<double,Block::frequencies> tmp;
+    std::array<float,Block::frequencies> tmp;
 
     // get first 10 frequencies and cache them in mFrequencies
     for( int i = 0; i < Block::frequencies; ++i ) {
         int x = frequency_order[i][0];
         int y = frequency_order[i][1];
-        double amp = this->mData[x][y];//(1.f + i); // TODO!
+        float amp = this->mData[x][y];//(1.f + i); // TODO!
         max = std::max( max, std::abs( amp ) );
         tmp[i] = amp;
     }
 
     for( int i = 0; i < Block::frequencies; ++i ) {
-        double f = std::round( tmp[i] * mQuantization / max );
+        float f = std::round( tmp[i] * mQuantization / max );
         mFrequencies[i] = f;
         mFrequencyNorm += f*f;
     }
@@ -95,12 +95,12 @@ bool Block::operator >( const Block& b ) const {
     return !( *this < b );
 }
 
-std::vector<double>& Block::operator[]( const size_t pos ) {
+std::vector<float>& Block::operator[]( const size_t pos ) {
     mDataReceived = true;
     return mData[pos];
 }
 
-const std::vector<double>& Block::operator[]( const size_t pos ) const {
+const std::vector<float>& Block::operator[]( const size_t pos ) const {
     return mData[pos];
 }
 
@@ -141,12 +141,12 @@ std::string Block::toString() const {
     return ss.str();
 }
 
-std::vector<std::vector<double> > Block::data() const {
+std::vector<std::vector<float> > Block::data() const {
     return mData;
 }
 
 //! \brief Set image data
-void Block::setData( const std::vector<std::vector<double> >& data ) {
+void Block::setData( const std::vector<std::vector<float> >& data ) {
     assert( data.size() == Block::size );
     assert( data[0].size() == Block::size );
     mData = data;
@@ -189,7 +189,7 @@ bool Block::transformed() const {
 bool Block::interesting() const {
     if( !mMeanCalculated ) LOG_ERROR( this->toString() );
     assert( mMeanCalculated );
-    double tmp = std::max( ( double ) 3.f, mMean * 0.1 );
+    float tmp = std::max( 3.f, mMean * 0.1f );
     return mStandardDeviation > tmp;
 }
 
@@ -198,7 +198,7 @@ void Block::calculateStandardDeviation() {
     assert( mDataReceived );
     mMean = 0.f;
     mStandardDeviation = 0.f;
-    double diff = 0.f;
+    float diff = 0.f;
 
     for( int y = 0; y < Block::size; ++y ) {
         for( int x = 0; x < Block::size; ++x ) {
@@ -206,7 +206,7 @@ void Block::calculateStandardDeviation() {
         }
     }
 
-    mMean /= (double)(Block::size*Block::size);
+    mMean /= (float)(Block::size*Block::size);
 
     for( int y = 0; y < Block::size; ++y ) {
         for( int x = 0; x < Block::size; ++x ) {
@@ -215,7 +215,7 @@ void Block::calculateStandardDeviation() {
         }
     }
 
-    mStandardDeviation /= (double)(Block::size*Block::size);
+    mStandardDeviation /= (float)(Block::size*Block::size);
     mStandardDeviation = std::sqrt( mStandardDeviation );
 
     mMeanCalculated = true;

@@ -11,11 +11,11 @@ Copyright
 namespace ooura {
 
     template<int i>
-    void ddct( int, std::vector<std::vector<double>>& );
+    void ddct( int, std::vector<std::vector<float>>& );
 
     template<>
-    void ddct<8>( int isgn, std::vector<std::vector<double>>& a );
+    void ddct<8>( int isgn, std::vector<std::vector<float>>& a );
 
     template<>
-    void ddct<16>( int isgn, std::vector<std::vector<double>>& a );
+    void ddct<16>( int isgn, std::vector<std::vector<float>>& a );
 }

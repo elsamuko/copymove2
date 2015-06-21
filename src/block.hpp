@@ -10,21 +10,21 @@
 class Block {
 public:
     enum { size = 16, frequencies = 9 };
-    explicit Block( double color = 0.f );
+    explicit Block( float color = 0.f );
 
     void dct();
     void idct();
 
     bool operator <( const Block& b ) const;
     bool operator >( const Block& b ) const;
-    std::vector<double>& operator[]( const size_t pos );
-    const std::vector<double>& operator[]( const size_t pos ) const;
+    std::vector<float>& operator[]( const size_t pos );
+    const std::vector<float>& operator[]( const size_t pos ) const;
 
     friend std::ostream& operator << ( std::ostream& stream, const Block& b );
     std::string toString() const;
 
-    std::vector<std::vector<double>> data() const;
-    void setData( const std::vector<std::vector<double>>& data );
+    std::vector<std::vector<float>> data() const;
+    void setData( const std::vector<std::vector<float>>& data );
 
     void setX( int x );
     int x() const;
@@ -36,7 +36,7 @@ public:
     int manhattanDistance( const Block& that ) const;
 
     template<class T>
-    static double cosineSimilarity( const T& a, const T&b, double normA, double normB );
+    static float cosineSimilarity( const T& a, const T&b, float normA, float normB );
 
     template<int from = 0, int to = 4>
     bool hasSimilarFreqs( const Block& other );
@@ -46,7 +46,7 @@ public:
     void calculateStandardDeviation();
 
     template< int digits = 4 >
-    static double roundBy( double in );
+    static float roundBy( float in );
 
 private:
     // get freq values from dct'd block
@@ -58,39 +58,39 @@ private:
     bool mMeanCalculated;
 
     // quant steps of freqs
-    double mQuantization;
+    float mQuantization;
 
     // arithm average of block ~ dct[0][0]
-    double mMean;
+    float mMean;
     // stddev of block ~ contrast
-    double mStandardDeviation; // contrast
+    float mStandardDeviation; // contrast
 
     // precalculated norm for cosine similarity
-    double mFrequencyNorm; // ||a||
+    float mFrequencyNorm; // ||a||
 
     // x/y position in image
     int mX;
     int mY;
 
     // data at x/y
-    std::vector<std::vector<double>> mData;
+    std::vector<std::vector<float>> mData;
     std::vector<int> mFrequencies;
 };
 
 template<class T>
-double Block::cosineSimilarity( const T& a, const T& b, double normA, double normB ) {
+float Block::cosineSimilarity( const T& a, const T& b, float normA, float normB ) {
 
     assert( a.size() == b.size() );
     if( normA <= 0 ) return 0.f;
     if( normB <= 0 ) return 0.f;
 
-    double dotP = 0;
+    float dotP = 0;
 
     for( size_t i = 0; i < a.size(); ++i ) {
         dotP += a[i] * b[i];
     }
 
-    double similarity = dotP/( normA * normB );
+    float similarity = dotP/( normA * normB );
     return similarity;
 }
 
@@ -99,8 +99,8 @@ template<int from, int to>
 bool Block::hasSimilarFreqs( const Block &other ) {
     assert( mTransformed );
 
-    double similarity = cosineSimilarity( this->mFrequencies, other.mFrequencies, this->mFrequencyNorm, other.mFrequencyNorm );
-    bool similar = similarity > 0.95;
+    float similarity = cosineSimilarity( this->mFrequencies, other.mFrequencies, this->mFrequencyNorm, other.mFrequencyNorm );
+    bool similar = similarity > 0.97;
     return similar;
 }
 
@@ -109,7 +109,7 @@ constexpr int power10( int digits ) {
 }
 
 template< int digits >
-double Block::roundBy( double in ) {
+float Block::roundBy( float in ) {
     in *= power10( digits );
     in = round( in );
     in /= power10( digits );

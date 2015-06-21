@@ -15,10 +15,10 @@
 #define W8_4R   0.70710678118654752440
 
 template<>
-void ooura::ddct<8>( int isgn, std::vector<std::vector<double>>& a ) {
+void ooura::ddct<8>( int isgn, std::vector<std::vector<float>>& a ) {
     int j;
-    double x0r, x0i, x1r, x1i, x2r, x2i, x3r, x3i;
-    double xr, xi;
+    float x0r, x0i, x1r, x1i, x2r, x2i, x3r, x3i;
+    float xr, xi;
 
     if (isgn < 0) {
         for (j = 0; j <= 7; j++) {
@@ -162,12 +162,12 @@ void ooura::ddct<8>( int isgn, std::vector<std::vector<double>>& a ) {
 
 
 template<>
-void ooura::ddct<16>( int isgn, std::vector<std::vector<double>>& a ) {
+void ooura::ddct<16>( int isgn, std::vector<std::vector<float>>& a ) {
 
     int j;
-    double x0r, x0i, x1r, x1i, x2r, x2i, x3r, x3i;
-    double x4r, x4i, x5r, x5i, x6r, x6i, x7r, x7i;
-    double xr, xi;
+    float x0r, x0i, x1r, x1i, x2r, x2i, x3r, x3i;
+    float x4r, x4i, x5r, x5i, x6r, x6i, x7r, x7i;
+    float xr, xi;
 
     if( isgn < 0 ) {
         for( j = 0; j <= 15; j++ ) {
