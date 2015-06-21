@@ -141,7 +141,7 @@ bool IOImage::load( const std::string filename ) {
         try {
             mImage.read( filename );
         } catch( Magick::Exception& error ) {
-            std::cerr << "Error: " << error.what() << std::endl;
+            LOG_ERROR( error.what() );
         }
 
         if( mImage.isValid() ) {
@@ -158,7 +158,7 @@ bool IOImage::load( const std::string filename ) {
 //! \returns true, if saved successfully
 bool IOImage::save( const std::string filename, int quality ) {
     if( filename.empty() ) {
-        std::cerr << "Filename is empty";
+        LOG_ERROR( "Filename is empty" );
         return false;
     }
 
@@ -171,7 +171,7 @@ bool IOImage::save( const std::string filename, int quality ) {
         try {
             mImage.write( filename );
         } catch( Magick::Exception& error ) {
-            std::cerr << "Error: " << error.what() << std::endl;
+            LOG_ERROR( error.what() );
         }
 
         if( fileExists( filename ) ) {
