@@ -19,7 +19,8 @@ public:
     DCTSorter();
     void setGrey( const GreyImage& grey );
     GreyImage getGrey() const;
-    DCTSorter::ShiftImages getShifts() const;
+    DCTSorter::ShiftImages getShiftImages() const;
+    std::vector<ShiftHit> getShiftHits() const;
     void work();
 
 private:
@@ -36,12 +37,13 @@ private:
     std::vector<Block> mOriginals;
     std::vector<Block> mCopies;
 
-    int mMaxHits;
+    size_t mMaxHits;
 
     void readGreyToBlocks();
     void dctBlocks();
     void sortBlocks();
     void sortShifts();
     void findDuplicates();
-};
 
+    void debugBlocks();
+};

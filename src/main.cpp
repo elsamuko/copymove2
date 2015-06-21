@@ -18,11 +18,21 @@ int main( int /*argc*/, char** /*argv*/ ) {
     sorter.setGrey( image.getGrey() );
     sorter.work();
 
-    DCTSorter::ShiftImages shifts = sorter.getShifts();
+    image.setGrey( sorter.getGrey() );
+    image.save( "interesting.jpg" );
+
+    DCTSorter::ShiftImages shifts = sorter.getShiftImages();
     image.setGrey( shifts.from );
     image.save( "z_from.jpg" );
     image.setGrey( shifts.to );
     image.save( "z_to.jpg" );
+
+    image.load( "cat.jpg" );
+    std::vector<ShiftHit> shiftHits = sorter.getShiftHits();
+    for( ShiftHit& hit : shiftHits ) {
+        image.drawHit( hit );
+    }
+    image.save( "z_result.jpg" );
 
     LOG("End");
 

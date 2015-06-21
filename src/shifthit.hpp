@@ -13,9 +13,20 @@ class ShiftHit {
         bool operator >( const Shift& b ) const;
         void setBlocks( const std::vector<std::pair<Block,Block>>& blocks );
         std::vector<std::pair<Block,Block>>& getBlocks();
+        std::vector<std::pair<Block,Block>> getGoodBlocks();
+        bool looksGood() const;
 
         friend std::ostream& operator <<( std::ostream& stream, const ShiftHit& b );
         std::string toString() const;
+
+        int x() const { return mMeanX; }
+        int y() const { return mMeanY; }
+        int radius() const { return mStandardDeviation; }
+        int dx() const { return mShift.dx(); }
+        int dy() const { return mShift.dy(); }
+
+        // template<class T>
+        // static double cosineSimilarity( const T& a, const T&b, double normA, double normB );
 
     private:
         void calculateStandardDeviation();

@@ -4,9 +4,10 @@
 #include "dctsorter.hpp"
 #include "log/log.hpp"
 #include <sstream>
+#include <fstream>
 
 DCTSorter::DCTSorter() :
-    mMaxHits( 3 ) {
+    mMaxHits( 25 ) {
 }
 
 void DCTSorter::setGrey( const GreyImage& grey ) {
@@ -21,14 +22,19 @@ GreyImage DCTSorter::getGrey() const {
     return mGrey;
 }
 
-DCTSorter::ShiftImages DCTSorter::getShifts() const {
+DCTSorter::ShiftImages DCTSorter::getShiftImages() const {
     return mResult;
+}
+
+std::vector<ShiftHit> DCTSorter::getShiftHits() const {
+    return mShiftHits;
 }
 
 void DCTSorter::work() {
     readGreyToBlocks();
     // for( Block& b : mBlocks ) { LOG( b.toString() ); }
     dctBlocks();
+    // debugBlocks();
     // for( Block& b : mBlocks ) { LOG( b.toString() ); }
     sortBlocks();
     // for( Block& b : mBlocks ) { LOG( b.toString() ); }
@@ -61,6 +67,11 @@ void DCTSorter::readGreyToBlocks() {
     }
 
     mThreadPool.waitForAllJobs();
+
+    // some stats
+    for( Block& block : mBlocks ) {
+        mGrey[block.x()+Block::size/2][block.y()+Block::size/2] = block.interesting() ? 255 : 0;
+    }
 }
 
 void DCTSorter::dctBlocks() {
@@ -143,41 +154,54 @@ void DCTSorter::sortBlocks() {
 void DCTSorter::findDuplicates() {
     LOG("Collecting shifts...");
 
-    std::vector<Block>::iterator tmp = mBlocks.begin();
-    std::vector<Block>::iterator b = tmp + 1;
+    std::vector<Block>::iterator b = mBlocks.begin();
     std::vector<Block>::iterator c = b;
 
     for( ; b!= mBlocks.end(); ++b ) {
 
         if( !b->interesting() ) {
-            tmp = b;
             continue;
         }
 
-        c = b;
+        c = b + 1;
+        if( c == mBlocks.end() ) {
+            break;
+        }
 
-        while( tmp->hasSimilarFreqs( *c ) ) {
-            if( tmp->manhattanDistance( *c ) > 3 * Block::size ) {
-                int dx = ( c->x() - tmp->x() );
-                int dy = ( c->y() - tmp->y() );
+        if( b->hasSimilarFreqs( *c ) ) {
+
+            if( c->interesting() && ( b->manhattanDistance( *c ) > 3 * Block::size ) ) {
+                int dx = ( c->x() - b->x() );
+                int dy = ( c->y() - b->y() );
 
                 Shift shift( dx, dy );
 
                 // if already exists as negative shift
                 if( mShifts.find( -shift ) != mShifts.end() ) {
-                    mShifts[ -shift ].push_back( std::make_pair(*c,*tmp) );
+                    mShifts[ -shift ].push_back( std::make_pair(*c,*b) );
                 } else {
-                    mShifts[ shift ].push_back( std::make_pair(*tmp,*c) );
+                    mShifts[ shift ].push_back( std::make_pair(*b,*c) );
                 }
 
             }
+
             ++c;
             if( c == mBlocks.end()) {
                 break;
             }
         }
 
-        tmp = b;
+    }
+}
+
+void DCTSorter::debugBlocks() {
+    LOG("Writing debug info...");
+    std::ofstream ofs( "blocks.txt", std::ios::out );
+
+    if( ofs.is_open() ) {
+        for( Block& b : mBlocks ) {
+            ofs << b;
+        }
     }
 }
 
@@ -189,16 +213,24 @@ void DCTSorter::sortShifts() {
     for( auto& count : mShifts ) {
         ShiftHit hit( count.first );
         hit.setBlocks( count.second );
-        mShiftHits.push_back( hit );
+        if( hit.looksGood() ) {
+            mShiftHits.push_back( hit );
+        }
     }
 
     std::sort( mShiftHits.rbegin(), mShiftHits.rend() );
 
-    for( int i = mMaxHits; i > 0 ; --i ) {
-        Block white( 255.f - 15*i );
-        ShiftHit& hit = mShiftHits[i-1];
+    // pop unused hits
+    size_t maxHits = std::min( mMaxHits, mShiftHits.size() );
+    while( mShiftHits.size() > maxHits ) {
+        mShiftHits.pop_back();
+    }
+
+    for( size_t i = 0; i < mShiftHits.size() ; ++i ) {
+        Block white( 255 * ( mMaxHits - i ) / mMaxHits );
+        ShiftHit& hit = mShiftHits[i];
         LOG( "Found " + hit.toString() );
-        std::vector<std::pair<Block,Block>>& pairs = hit.getBlocks();
+        std::vector<std::pair<Block,Block>> pairs = hit.getGoodBlocks();
         for( std::pair<Block,Block>& pair : pairs ) {
             mResult.from.setBlock( white, pair.first.x(), pair.first.y() );
             mResult.to.setBlock( white, pair.second.x(), pair.second.y() );

@@ -123,6 +123,14 @@ void IOImage::setGrey( const GreyImage& grey ) {
     mImage.syncPixels();
 }
 
+void IOImage::drawHit( ShiftHit& hit ) {
+    mImage.strokeColor( "red" );
+    mImage.fillColor( "transparent" );
+    mImage.strokeWidth( 2 );
+    // mImage.draw( Magick::DrawableCircle( hit.x(), hit.y(), hit.radius(),hit.radius() ) );
+    mImage.draw( Magick::DrawableLine( hit.x(), hit.y(), hit.x() + hit.dx(), hit.y() + hit.dy() ) );
+}
+
 //! \brief Load image
 //! \param filename e.g. "cat.jpg"
 //! \returns true, if loaded successfully

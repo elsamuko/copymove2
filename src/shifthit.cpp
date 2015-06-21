@@ -1,5 +1,6 @@
 #include "shifthit.hpp"
 #include <sstream>
+#include <iomanip>
 
 ShiftHit::ShiftHit( Shift shift ) :
     mShift( shift ),
@@ -17,8 +18,12 @@ bool ShiftHit::operator <( const ShiftHit& that ) const {
 }
 
 std::ostream& operator <<(std::ostream &stream, const ShiftHit &b) {
-    stream << "[" << b.mMeanX << ", " << b.mMeanY << "] +- " << b.mStandardDeviation;
-    stream << " w/ " << b.mBlocks.size() << " hits";
+    stream << "["     << std::setw( 4 ) << std::round( b.mMeanX );
+    stream << ", "    << std::setw( 4 ) << std::round( b.mMeanY );
+    stream << "] +- " << std::setw( 4 ) << std::round( b.mStandardDeviation );
+    stream << " -> [" << std::setw( 5 ) << b.mShift.dx();
+    stream << ", "    << std::setw( 5 ) << b.mShift.dy();
+    stream << "] w/ " << std::setw( 4 ) << b.mBlocks.size() << " hits";
     return stream;
 }
 
@@ -68,5 +73,22 @@ void ShiftHit::setBlocks(const std::vector<std::pair<Block, Block> >& blocks ) {
 
 std::vector<std::pair<Block, Block> >&ShiftHit::getBlocks() {
     return mBlocks;
+}
+
+std::vector<std::pair<Block, Block> > ShiftHit::getGoodBlocks() {
+    std::vector<std::pair<Block,Block>> blocks;
+    for( std::pair<Block,Block>& pair : mBlocks ) {
+        int dx = pair.first.x() - mMeanX;
+        int dy = pair.first.y() - mMeanY;
+        if( (dx*dx+dy*dy) < mStandardDeviation * mStandardDeviation ) {
+            blocks.push_back( pair );
+        }
+    }
+    return blocks;
+}
+
+bool ShiftHit::looksGood() const {
+    assert( mMeanCalculated );
+    return mStandardDeviation < 500 && mBlocks.size() > 80; // magic
 }
 

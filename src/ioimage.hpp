@@ -4,6 +4,7 @@
 
 #include "block.hpp"
 #include "greyimage.hpp"
+#include "shifthit.hpp"
 
 class IOImage {
 public:
@@ -18,6 +19,8 @@ public:
 public:
     GreyImage getGrey();
     void setGrey( const GreyImage& grey );
+
+    void drawHit( ShiftHit& hit );
 
     size_t width() const;
     size_t height() const;
