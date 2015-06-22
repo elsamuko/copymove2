@@ -30,6 +30,9 @@ SOURCES += $${SRC_DIR}/greyimage.cpp
 SOURCES += $${SRC_DIR}/ooura/shrtdct.cpp
 HEADERS += $${SRC_DIR}/ooura/shrtdct.hpp
 
+SOURCES += $${SRC_DIR}/shift.cpp
+HEADERS += $${SRC_DIR}/shift.hpp
+
 SOURCES += block_test.cpp
 HEADERS += sample.hpp
 

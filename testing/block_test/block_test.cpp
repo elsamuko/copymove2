@@ -7,7 +7,7 @@
 
 #include "block.hpp"
 #include "sample.hpp"
-#include "fdimage.hpp"
+#include "ioimage.hpp"
 #include "greyimage.hpp"
 #include "log/log.hpp"
 
@@ -53,10 +53,10 @@ void Block_test::testDCT() {
         QVERIFY( Block::roundBy<7>( b1[7][7] ) == -0.1154849 );
     } else if( Block::size == 16 ) {
         // clear; data=zeros(16,16); data(2,3)=1; dct2(data)
-        QVERIFY( Block::roundBy<7>( b1[2][1] ) == 0.0664559 );
-        QVERIFY( Block::roundBy<7>( b1[2][2] ) == 0.0577425 );
-        QVERIFY( Block::roundBy<7>( b1[2][3] ) == 0.0440563 );
-        QVERIFY( Block::roundBy<7>( b1[15][15] ) == -0.0171049 );
+        QVERIFY2( Block::roundBy<7>( b1[2][1] ) == 0.0664559f, std::to_string( Block::roundBy<7>( b1[2][1] ) ).c_str() );
+        QVERIFY( Block::roundBy<7>( b1[2][2] ) == 0.0577425f );
+        QVERIFY( Block::roundBy<7>( b1[2][3] ) == 0.0440563f );
+        QVERIFY( Block::roundBy<7>( b1[15][15] ) == -0.0171049f );
     }
 
     b1.idct();
@@ -87,13 +87,14 @@ void Block_test::testOctave() {
         file.close();
     }
 
-    FDImage image;
+    IOImage image;
     image.load( "sample.png" );
     QVERIFY( ! image.isNull() );
 
     GreyImage grey = image.getGrey();
     Block b;
     grey.getBlock( b, 0, 0);
+    b.calculateStandardDeviation();
 
     LOG( b.toString() );
     b.dct();
