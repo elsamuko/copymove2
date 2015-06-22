@@ -4,6 +4,7 @@
 
 #include "shift.hpp"
 #include "block.hpp"
+#include "point.hpp"
 
 class ShiftHit {
     public:
@@ -13,7 +14,7 @@ class ShiftHit {
         bool operator >( const Shift& b ) const;
         void setBlocks( const std::list<std::pair<Block,Block>>& blocks );
         std::list<std::pair<Block,Block>>& getBlocks();
-        std::list<std::pair<Block,Block>> getGoodBlocks();
+        // std::list<std::pair<Block,Block>> getGoodBlocks();
         bool looksGood() const;
 
         friend std::ostream& operator <<( std::ostream& stream, const ShiftHit& b );
@@ -21,15 +22,16 @@ class ShiftHit {
 
         int x() const { return mMeanX; }
         int y() const { return mMeanY; }
-        int radius() const { return mStandardDeviation; }
+        int radius() const { assert( mMeanCalculated ); return mStandardDeviation; }
+        int distance() const { assert( mMeanCalculated ); return mGeometricAverageDistance; }
         int dx() const { return mShift.dx(); }
         int dy() const { return mShift.dy(); }
+        void setVerbosity( bool verbose );
 
-        // template<class T>
-        // static double cosineSimilarity( const T& a, const T&b, double normA, double normB );
         void setRanking( int position ) { mRanking = position; }
         int ranking() const { return mRanking; }
 
+        static std::pair<PointF,float> geometricMedian( const std::list<PointF>& points );
 
     private:
         void calculateStandardDeviation();
@@ -41,13 +43,19 @@ class ShiftHit {
         bool mDataReceived;
         bool mMeanCalculated;
 
+        // debug state
+        bool mVerbose;
 
         int mRanking;
 
         // arithm average of position of blocks
-        double mMeanX;
-        double mMeanY;
+        PointF mMean;
+        float mMeanX;
+        float mMeanY;
 
         // stddev of position of blocks -> how spread is the hit
-        double mStandardDeviation;
+        float mStandardDeviation;
+
+        // average distance of all hits to center hit
+        float mGeometricAverageDistance;
 };

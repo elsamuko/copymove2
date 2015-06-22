@@ -127,8 +127,14 @@ void IOImage::drawHit( ShiftHit& hit ) {
     mImage.strokeColor( "red" );
     mImage.fillColor( "transparent" );
     mImage.strokeWidth( 2 );
-    // mImage.draw( Magick::DrawableCircle( hit.x(), hit.y(), hit.radius(),hit.radius() ) );
+    mImage.draw( Magick::DrawableCircle( hit.x(), hit.y(), hit.x() + hit.distance(),hit.y() ) );
     mImage.draw( Magick::DrawableLine( hit.x(), hit.y(), hit.x() + hit.dx(), hit.y() + hit.dy() ) );
+
+    mImage.fillColor( "red" );
+    mImage.strokeWidth( 10 );
+    mImage.draw( Magick::DrawableRectangle( hit.x(), hit.y(), hit.x() + 5, hit.y() + 5 ) );
+    mImage.fillColor( "black" );
+    mImage.draw( Magick::DrawableText( hit.x(), hit.y()+5, std::to_string( hit.ranking() ) ) );
 }
 
 //! \brief Load image

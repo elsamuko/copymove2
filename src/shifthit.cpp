@@ -1,11 +1,13 @@
 #include "shifthit.hpp"
 #include <sstream>
 #include <iomanip>
+#include <cfloat>
 
 ShiftHit::ShiftHit( Shift shift ) :
     mShift( shift ),
     mDataReceived( false ),
-    mMeanCalculated( false ) {
+    mMeanCalculated( false ),
+    mVerbose( false ) {
 }
 
 ShiftHit::~ShiftHit() {
@@ -18,12 +20,26 @@ bool ShiftHit::operator <( const ShiftHit& that ) const {
 }
 
 std::ostream& operator <<(std::ostream &stream, const ShiftHit &b) {
-    stream << "["     << std::setw( 4 ) << std::round( b.mMeanX );
+    stream << "#"     << std::setw( 2 ) << std::round( b.mRanking );
+    stream << " ["    << std::setw( 4 ) << std::round( b.mMeanX );
     stream << ", "    << std::setw( 4 ) << std::round( b.mMeanY );
     stream << "] +- " << std::setw( 4 ) << std::round( b.mStandardDeviation );
+    stream << " av. " << std::setw( 4 ) << std::round( b.mGeometricAverageDistance );
     stream << " -> [" << std::setw( 5 ) << b.mShift.dx();
     stream << ", "    << std::setw( 5 ) << b.mShift.dy();
     stream << "] w/ " << std::setw( 4 ) << b.mBlocks.size() << " hits";
+
+    if( b.mVerbose ) {
+        stream << ": { ";
+
+        for( auto& fromTo : b.mBlocks ) {
+            stream << "{";
+            stream << fromTo.first.x() << ",";
+            stream << fromTo.first.y() << "}, ";
+        }
+        stream << "}";
+    }
+
     return stream;
 }
 
@@ -33,22 +49,57 @@ std::string ShiftHit::toString() const {
     return ss.str();
 }
 
+void ShiftHit::setVerbosity(bool verbose) {
+    mVerbose = verbose;
+}
+
+std::pair<PointF, float> ShiftHit::geometricMedian( const std::list<PointF>& points ) {
+    float currentMin = FLT_MAX;
+    PointF result;
+
+    for( const PointF& a : points ) {
+        float squareSum = 0;
+        for( const PointF& b : points ) {
+            squareSum += a.distance( b );
+        }
+        if( squareSum < currentMin ) {
+            currentMin = squareSum;
+            result = a;
+        }
+    }
+    return std::make_pair( result, currentMin/points.size() );
+}
+
 void ShiftHit::calculateStandardDeviation() {
     assert( !mMeanCalculated );
     assert( mDataReceived );
+    mMean.set( 0.f, 0.f );
     mMeanX = 0.f;
     mMeanY = 0.f;
     mStandardDeviation = 0.f;
-    double diffX = 0.f;
-    double diffY = 0.f;
+    float diffX = 0.f;
+    float diffY = 0.f;
+
+    std::list<PointF> points;
 
     for( auto& fromTo : mBlocks ) {
-        mMeanX += fromTo.first.x();
-        mMeanY += fromTo.first.y();
+        points.emplace_back( fromTo.first.x(), fromTo.first.y() );
     }
 
-    mMeanX /= (double)(mBlocks.size());
-    mMeanY /= (double)(mBlocks.size());
+    std::pair<PointF,float> median = ShiftHit::geometricMedian( points );
+
+    mGeometricAverageDistance = median.second;
+
+    mMeanX = median.first.x();
+    mMeanY = median.first.y();
+
+//    for( auto& fromTo : mBlocks ) {
+//        mMeanX += fromTo.first.x();
+//        mMeanY += fromTo.first.y();
+//    }
+
+//    mMeanX /= (float)(mBlocks.size());
+//    mMeanY /= (float)(mBlocks.size());
 
     for( auto& fromTo : mBlocks ) {
         diffX = fromTo.first.x() - mMeanX;
@@ -57,7 +108,7 @@ void ShiftHit::calculateStandardDeviation() {
         mStandardDeviation += diffY*diffY;
     }
 
-    mStandardDeviation /= (double)(mBlocks.size());
+    mStandardDeviation /= (float)(mBlocks.size());
     mStandardDeviation = std::sqrt( mStandardDeviation );
 
     mMeanCalculated = true;
@@ -75,19 +126,19 @@ std::list<std::pair<Block, Block> >&ShiftHit::getBlocks() {
     return mBlocks;
 }
 
-std::list<std::pair<Block, Block> > ShiftHit::getGoodBlocks() {
-    std::list<std::pair<Block,Block>> blocks;
-    for( std::pair<Block,Block>& pair : mBlocks ) {
-        int dx = pair.first.x() - mMeanX;
-        int dy = pair.first.y() - mMeanY;
-        if( (dx*dx+dy*dy) < mStandardDeviation * mStandardDeviation ) {
-            blocks.push_back( pair );
-        }
-    }
-    return blocks;
-}
+//std::list<std::pair<Block, Block> > ShiftHit::getGoodBlocks() {
+//    std::list<std::pair<Block,Block>> blocks;
+//    for( std::pair<Block,Block>& pair : mBlocks ) {
+//        int dx = pair.first.x() - mMeanX;
+//        int dy = pair.first.y() - mMeanY;
+//        if( (dx*dx+dy*dy) < mStandardDeviation * mStandardDeviation ){
+//            blocks.push_back( pair );
+//        }
+//    }
+//    return blocks;
+//}
 
 bool ShiftHit::looksGood() const {
     assert( mMeanCalculated );
-    return mStandardDeviation < 500 && mBlocks.size() > 80; // magic
+    return mBlocks.size() > 10 && mGeometricAverageDistance < 100; // TODO: Parameterize
 }
