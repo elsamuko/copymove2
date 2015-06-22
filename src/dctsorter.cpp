@@ -226,6 +226,19 @@ void DCTSorter::sortShifts() {
         mShiftHits.pop_back();
     }
 
+
+    // set ranking
+    int position = 0;
+
+    for( ShiftHit& hit : mShiftHits ) {
+        hit.setRanking( position );
+        position++;
+    }
+
+    LOG( "Hits: " + std::to_string( position ) );
+
+
+    // write result
     for( size_t i = 0; i < mShiftHits.size() ; ++i ) {
         Block white( 255 * ( mMaxHits - i ) / mMaxHits );
         ShiftHit& hit = mShiftHits[i];

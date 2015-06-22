@@ -27,6 +27,9 @@ class ShiftHit {
 
         // template<class T>
         // static double cosineSimilarity( const T& a, const T&b, double normA, double normB );
+        void setRanking( int position ) { mRanking = position; }
+        int ranking() const { return mRanking; }
+
 
     private:
         void calculateStandardDeviation();
@@ -37,6 +40,9 @@ class ShiftHit {
         // state checks
         bool mDataReceived;
         bool mMeanCalculated;
+
+
+        int mRanking;
 
         // arithm average of position of blocks
         double mMeanX;
