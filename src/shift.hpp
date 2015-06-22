@@ -20,6 +20,11 @@ class Shift
         std::string toString() const;
         Shift operator -();
 
+        template<int i>
+        static int quantize( int in ) {
+            return int( i * std::round( float( in ) / i ) );
+        }
+
 private:
         int mDx;
         int mDy;
