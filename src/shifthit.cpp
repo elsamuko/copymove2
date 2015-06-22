@@ -126,18 +126,6 @@ std::list<std::pair<Block, Block> >&ShiftHit::getBlocks() {
     return mBlocks;
 }
 
-//std::list<std::pair<Block, Block> > ShiftHit::getGoodBlocks() {
-//    std::list<std::pair<Block,Block>> blocks;
-//    for( std::pair<Block,Block>& pair : mBlocks ) {
-//        int dx = pair.first.x() - mMeanX;
-//        int dy = pair.first.y() - mMeanY;
-//        if( (dx*dx+dy*dy) < mStandardDeviation * mStandardDeviation ){
-//            blocks.push_back( pair );
-//        }
-//    }
-//    return blocks;
-//}
-
 bool ShiftHit::looksGood() const {
     assert( mMeanCalculated );
     return mBlocks.size() > 10 && mGeometricAverageDistance < 100; // TODO: Parameterize

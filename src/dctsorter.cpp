@@ -243,7 +243,7 @@ void DCTSorter::sortShifts() {
         Block white( 255 * ( mMaxHits - i ) / mMaxHits );
         ShiftHit& hit = mShiftHits[i];
         LOG( "Found " + hit.toString() );
-        std::list<std::pair<Block,Block>> pairs = hit.getGoodBlocks();
+        std::list<std::pair<Block,Block>>& pairs = hit.getBlocks();
         for( std::pair<Block,Block>& pair : pairs ) {
             mResult.from.setBlock( white, pair.first.x(), pair.first.y() );
             mResult.to.setBlock( white, pair.second.x(), pair.second.y() );

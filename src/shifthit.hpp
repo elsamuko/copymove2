@@ -14,7 +14,6 @@ class ShiftHit {
         bool operator >( const Shift& b ) const;
         void setBlocks( const std::list<std::pair<Block,Block>>& blocks );
         std::list<std::pair<Block,Block>>& getBlocks();
-        // std::list<std::pair<Block,Block>> getGoodBlocks();
         bool looksGood() const;
 
         friend std::ostream& operator <<( std::ostream& stream, const ShiftHit& b );
