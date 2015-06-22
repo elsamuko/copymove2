@@ -29,9 +29,9 @@ int main( int argc, char** argv ) {
 
     DCTSorter::ShiftImages shifts = sorter.getShiftImages();
     image.setGrey( shifts.from );
-    image.save( "y_from.jpg" );
+    image.save( "y_from.png" );
     image.setGrey( shifts.to );
-    image.save( "y_to.jpg" );
+    image.save( "y_to.png" );
 
     image.load( filename );
     std::vector<ShiftHit> shiftHits = sorter.getShiftHits();
