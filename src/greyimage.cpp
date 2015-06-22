@@ -20,18 +20,18 @@ T CLAMP( T in ) {
 GreyImage::GreyImage( int width, int height ) {
     mWidth  = width;
     mHeight = height;
-    mPixels = std::vector<std::vector<double>>( mWidth, std::vector<double>( mHeight, 0 ) );
+    mPixels = std::vector<std::vector<float>>( mWidth, std::vector<float>( mHeight, 0 ) );
 }
 
 size_t GreyImage::width() const {
     return mWidth;
 }
 
-std::vector<double>& GreyImage::operator[]( const size_t pos ) {
+std::vector<float>& GreyImage::operator[]( const size_t pos ) {
     return mPixels[pos];
 }
 
-const std::vector<double>& GreyImage::operator[]( const size_t pos ) const {
+const std::vector<float>& GreyImage::operator[]( const size_t pos ) const {
     return mPixels[pos];
 }
 
