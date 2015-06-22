@@ -6,8 +6,11 @@ Shift::Shift( int dx, int dy ) :
 }
 
 bool Shift::operator <( const Shift& that ) const {
-    bool smaller = (this->mDx + this->mDy) < (that.mDx + that.mDy);
-    return smaller;
+
+    if( this->mDy < that.mDy ) return true;
+    if( this->mDy > that.mDy ) return false;
+
+    return this->mDx < that.mDx;
 }
 
 bool Shift::operator >( const Shift& b ) const {
