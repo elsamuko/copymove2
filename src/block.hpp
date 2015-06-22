@@ -100,7 +100,7 @@ bool Block::hasSimilarFreqs( const Block &other ) {
     assert( mTransformed );
 
     float similarity = cosineSimilarity( this->mFrequencies, other.mFrequencies, this->mFrequencyNorm, other.mFrequencyNorm );
-    bool similar = similarity > 0.97;
+    bool similar = similarity > 0.85;
     return similar;
 }
 
