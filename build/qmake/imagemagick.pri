@@ -12,7 +12,7 @@ unix{
             $${MAGICK_DIR}/libMagickWand-6.Q16.a \
             $${MAGICK_DIR}/libMagickCore-6.Q16.a \
             -llcms2 -ltiff -lfreetype -ljpeg -llzma \
-            -lbz2 -lxml2 -lz -lm -lpthread -lltdl
+            -lbz2 -lxml2 -lz -lm -lpthread -lltdl -lfontconfig
 }
 macx{
     INCLUDEPATH += /opt/local/include
