@@ -167,9 +167,9 @@ void DCTSorter::findDuplicates() {
             break;
         }
 
-        if( b->hasSimilarFreqs( *c ) ) {
+        while( b->hasSimilarFreqs( *c ) ) {
 
-            if( c->interesting() && ( b->manhattanDistance( *c ) > 3 * Block::size ) ) {
+            if( b->manhattanDistance( *c ) > ( 5 * Block::size ) ) {
                 int dx = ( c->x() - b->x() );
                 int dy = ( c->y() - b->y() );
 
