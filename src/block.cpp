@@ -7,7 +7,7 @@
 #include "ooura/shrtdct.hpp"
 #include "log/log.hpp"
 
-Block::Block( float color ) {
+Block::Block( float color , size_t quality ) {
     mTransformed = false;
     mMeanCalculated = false;
     mDataReceived = false;
@@ -18,6 +18,7 @@ Block::Block( float color ) {
     mFrequencies = std::vector<int>( Block::frequencies, 0 );
     mFrequencyNorm = 0;
     mPos.set( 0, 0 );
+    mQuality = 0.9 + float( quality )/100.f;
 }
 
 void Block::assignFrequencies() {

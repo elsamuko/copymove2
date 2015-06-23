@@ -11,7 +11,7 @@
 class Block {
 public:
     enum { size = 16, frequencies = 9 };
-    explicit Block( float color = 0.f );
+    explicit Block( float color = 0.f, size_t quality = 5 );
 
     void dct();
     void idct();
@@ -63,6 +63,9 @@ private:
     // quant steps of freqs
     float mQuantization;
 
+    // min. cosine similarity
+    float mQuality;
+
     // arithm average of block ~ dct[0][0]
     float mMean;
     // stddev of block ~ contrast
@@ -102,7 +105,7 @@ bool Block::hasSimilarFreqs( const Block &other ) {
     assert( mTransformed );
 
     float similarity = cosineSimilarity( this->mFrequencies, other.mFrequencies, this->mFrequencyNorm, other.mFrequencyNorm );
-    bool similar = similarity > 0.85;
+    bool similar = similarity > mQuality;
     return similar;
 }
 
