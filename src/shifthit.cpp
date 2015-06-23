@@ -3,10 +3,12 @@
 #include <iomanip>
 #include <cfloat>
 
-ShiftHit::ShiftHit( Shift shift ) :
+ShiftHit::ShiftHit( Shift shift, PointI size ) :
     mShift( shift ),
+    mImageSize( size ),
     mDataReceived( false ),
     mMeanCalculated( false ),
+    mMedianCalculated( false ),
     mVerbose( false ) {
 }
 
@@ -21,10 +23,13 @@ bool ShiftHit::operator <( const ShiftHit& that ) const {
 
 std::ostream& operator <<(std::ostream &stream, const ShiftHit &b) {
     stream << "#"     << std::setw( 2 ) << std::round( b.mRanking );
-    stream << " ["    << std::setw( 4 ) << std::round( b.mMeanX );
-    stream << ", "    << std::setw( 4 ) << std::round( b.mMeanY );
+    stream << " ["    << std::setw( 4 ) << std::round( b.mMean.x() );
+    stream << ", "    << std::setw( 4 ) << std::round( b.mMean.y() );
     stream << "] +- " << std::setw( 4 ) << std::round( b.mStandardDeviation );
-    stream << " av. " << std::setw( 4 ) << std::round( b.mGeometricAverageDistance );
+    stream << " ["    << std::setw( 4 ) << std::round( b.mGeometricAverage.x() );
+    stream << ", "    << std::setw( 4 ) << std::round( b.mGeometricAverage.y() );
+    stream << "] +- " << std::setw( 4 ) << std::round( b.mGeometricAverageDistance );
+    stream << " dm "  << std::setw( 4 ) << std::round( b.mMean.distance( b.mGeometricAverage ) );
     stream << " -> [" << std::setw( 5 ) << b.mShift.dx();
     stream << ", "    << std::setw( 5 ) << b.mShift.dy();
     stream << "] w/ " << std::setw( 4 ) << b.mBlocks.size() << " hits";
@@ -70,15 +75,9 @@ std::pair<PointF, float> ShiftHit::geometricMedian( const std::list<PointF>& poi
     return std::make_pair( result, currentMin/points.size() );
 }
 
-void ShiftHit::calculateStandardDeviation() {
-    assert( !mMeanCalculated );
+void ShiftHit::calculateGeometricDistance() {
+    assert( !mMedianCalculated );
     assert( mDataReceived );
-    mMean.set( 0.f, 0.f );
-    mMeanX = 0.f;
-    mMeanY = 0.f;
-    mStandardDeviation = 0.f;
-    float diffX = 0.f;
-    float diffY = 0.f;
 
     std::list<PointF> points;
 
@@ -87,25 +86,29 @@ void ShiftHit::calculateStandardDeviation() {
     }
 
     std::pair<PointF,float> median = ShiftHit::geometricMedian( points );
-
     mGeometricAverageDistance = median.second;
+    mGeometricAverage = median.first;
 
-    mMeanX = median.first.x();
-    mMeanY = median.first.y();
+    mMedianCalculated = true;
+}
 
-//    for( auto& fromTo : mBlocks ) {
-//        mMeanX += fromTo.first.x();
-//        mMeanY += fromTo.first.y();
-//    }
+void ShiftHit::calculateStandardDeviation() {
+    assert( !mMeanCalculated );
+    assert( mDataReceived );
 
-//    mMeanX /= (float)(mBlocks.size());
-//    mMeanY /= (float)(mBlocks.size());
+    mMean.set( 0.f, 0.f );
+    mStandardDeviation = 0.f;
+    PointF diff;
 
     for( auto& fromTo : mBlocks ) {
-        diffX = fromTo.first.x() - mMeanX;
-        diffY = fromTo.first.y() - mMeanY;
-        mStandardDeviation += diffX*diffX;
-        mStandardDeviation += diffY*diffY;
+        mMean += fromTo.first.pos();
+    }
+
+    mMean /= (float)(mBlocks.size());
+
+    for( auto& fromTo : mBlocks ) {
+        diff = PointF( fromTo.first.pos() ) - mMean;
+        mStandardDeviation += diff.sqr();
     }
 
     mStandardDeviation /= (float)(mBlocks.size());
@@ -119,6 +122,7 @@ void ShiftHit::setBlocks(const std::list<std::pair<Block, Block> >& blocks ) {
     mBlocks = blocks;
     mDataReceived = true;
 
+    calculateGeometricDistance();
     calculateStandardDeviation();
 }
 
@@ -128,5 +132,6 @@ std::list<std::pair<Block, Block> >&ShiftHit::getBlocks() {
 
 bool ShiftHit::looksGood() const {
     assert( mMeanCalculated );
-    return mBlocks.size() > 10 && mGeometricAverageDistance < 100; // TODO: Parameterize
+    assert( mMedianCalculated );
+    return ( mMean.distance( mGeometricAverage ) < 25 )  && mBlocks.size() > 5;
 }

@@ -17,8 +17,7 @@ Block::Block( float color ) {
     mData = std::vector<std::vector<float>>( Block::size, std::vector<float>( Block::size, color ) );
     mFrequencies = std::vector<int>( Block::frequencies, 0 );
     mFrequencyNorm = 0;
-    mX = 0;
-    mY = 0;
+    mPos.set( 0, 0 );
 }
 
 void Block::assignFrequencies() {
@@ -154,19 +153,27 @@ void Block::setData( const std::vector<std::vector<float> >& data ) {
 }
 
 void Block::setX( int x ) {
-    mX = x;
+    mPos.setX( x );
 }
 
 int Block::x() const {
-    return mX;
+    return mPos.x();
 }
 
 void Block::setY( int y ) {
-    mY = y;
+    mPos.setY( y );
 }
 
 int Block::y() const {
-    return mY;
+    return mPos.y();
+}
+
+PointI Block::pos() const {
+    return mPos;
+}
+
+void Block::setPos( const PointI& pos ) {
+    mPos = pos;
 }
 
 int Block::frequency( size_t position ) const {

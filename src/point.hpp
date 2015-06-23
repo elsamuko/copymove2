@@ -7,7 +7,9 @@
 template<class T>
 class Point {
     public:
-        Point( T x = 0, T y = 0 ) : mX(x), mY(y) {}
+        Point( T x = T(), T y = T() ) : mX( x ), mY( y ) {}
+        template<class U>
+        Point( Point<U> that ) : mX( that.x() ), mY( that.y() ) {}
         T x() const { return mX; }
         T y() const { return mY; }
         void set( const T x, const T y ) { mX = x; mY = y; }
@@ -19,9 +21,52 @@ class Point {
 
         std::string toString() const;
 
-        T distance( const Point<T>& p ) const {
-            T dx = mX - p.x();
-            T dy = mY - p.y();
+        T abs() const {
+            return std::sqrt( sqr() );
+        }
+
+        T sqr() const {
+            return mX*mX + mY*mY;
+        }
+
+        template<class U>
+        Point& operator+= ( const Point<U>& that ) {
+            this->mX += that.x();
+            this->mY += that.y();
+            return *this;
+        }
+
+        template<class U>
+        Point& operator-= ( const Point<U>& that ) {
+            this->mX -= that.x();
+            this->mY -= that.y();
+            return *this;
+        }
+
+        template<class U>
+        Point& operator*= ( const Point<U>& that ) {
+            this->mX *= that.x();
+            this->mY *= that.y();
+            return *this;
+        }
+
+        template<class U>
+        Point& operator*= ( const U in ) {
+            this->mX *= in;
+            this->mY *= in;
+            return *this;
+        }
+
+        template<class U>
+        Point& operator/= ( const U in ) {
+            this->mX /= in;
+            this->mY /= in;
+            return *this;
+        }
+
+        T distance( const Point<T>& that ) const {
+            T dx = mX - that.mX;
+            T dy = mY - that.mY;
             T distance = std::sqrt( dx*dx + dy*dy );
             return distance;
         }
@@ -30,6 +75,46 @@ class Point {
         T mX;
         T mY;
 };
+
+template<class T, class U>
+inline Point<T> operator+( const Point<T>& a, const Point<U>& b ) {
+    Point<T> result( a );
+    result += b;
+    return result;
+}
+
+template<class T, class U>
+inline Point<T> operator-( const Point<T>& a, const Point<U>& b ) {
+    Point<T> result( a );
+    result -= b;
+    return result;
+}
+
+template<class T, class U>
+inline Point<T> operator*( const Point<T>& a, const Point<U>& b )  {
+    Point<T> result( a );
+    result *= b;
+    return result;
+}
+
+template<class T, class U>
+inline Point<T> operator*( const Point<T>& a,  const U b )  {
+    Point<T> result( a );
+    result *= b;
+    return result;
+}
+
+template<class T, class U>
+inline Point<T> operator*( const U a, const Point<T>& b )  {
+    Point<T> result( b );
+    result *= a;
+    return result;
+}
+
+template<class T, class U>
+inline Point<T> operator/( const Point<T>& a, const Point<T>& b ) {
+    return ( a * ( 1 / b ) );
+}
 
 template<class U>
 std::ostream& operator <<(std::ostream &stream, const Point<U> &b) {
@@ -48,6 +133,5 @@ std::string Point<T>::toString() const {
     return ss.str();
 }
 
-using PointD = Point<double>;
 using PointF = Point<float>;
-using PointI = Point<float>;
+using PointI = Point<int>;

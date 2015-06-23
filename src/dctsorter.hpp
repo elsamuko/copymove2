@@ -32,8 +32,7 @@ private:
     std::map<Shift, std::list<std::pair<Block,Block>>> mShifts;
     std::vector<ShiftHit> mShiftHits;
 
-    int mWidth;
-    int mHeight;
+    PointI mImageSize;
 
     std::vector<Block> mOriginals;
     std::vector<Block> mCopies;

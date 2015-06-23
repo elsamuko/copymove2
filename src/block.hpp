@@ -6,6 +6,7 @@
 #include <cassert>
 
 #include "log/log.hpp"
+#include "point.hpp"
 
 class Block {
 public:
@@ -30,6 +31,8 @@ public:
     int x() const;
     void setY( int y );
     int y() const;
+    PointI pos() const;
+    void setPos( const PointI& pos );
 
     int frequency( size_t position ) const;
 
@@ -69,8 +72,7 @@ private:
     float mFrequencyNorm; // ||a||
 
     // x/y position in image
-    int mX;
-    int mY;
+    PointI mPos;
 
     // data at x/y
     std::vector<std::vector<float>> mData;

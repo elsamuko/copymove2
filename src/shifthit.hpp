@@ -8,7 +8,7 @@
 
 class ShiftHit {
     public:
-        explicit ShiftHit( Shift shift );
+        explicit ShiftHit( Shift shift, PointI size );
         ~ShiftHit();
         bool operator <(const ShiftHit& b ) const;
         bool operator >( const Shift& b ) const;
@@ -19,8 +19,8 @@ class ShiftHit {
         friend std::ostream& operator <<( std::ostream& stream, const ShiftHit& b );
         std::string toString() const;
 
-        int x() const { return mMeanX; }
-        int y() const { return mMeanY; }
+        int x() const { return mGeometricAverage.x(); }
+        int y() const { return mGeometricAverage.y(); }
         int radius() const { assert( mMeanCalculated ); return mStandardDeviation; }
         int distance() const { assert( mMeanCalculated ); return mGeometricAverageDistance; }
         int dx() const { return mShift.dx(); }
@@ -34,27 +34,26 @@ class ShiftHit {
 
     private:
         void calculateStandardDeviation();
+        void calculateGeometricDistance();
 
         Shift mShift;
+        PointI mImageSize;
         std::list<std::pair<Block,Block>> mBlocks;
 
         // state checks
         bool mDataReceived;
         bool mMeanCalculated;
+        bool mMedianCalculated;
 
-        // debug state
+        // debug info
         bool mVerbose;
-
         int mRanking;
 
-        // arithm average of position of blocks
+        // arith average + stddev
         PointF mMean;
-        float mMeanX;
-        float mMeanY;
-
-        // stddev of position of blocks -> how spread is the hit
         float mStandardDeviation;
 
-        // average distance of all hits to center hit
+        // geometric median + distance
+        PointF mGeometricAverage;
         float mGeometricAverageDistance;
 };

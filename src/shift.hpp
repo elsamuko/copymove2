@@ -4,6 +4,8 @@
 #include <cstdlib>
 #include <iostream>
 
+#include "point.hpp"
+
 class Shift
 {
     public:
@@ -25,7 +27,8 @@ class Shift
             return int( i * std::round( float( in ) / i ) );
         }
 
+        void quantize();
+
 private:
-        int mDx;
-        int mDy;
+        PointI mDXY;
 };

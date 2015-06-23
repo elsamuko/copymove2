@@ -14,8 +14,7 @@ void DCTSorter::setGrey( const GreyImage& grey ) {
     mGrey = grey;
     mResult.from = GreyImage( grey.width(), grey.height() );
     mResult.to   = GreyImage( grey.width(), grey.height() );
-    mWidth = grey.width();
-    mHeight = grey.height();
+    mImageSize.set( grey.width(), grey.height() );
 }
 
 GreyImage DCTSorter::getGrey() const {
@@ -175,6 +174,7 @@ void DCTSorter::findDuplicates() {
                 int dy = ( c->y() - b->y() );
 
                 Shift shift( dx, dy );
+                shift.quantize();
 
                 // if already exists as negative shift
                 if( mShifts.find( -shift ) != mShifts.end() ) {
@@ -211,7 +211,7 @@ void DCTSorter::sortShifts() {
     mShiftHits.reserve( mShifts.size() );
 
     for( auto& count : mShifts ) {
-        ShiftHit hit( count.first );
+        ShiftHit hit( count.first, mImageSize );
         hit.setBlocks( count.second );
         if( hit.looksGood() ) {
             mShiftHits.push_back( hit );
@@ -239,8 +239,9 @@ void DCTSorter::sortShifts() {
 
 
     // write result
-    for( size_t i = 0; i < mShiftHits.size() ; ++i ) {
-        Block white( 255 * ( mMaxHits - i ) / mMaxHits );
+    int size = mShiftHits.size();
+    for( int i = 0; i < size ; ++i ) {
+        Block white( 255 * ( size - i ) / size );
         ShiftHit& hit = mShiftHits[i];
         LOG( "Found " + hit.toString() );
         std::list<std::pair<Block,Block>>& pairs = hit.getBlocks();
