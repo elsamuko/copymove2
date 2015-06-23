@@ -3,7 +3,7 @@
 #include <iomanip>
 #include <cfloat>
 
-ShiftHit::ShiftHit(Shift shift, PointI size , size_t minHits) :
+ShiftHit::ShiftHit( Shift shift, PointI size , size_t minHits ) :
     mShift( shift ),
     mImageSize( size ),
     mMinHits( minHits ),
@@ -22,7 +22,7 @@ bool ShiftHit::operator <( const ShiftHit& that ) const {
     return less;
 }
 
-std::ostream& operator <<(std::ostream &stream, const ShiftHit &b) {
+std::ostream& operator <<( std::ostream& stream, const ShiftHit& b ) {
     stream << "#"     << std::setw( 2 ) << std::round( b.mRanking );
     stream << " ["    << std::setw( 4 ) << std::round( b.mMean.x() );
     stream << ", "    << std::setw( 4 ) << std::round( b.mMean.y() );
@@ -38,11 +38,12 @@ std::ostream& operator <<(std::ostream &stream, const ShiftHit &b) {
     if( b.mVerbose ) {
         stream << ": { ";
 
-        for( auto& fromTo : b.mBlocks ) {
+        for( auto & fromTo : b.mBlocks ) {
             stream << "{";
             stream << fromTo.first.x() << ",";
             stream << fromTo.first.y() << "}, ";
         }
+
         stream << "}";
     }
 
@@ -55,7 +56,7 @@ std::string ShiftHit::toString() const {
     return ss.str();
 }
 
-void ShiftHit::setVerbosity(bool verbose) {
+void ShiftHit::setVerbosity( bool verbose ) {
     mVerbose = verbose;
 }
 
@@ -63,17 +64,20 @@ std::pair<PointF, float> ShiftHit::geometricMedian( const std::list<PointF>& poi
     float currentMin = FLT_MAX;
     PointF result;
 
-    for( const PointF& a : points ) {
+    for( const PointF & a : points ) {
         float squareSum = 0;
-        for( const PointF& b : points ) {
+
+        for( const PointF & b : points ) {
             squareSum += a.distance( b );
         }
+
         if( squareSum < currentMin ) {
             currentMin = squareSum;
             result = a;
         }
     }
-    return std::make_pair( result, currentMin/points.size() );
+
+    return std::make_pair( result, currentMin / points.size() );
 }
 
 void ShiftHit::calculateGeometricDistance() {
@@ -82,11 +86,11 @@ void ShiftHit::calculateGeometricDistance() {
 
     std::list<PointF> points;
 
-    for( auto& fromTo : mBlocks ) {
+    for( auto & fromTo : mBlocks ) {
         points.emplace_back( fromTo.first.x(), fromTo.first.y() );
     }
 
-    std::pair<PointF,float> median = ShiftHit::geometricMedian( points );
+    std::pair<PointF, float> median = ShiftHit::geometricMedian( points );
     mGeometricAverageDistance = median.second;
     mGeometricAverage = median.first;
 
@@ -101,24 +105,24 @@ void ShiftHit::calculateStandardDeviation() {
     mStandardDeviation = 0.f;
     PointF diff;
 
-    for( auto& fromTo : mBlocks ) {
+    for( auto & fromTo : mBlocks ) {
         mMean += fromTo.first.pos();
     }
 
-    mMean /= (float)(mBlocks.size());
+    mMean /= ( float )( mBlocks.size() );
 
-    for( auto& fromTo : mBlocks ) {
+    for( auto & fromTo : mBlocks ) {
         diff = PointF( fromTo.first.pos() ) - mMean;
         mStandardDeviation += diff.sqr();
     }
 
-    mStandardDeviation /= (float)(mBlocks.size());
+    mStandardDeviation /= ( float )( mBlocks.size() );
     mStandardDeviation = std::sqrt( mStandardDeviation );
 
     mMeanCalculated = true;
 }
 
-void ShiftHit::setBlocks(const std::list<std::pair<Block, Block> >& blocks ) {
+void ShiftHit::setBlocks( const std::list<std::pair<Block, Block> >& blocks ) {
     assert( !mDataReceived );
     mBlocks = blocks;
     mDataReceived = true;
@@ -127,7 +131,7 @@ void ShiftHit::setBlocks(const std::list<std::pair<Block, Block> >& blocks ) {
     calculateStandardDeviation();
 }
 
-std::list<std::pair<Block, Block> >&ShiftHit::getBlocks() {
+std::list<std::pair<Block, Block> >& ShiftHit::getBlocks() {
     return mBlocks;
 }
 

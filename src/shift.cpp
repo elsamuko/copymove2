@@ -7,8 +7,13 @@ Shift::Shift( int dx, int dy ) :
 
 bool Shift::operator <( const Shift& that ) const {
 
-    if( this->mDXY.y() < that.mDXY.y() ) return true;
-    if( this->mDXY.y() > that.mDXY.y() ) return false;
+    if( this->mDXY.y() < that.mDXY.y() ) {
+        return true;
+    }
+
+    if( this->mDXY.y() > that.mDXY.y() ) {
+        return false;
+    }
 
     return this->mDXY.x() < that.mDXY.x();
 }
@@ -17,11 +22,11 @@ bool Shift::operator >( const Shift& b ) const {
     return !( *this < b );
 }
 
-void Shift::setDx(int dx ) {
+void Shift::setDx( int dx ) {
     mDXY.setX( dx );
 }
 
-void Shift::setDy(int dy ) {
+void Shift::setDy( int dy ) {
     mDXY.setY( dy );
 }
 
@@ -33,7 +38,7 @@ int Shift::dy() const {
     return mDXY.y();
 }
 
-std::ostream& operator <<(std::ostream &stream, const Shift &b) {
+std::ostream& operator <<( std::ostream& stream, const Shift& b ) {
     stream << "[" << b.mDXY.x() << ", " << b.mDXY.y() << "]";
     return stream;
 }

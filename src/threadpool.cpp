@@ -23,7 +23,7 @@ ThreadPool::ThreadPool() {
 
                 this->workOff();
 
-                if( ! ( mRunning.load() || mJobCount.load() ) ) {
+                if( !( mRunning.load() || mJobCount.load() ) ) {
                     break;
                 }
 

@@ -1,7 +1,6 @@
 #include "offset.hpp"
 
-Offset::Offset()
-{
+Offset::Offset() {
 }
 
 Shift Offset::getShift() const {

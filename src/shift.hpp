@@ -6,8 +6,7 @@
 
 #include "point.hpp"
 
-class Shift
-{
+class Shift {
     public:
         Shift( int dx, int dy );
         bool operator <( const Shift& b ) const;
@@ -29,6 +28,6 @@ class Shift
 
         void quantize();
 
-private:
+    private:
         PointI mDXY;
 };

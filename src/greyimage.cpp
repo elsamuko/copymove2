@@ -1,4 +1,4 @@
-    #include "greyimage.hpp"
+#include "greyimage.hpp"
 
 #include <sstream>
 #include <fstream>

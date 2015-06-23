@@ -11,11 +11,11 @@
 int main( int argc, char** argv ) {
 
     if( argc < 2 ) {
-        LOG_WARNING( "No argument, exiting...");
+        LOG_WARNING( "No argument, exiting..." );
         return 1;
     }
 
-    LOG("Start");
+    LOG( "Start" );
     IOImage image;
     std::string filename = argv[1];
     image.load( filename );
@@ -38,12 +38,14 @@ int main( int argc, char** argv ) {
     image.load( filename );
     std::vector<ShiftHit> shiftHits = sorter.getShiftHits();
     std::reverse( shiftHits.begin(), shiftHits.end() );
-    for( ShiftHit& hit : shiftHits ) {
+
+    for( ShiftHit & hit : shiftHits ) {
         image.drawHit( hit );
     }
+
     image.save( "z_result.jpg" );
 
-    LOG("End");
+    LOG( "End" );
 
     return 0;
 }

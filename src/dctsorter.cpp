@@ -42,7 +42,7 @@ void DCTSorter::work() {
 }
 
 void DCTSorter::readGreyToBlocks() {
-    LOG("Read image...");
+    LOG( "Read image..." );
 
     const size_t width = mGrey.width();
     const size_t height = mGrey.height();
@@ -50,31 +50,31 @@ void DCTSorter::readGreyToBlocks() {
     const size_t wB = width  - Block::size;
 
     mBlocks = std::vector<Block>( hB * wB );
-    std::atomic_int i(0);
+    std::atomic_int i( 0 );
 
     // read
     for( size_t y = 0; y < hB; ++y ) {
         for( size_t x = 0; x < wB; ++x ) {
             int current = i++;
-            mThreadPool.add( [this,current,x,y] {
+            mThreadPool.add( [this, current, x, y] {
                 mBlocks[current].setX( x );
                 mBlocks[current].setY( y );
                 mGrey.getBlock( mBlocks[current], x, y );
                 mBlocks[current].calculateStandardDeviation();
-            });
+            } );
         }
     }
 
     mThreadPool.waitForAllJobs();
 
     // some stats
-    for( Block& block : mBlocks ) {
-        mGrey[block.x()+Block::size/2][block.y()+Block::size/2] = block.interesting() ? 255 : 0;
+    for( Block & block : mBlocks ) {
+        mGrey[block.x() + Block::size / 2][block.y() + Block::size / 2] = block.interesting() ? 255 : 0;
     }
 }
 
 void DCTSorter::dctBlocks() {
-    LOG("DCT...");
+    LOG( "DCT..." );
 
     size_t blocks  = mBlocks.size();
     size_t threads = mThreadPool.size();
@@ -88,41 +88,43 @@ void DCTSorter::dctBlocks() {
 
     for( size_t thread = 0; thread < threads; ++thread ) {
         std::this_thread::sleep_for( std::chrono::milliseconds( 1 ) );
-        mThreadPool.add( [thread,parts,this] {
-            size_t from = thread*parts;
-            size_t to   = (thread+1)*parts;
+        mThreadPool.add( [thread, parts, this] {
+            size_t from = thread* parts;
+            size_t to   = ( thread + 1 ) * parts;
             LOG( std::to_string( from ) + " to " + std::to_string( to ) );
-            for( size_t i = from; i<to; ++i ) {
+
+            for( size_t i = from; i < to; ++i ) {
                 mBlocks[i].dct();
             }
-        });
+        } );
     }
 
     if( rest > 0 ) {
         LOG( "rest : " + std::to_string( rest ) );
         std::this_thread::sleep_for( std::chrono::milliseconds( 1 ) );
-        mThreadPool.add( [blocks,rest,this] {
+        mThreadPool.add( [blocks, rest, this] {
             size_t from = blocks - rest;
             size_t to   = blocks;
             LOG( std::to_string( from ) + " to " + std::to_string( to ) );
-            for( size_t i = from; i<to; ++i ) {
+
+            for( size_t i = from; i < to; ++i ) {
                 mBlocks[i].dct();
             }
-        });
+        } );
     }
 
     mThreadPool.waitForAllJobs();
 
-//    // some stats
-//    std::atomic_int max( 20 );
-//    int freq = 0;
+    //    // some stats
+    //    std::atomic_int max( 20 );
+    //    int freq = 0;
 
-//    for( Block& block : mBlocks ) {
-//        max.store( std::max( max.load(), block.frequency( freq ) ) );
-//    }
-//    for( Block& block : mBlocks ) {
-//        mGrey[block.x()+Block::size/2][block.y()+Block::size/2] = ( max.load() + block.frequency( freq ) ) * 256 / max;
-//    }
+    //    for( Block& block : mBlocks ) {
+    //        max.store( std::max( max.load(), block.frequency( freq ) ) );
+    //    }
+    //    for( Block& block : mBlocks ) {
+    //        mGrey[block.x()+Block::size/2][block.y()+Block::size/2] = ( max.load() + block.frequency( freq ) ) * 256 / max;
+    //    }
 }
 
 // http://codereview.stackexchange.com/questions/22744/multi-threaded-sort
@@ -146,23 +148,24 @@ void DCTSorter::dctBlocks() {
 //}
 
 void DCTSorter::sortBlocks() {
-    LOG("Sorting...");
+    LOG( "Sorting..." );
     std::sort( mBlocks.begin(), mBlocks.end() );
 }
 
 void DCTSorter::findDuplicates() {
-    LOG("Collecting shifts...");
+    LOG( "Collecting shifts..." );
 
     std::vector<Block>::iterator b = mBlocks.begin();
     std::vector<Block>::iterator c = b;
 
-    for( ; b!= mBlocks.end(); ++b ) {
+    for( ; b != mBlocks.end(); ++b ) {
 
         if( !b->interesting() ) {
             continue;
         }
 
         c = b + 1;
+
         if( c == mBlocks.end() ) {
             break;
         }
@@ -178,14 +181,15 @@ void DCTSorter::findDuplicates() {
 
                 // if already exists as negative shift
                 if( mShifts.find( -shift ) != mShifts.end() ) {
-                    mShifts[ -shift ].push_back( std::make_pair(*c,*b) );
+                    mShifts[ -shift ].push_back( std::make_pair( *c, *b ) );
                 } else {
-                    mShifts[ shift ].push_back( std::make_pair(*b,*c) );
+                    mShifts[ shift ].push_back( std::make_pair( *b, *c ) );
                 }
             }
 
             ++c;
-            if( c == mBlocks.end()) {
+
+            if( c == mBlocks.end() ) {
                 break;
             }
         }
@@ -194,24 +198,25 @@ void DCTSorter::findDuplicates() {
 }
 
 void DCTSorter::debugBlocks() {
-    LOG("Writing debug info...");
+    LOG( "Writing debug info..." );
     std::ofstream ofs( "blocks.txt", std::ios::out );
 
     if( ofs.is_open() ) {
-        for( Block& b : mBlocks ) {
+        for( Block & b : mBlocks ) {
             ofs << b;
         }
     }
 }
 
 void DCTSorter::sortShifts() {
-    LOG("Sorting shifts...");
+    LOG( "Sorting shifts..." );
 
     mShiftHits.reserve( mShifts.size() );
 
-    for( auto& count : mShifts ) {
+    for( auto & count : mShifts ) {
         ShiftHit hit( count.first, mImageSize, mMinHits );
         hit.setBlocks( count.second );
+
         if( hit.looksGood() ) {
             mShiftHits.push_back( hit );
         }
@@ -222,7 +227,7 @@ void DCTSorter::sortShifts() {
     // set ranking
     int position = 0;
 
-    for( ShiftHit& hit : mShiftHits ) {
+    for( ShiftHit & hit : mShiftHits ) {
         hit.setRanking( position );
         position++;
     }
@@ -232,12 +237,14 @@ void DCTSorter::sortShifts() {
 
     // write result
     int size = mShiftHits.size();
+
     for( int i = 0; i < size ; ++i ) {
         Block white( 255 * ( size - i ) / size );
         ShiftHit& hit = mShiftHits[i];
         LOG( "Found " + hit.toString() );
-        std::list<std::pair<Block,Block>>& pairs = hit.getBlocks();
-        for( std::pair<Block,Block>& pair : pairs ) {
+        std::list<std::pair<Block, Block>>& pairs = hit.getBlocks();
+
+        for( std::pair<Block, Block>& pair : pairs ) {
             mResult.from.setBlock( white, pair.first.x(), pair.first.y() );
             mResult.to.setBlock( white, pair.second.x(), pair.second.y() );
         }

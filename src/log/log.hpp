@@ -13,6 +13,6 @@
 #define LOGQT(TYPE,A,FILE,LINE,FUNC) logging::writeLog( TYPE, FILE, LINE, FUNC, A )
 
 namespace logging {
-    bool            writeLog(const char* level, const char* cfile, int line, const char* function, std::string content );
+    bool            writeLog( const char* level, const char* cfile, int line, const char* function, std::string content );
     std::string     logFilename();
 }

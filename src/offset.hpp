@@ -2,8 +2,7 @@
 
 #include "shift.hpp"
 
-class Offset
-{
+class Offset {
     public:
         Offset();
         Shift getShift() const;

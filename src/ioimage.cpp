@@ -90,7 +90,7 @@ GreyImage IOImage::getGrey() {
 
     for( size_t y = 0; y < h; ++y ) {
         for( size_t x = 0; x < w; ++x ) {
-            grey[x][y] = pixel_cache->green/256;
+            grey[x][y] = pixel_cache->green / 256;
             ++pixel_cache;
         }
     }
@@ -133,10 +133,10 @@ void IOImage::drawHit( ShiftHit& hit ) {
     std::string text = std::to_string( hit.ranking() );
     mImage.strokeColor( "black" );
     mImage.fillColor( "lime" );
-    mImage.draw( Magick::DrawableRectangle( hit.x()-5, hit.y()-10, hit.x() + 3 + text.size()*8, hit.y()+10 ) );
+    mImage.draw( Magick::DrawableRectangle( hit.x() - 5, hit.y() - 10, hit.x() + 3 + text.size() * 8, hit.y() + 10 ) );
     mImage.fillColor( "black" );
     mImage.strokeWidth( 0 );
-    mImage.draw( Magick::DrawableText( hit.x(), hit.y()+5, text ) );
+    mImage.draw( Magick::DrawableText( hit.x(), hit.y() + 5, text ) );
 }
 
 //! \brief Load image

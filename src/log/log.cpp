@@ -39,6 +39,7 @@ static void rotateLog() {
 
 void initLogFile() {
     static bool initialized = false;
+
     if( !initialized ) {
         initialized = true;
 
@@ -64,6 +65,7 @@ std::string indent( const std::string& s, int count ) {
 
     if( std::getline( ss, item ) ) {
         ret << item << std::endl;
+
         while( std::getline( ss, item ) ) {
             ret << whitespaces << item << std::endl;
         }

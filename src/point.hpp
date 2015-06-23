@@ -10,11 +10,22 @@ class Point {
         Point( T x = T(), T y = T() ) : mX( x ), mY( y ) {}
         template<class U>
         Point( Point<U> that ) : mX( that.x() ), mY( that.y() ) {}
-        T x() const { return mX; }
-        T y() const { return mY; }
-        void set( const T x, const T y ) { mX = x; mY = y; }
-        void setX( const T x ) { mX = x; }
-        void setY( const T y ) { mY = y; }
+        T x() const {
+            return mX;
+        }
+        T y() const {
+            return mY;
+        }
+        void set( const T x, const T y ) {
+            mX = x;
+            mY = y;
+        }
+        void setX( const T x ) {
+            mX = x;
+        }
+        void setY( const T y ) {
+            mY = y;
+        }
 
         template<class U>
         friend std::ostream& operator <<( std::ostream& stream, const Point<U>& b );
@@ -26,7 +37,7 @@ class Point {
         }
 
         T sqr() const {
-            return mX*mX + mY*mY;
+            return mX * mX + mY * mY;
         }
 
         template<class U>
@@ -67,7 +78,7 @@ class Point {
         T distance( const Point<T>& that ) const {
             T dx = mX - that.mX;
             T dy = mY - that.mY;
-            T distance = std::sqrt( dx*dx + dy*dy );
+            T distance = std::sqrt( dx * dx + dy * dy );
             return distance;
         }
 
@@ -117,7 +128,7 @@ inline Point<T> operator/( const Point<T>& a, const Point<T>& b ) {
 }
 
 template<class U>
-std::ostream& operator <<(std::ostream &stream, const Point<U> &b) {
+std::ostream& operator <<( std::ostream& stream, const Point<U>& b ) {
 
     stream << "["     << std::setw( 4 ) << std::round( b.mX );
     stream << ", "    << std::setw( 4 ) << std::round( b.mY );

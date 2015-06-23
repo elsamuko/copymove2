@@ -18,7 +18,7 @@ Block::Block( float color , size_t quality ) {
     mFrequencies = std::vector<int>( Block::frequencies, 0 );
     mFrequencyNorm = 0;
     mPos.set( 0, 0 );
-    mQuality = 0.9 + float( quality )/100.f;
+    mQuality = 0.9 + float( quality ) / 100.f;
 }
 
 void Block::assignFrequencies() {
@@ -41,7 +41,7 @@ void Block::assignFrequencies() {
 
     float max = 0.01;
 
-    std::array<float,Block::frequencies> tmp;
+    std::array<float, Block::frequencies> tmp;
 
     // get first 10 frequencies and cache them in mFrequencies
     for( int i = 0; i < Block::frequencies; ++i ) {
@@ -55,7 +55,7 @@ void Block::assignFrequencies() {
     for( int i = 0; i < Block::frequencies; ++i ) {
         float f = std::round( tmp[i] * mQuantization / max );
         mFrequencies[i] = f;
-        mFrequencyNorm += f*f;
+        mFrequencyNorm += f * f;
     }
 
     mFrequencyNorm = std::sqrt( mFrequencyNorm );
@@ -125,7 +125,7 @@ std::ostream& operator<< ( std::ostream& stream, const Block& b ) {
     stream.width( 3 );
     stream << std::round( b.mStandardDeviation ) << " {";
 
-    for( auto& f : b.mFrequencies ) {
+    for( auto & f : b.mFrequencies ) {
         stream.width( 5 );
         stream << Block::roundBy<0>( f ) << ", ";
     }
@@ -178,7 +178,10 @@ void Block::setPos( const PointI& pos ) {
 }
 
 int Block::frequency( size_t position ) const {
-    if( !mTransformed ) LOG_ERROR( this->toString() );
+    if( !mTransformed ) {
+        LOG_ERROR( this->toString() );
+    }
+
     assert( mTransformed );
     assert( position < mFrequencies.size() );
     return mFrequencies[position];
@@ -195,7 +198,10 @@ bool Block::transformed() const {
 }
 
 bool Block::interesting() const {
-    if( !mMeanCalculated ) LOG_ERROR( this->toString() );
+    if( !mMeanCalculated ) {
+        LOG_ERROR( this->toString() );
+    }
+
     assert( mMeanCalculated );
     float tmp = std::max( 1.f, mMean * 0.1f );
     return mStandardDeviation > tmp;
@@ -214,16 +220,16 @@ void Block::calculateStandardDeviation() {
         }
     }
 
-    mMean /= (float)(Block::size*Block::size);
+    mMean /= ( float )( Block::size * Block::size );
 
     for( int y = 0; y < Block::size; ++y ) {
         for( int x = 0; x < Block::size; ++x ) {
             diff = mData[x][y] - mMean;
-            mStandardDeviation += diff*diff;
+            mStandardDeviation += diff * diff;
         }
     }
 
-    mStandardDeviation /= (float)(Block::size*Block::size);
+    mStandardDeviation /= ( float )( Block::size * Block::size );
     mStandardDeviation = std::sqrt( mStandardDeviation );
 
     mMeanCalculated = true;
