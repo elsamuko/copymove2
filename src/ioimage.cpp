@@ -126,15 +126,17 @@ void IOImage::setGrey( const GreyImage& grey ) {
 void IOImage::drawHit( ShiftHit& hit ) {
     mImage.strokeColor( "red" );
     mImage.fillColor( "transparent" );
-    mImage.strokeWidth( 2 );
-    mImage.draw( Magick::DrawableCircle( hit.x(), hit.y(), hit.x() + hit.distance(),hit.y() ) );
+    mImage.strokeWidth( 1 );
+    // mImage.draw( Magick::DrawableCircle( hit.x(), hit.y(), hit.x() + hit.distance(),hit.y() ) );
     mImage.draw( Magick::DrawableLine( hit.x(), hit.y(), hit.x() + hit.dx(), hit.y() + hit.dy() ) );
 
-    mImage.fillColor( "red" );
-    mImage.strokeWidth( 10 );
-    mImage.draw( Magick::DrawableRectangle( hit.x(), hit.y(), hit.x() + 5, hit.y() + 5 ) );
+    std::string text = std::to_string( hit.ranking() );
+    mImage.strokeColor( "black" );
+    mImage.fillColor( "lime" );
+    mImage.draw( Magick::DrawableRectangle( hit.x()-5, hit.y()-10, hit.x() + 3 + text.size()*8, hit.y()+10 ) );
     mImage.fillColor( "black" );
-    mImage.draw( Magick::DrawableText( hit.x(), hit.y()+5, std::to_string( hit.ranking() ) ) );
+    mImage.strokeWidth( 0 );
+    mImage.draw( Magick::DrawableText( hit.x(), hit.y()+5, text ) );
 }
 
 //! \brief Load image

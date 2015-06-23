@@ -37,6 +37,7 @@ int main( int argc, char** argv ) {
 
     image.load( filename );
     std::vector<ShiftHit> shiftHits = sorter.getShiftHits();
+    std::reverse( shiftHits.begin(), shiftHits.end() );
     for( ShiftHit& hit : shiftHits ) {
         image.drawHit( hit );
     }
