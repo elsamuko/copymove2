@@ -8,7 +8,7 @@
 
 class ShiftHit {
     public:
-        explicit ShiftHit( Shift shift, PointI size );
+        explicit ShiftHit( Shift shift, PointI size, size_t minHits );
         ~ShiftHit();
         bool operator <(const ShiftHit& b ) const;
         bool operator >( const Shift& b ) const;
@@ -39,6 +39,7 @@ class ShiftHit {
         Shift mShift;
         PointI mImageSize;
         std::list<std::pair<Block,Block>> mBlocks;
+        size_t mMinHits;
 
         // state checks
         bool mDataReceived;

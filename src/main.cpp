@@ -20,7 +20,9 @@ int main( int argc, char** argv ) {
     std::string filename = argv[1];
     image.load( filename );
 
-    DCTSorter sorter;
+    int minHits = 20;
+
+    DCTSorter sorter( minHits );
     sorter.setGrey( image.getGrey() );
     sorter.work();
 

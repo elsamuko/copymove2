@@ -3,9 +3,10 @@
 #include <iomanip>
 #include <cfloat>
 
-ShiftHit::ShiftHit( Shift shift, PointI size ) :
+ShiftHit::ShiftHit(Shift shift, PointI size , size_t minHits) :
     mShift( shift ),
     mImageSize( size ),
+    mMinHits( minHits ),
     mDataReceived( false ),
     mMeanCalculated( false ),
     mMedianCalculated( false ),
@@ -133,5 +134,8 @@ std::list<std::pair<Block, Block> >&ShiftHit::getBlocks() {
 bool ShiftHit::looksGood() const {
     assert( mMeanCalculated );
     assert( mMedianCalculated );
-    return ( mMean.distance( mGeometricAverage ) < 25 )  && mBlocks.size() > 5;
+    // bool centerCriterium = mMean.distance( mGeometricAverage ) < 25;       // arith. mean and geometric median are close
+    // bool spreadCriterium = mGeometricAverageDistance < mImageSize.abs()/8; // hit is not too spread
+    bool sizeCriterium   = mBlocks.size() > mMinHits;                      // minimum of hits
+    return /*centerCriterium && spreadCriterium &&*/ sizeCriterium;
 }

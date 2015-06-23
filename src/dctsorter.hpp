@@ -17,7 +17,7 @@ public:
         GreyImage from;
         GreyImage to;
     };
-    DCTSorter();
+    DCTSorter(size_t minHits );
     void setGrey( const GreyImage& grey );
     GreyImage getGrey() const;
     DCTSorter::ShiftImages getShiftImages() const;
@@ -37,7 +37,7 @@ private:
     std::vector<Block> mOriginals;
     std::vector<Block> mCopies;
 
-    size_t mMaxHits;
+    size_t mMinHits;
 
     void readGreyToBlocks();
     void dctBlocks();

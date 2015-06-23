@@ -6,8 +6,8 @@
 #include <sstream>
 #include <fstream>
 
-DCTSorter::DCTSorter() :
-    mMaxHits( 25 ) {
+DCTSorter::DCTSorter( size_t minHits ) :
+    mMinHits( minHits ) {
 }
 
 void DCTSorter::setGrey( const GreyImage& grey ) {
@@ -169,7 +169,7 @@ void DCTSorter::findDuplicates() {
 
         while( b->hasSimilarFreqs( *c ) ) {
 
-            if( b->manhattanDistance( *c ) > ( 5 * Block::size ) ) {
+            if( c->interesting() && b->manhattanDistance( *c ) > ( 5 * Block::size ) ) {
                 int dx = ( c->x() - b->x() );
                 int dy = ( c->y() - b->y() );
 
@@ -182,7 +182,6 @@ void DCTSorter::findDuplicates() {
                 } else {
                     mShifts[ shift ].push_back( std::make_pair(*b,*c) );
                 }
-
             }
 
             ++c;
@@ -211,7 +210,7 @@ void DCTSorter::sortShifts() {
     mShiftHits.reserve( mShifts.size() );
 
     for( auto& count : mShifts ) {
-        ShiftHit hit( count.first, mImageSize );
+        ShiftHit hit( count.first, mImageSize, mMinHits );
         hit.setBlocks( count.second );
         if( hit.looksGood() ) {
             mShiftHits.push_back( hit );
@@ -219,13 +218,6 @@ void DCTSorter::sortShifts() {
     }
 
     std::sort( mShiftHits.rbegin(), mShiftHits.rend() );
-
-    // pop unused hits
-    size_t maxHits = std::min( mMaxHits, mShiftHits.size() );
-    while( mShiftHits.size() > maxHits ) {
-        mShiftHits.pop_back();
-    }
-
 
     // set ranking
     int position = 0;
@@ -250,5 +242,4 @@ void DCTSorter::sortShifts() {
             mResult.to.setBlock( white, pair.second.x(), pair.second.y() );
         }
     }
-
 }
