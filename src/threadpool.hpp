@@ -7,7 +7,6 @@
 #include <mutex>
 #include <condition_variable>
 
-#include "log/log.hpp"
 
 class ThreadPool {
     public:

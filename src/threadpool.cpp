@@ -17,11 +17,11 @@ ThreadPool::ThreadPool() {
         mWorkers.emplace_back( [this] {
             for( ;; ) {
 
-                if( !jobsAvailable() ) {
+                if( jobsAvailable() ) {
+                    this->workOff();
+                } else {
                     this->standInLine();
                 }
-
-                this->workOff();
 
                 if( !( mRunning.load() || mJobCount.load() ) ) {
                     break;
@@ -61,7 +61,7 @@ void ThreadPool::workOff() {
 
 void ThreadPool::standInLine() {
     std::unique_lock<std::mutex> lock( mWaitingMutex );
-    mWaitingCondition.wait( lock );
+    mWaitingCondition.wait_for( lock, std::chrono::milliseconds( 100 ) );
 }
 
 bool ThreadPool::jobsAvailable() {
