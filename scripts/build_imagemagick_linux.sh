@@ -57,7 +57,7 @@ function doConfigure {
             --without-fpx \
             --without-lqr \
             --without-jbig \
-            --without-jp2 \
+            --without-openjp2 \
             --without-openexr \
             --without-pango \
             --without-rsvg \
@@ -66,6 +66,8 @@ function doConfigure {
             --without-windows-font-dir \
             --without-gs-font-dir \
             --without-x \
+            --without-wmf \
+            --without-gvc \
             --disable-openmp
 }
 
@@ -76,7 +78,7 @@ function doBuild {
 
     # release
     make clean
-    CXXFLAGS="-msse2 -O3" make -j8 install prefix="$BUILD_DIR/release"
+    CXXFLAGS="-msse2 -Ofast -finline -ffast-math -funsafe-math-optimizations" make -j8 install prefix="$BUILD_DIR/release"
 }
 
 function doCopy {
