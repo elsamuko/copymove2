@@ -2,7 +2,7 @@
 
 OS=linux
 PROJECT=imagemagick
-VERSION="6.8.9-8"
+VERSION="6.9.1-6"
 DL_URL="http://mirror.checkdomain.de/imagemagick/releases/ImageMagick-$VERSION.zip"
 
 SCRIPT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
