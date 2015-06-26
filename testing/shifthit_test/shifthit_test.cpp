@@ -46,7 +46,7 @@ void ShiftHit_test::paint(const std::list<PointF> &points, const std::string &fi
 
 void ShiftHit_test::testMinus() {
     Shift shift( 1, 1 );
-    ShiftHit hit(shift);
+    ShiftHit hit(shift, PointI(400,600), 10 );
     QVERIFY( true );
 }
 
