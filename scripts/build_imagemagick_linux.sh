@@ -45,10 +45,9 @@ function doUnzip {
 }
 
 function doConfigure {
-    cd "$SRC_DIR/$PROJECT-$VERSION"
     ./configure \
             --prefix="$BUILD_DIR" \
-            --enable-shared=yes \
+            --enable-shared=no \
             --enable-static=yes \
             --with-quantum-depth=16 \
             --without-fftw \
@@ -68,25 +67,32 @@ function doConfigure {
             --without-x \
             --without-wmf \
             --without-gvc \
-            --disable-openmp
+            --disable-openmp \
+            --disable-docs
 }
 
 function doBuild {
+    cd "$SRC_DIR/$PROJECT-$VERSION"
+
     # debug
-    make clean
-    CXXFLAGS="-g -O0" make -j8 install prefix="$BUILD_DIR/debug"
+    (export CXXFLAGS="$CXXFLAGS -g -O0"; \
+    export CFLAGS="$CFLAGS -g -O0"; \
+    doConfigure)
+    make -j8 install prefix="$BUILD_DIR/debug"
 
     # release
-    make clean
-    CXXFLAGS="-msse2 -Ofast -finline -ffast-math -funsafe-math-optimizations" make -j8 install prefix="$BUILD_DIR/release"
+    (export CXXFLAGS="$CXXFLAGS -msse2 -Ofast -finline -ffast-math -funsafe-math-optimizations"; \
+    export CFLAGS="$CFLAGS -msse2 -Ofast -finline -ffast-math -funsafe-math-optimizations"; \
+    doConfigure)
+    make -j8 install prefix="$BUILD_DIR/release"
 }
 
 function doCopy {
-    mkdir -p "$TARGET_DIR/bin/linux/debug"
-    mkdir -p "$TARGET_DIR/bin/linux/release"
+    mkdir -p "$TARGET_DIR/bin/$OS/debug"
+    mkdir -p "$TARGET_DIR/bin/$OS/release"
     mkdir -p "$TARGET_DIR/include"
-    cp -r "$BUILD_DIR/debug/lib"/* "$TARGET_DIR/bin/linux/debug"
-    cp -r "$BUILD_DIR/release/lib"/* "$TARGET_DIR/bin/linux/release"
+    cp -r "$BUILD_DIR/debug/lib"/* "$TARGET_DIR/bin/$OS/debug"
+    cp -r "$BUILD_DIR/release/lib"/* "$TARGET_DIR/bin/$OS/release"
     cp -r "$BUILD_DIR/include/ImageMagick-6"/* "$TARGET_DIR/include"
 }
 
@@ -94,6 +100,5 @@ function doCopy {
 doPrepare
 doDownload
 doUnzip
-doConfigure
 doBuild
 doCopy
