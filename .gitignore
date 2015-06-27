@@ -1,10 +1,13 @@
 
 *
 
+!.gitignore
+
 !*/
 
 !*.cpp
 !*.hpp
+!*.ui
 
 !*.pro
 !*.pri
