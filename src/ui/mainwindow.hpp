@@ -4,6 +4,7 @@
 #include <QImage>
 
 #include "greyimage.hpp"
+#include "ui/filedealer.hpp"
 
 class SorterConnection;
 
@@ -21,10 +22,16 @@ class MainWindow : public QMainWindow {
     private slots:
         void on_actionExit_triggered();
         void on_actionOpen_triggered();
+        void slotOpenImage( QString filename );
 
     private:
+        void setupRecentImagesMenu();
+
         Ui::MainWindow* ui;
 
         QImage mImage;
         SorterConnection* mConnection;
+
+        /* io helper class */
+        FileDealer mFileDealer;
 };
