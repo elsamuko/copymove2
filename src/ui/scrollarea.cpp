@@ -18,15 +18,30 @@ ScrollArea::ScrollArea( QWidget* parent ) :
     this->setWidgetResizable( true );
 }
 
+void ScrollArea::autoZoom() {
+
+    if( mImage.isNull() ) {
+        return;
+    }
+
+    float scaledW   = this->size().width();
+    float originalW = mImage.size().width();
+
+    float scaledH   = this->size().height();
+    float originalH = mImage.size().height();
+
+    mZoom = std::min( scaledW / originalW, scaledH / originalH ) * 0.97;
+    this->zoom();
+}
+
 void ScrollArea::setImage( const QImage image ) {
-    mLabel->setPixmap( QPixmap::fromImage( image ) );
+    Q_ASSERT( !image.isNull() );
+
+    mImage = image;
+    mLabel->setPixmap( QPixmap::fromImage( mImage ) );
     mLabel->adjustSize();
 
-    float scaled   = this->size().width() - 5;
-    float original = image.size().width();
-
-    mZoom = scaled / original;
-    this->zoom();
+    autoZoom();
 }
 
 void ScrollArea::wheelEvent( QWheelEvent* event ) {
@@ -43,6 +58,10 @@ void ScrollArea::wheelEvent( QWheelEvent* event ) {
         mZoom += mZoom * delta / 25.f;
         this->zoom();
     }
+}
+
+void ScrollArea::mouseDoubleClickEvent( QMouseEvent* ) {
+    this->autoZoom();
 }
 
 void ScrollArea::zoom() {
