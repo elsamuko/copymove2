@@ -17,6 +17,7 @@ MainWindow::MainWindow( QWidget* parent ) :
 
     connect( ui->widgetControl, &ControlWidget::signalRun, mConnection, &SorterConnection::slotRun, Qt::UniqueConnection );
     connect( mConnection, &SorterConnection::signalDone, ui->widgetControl, &ControlWidget::slotResults, Qt::UniqueConnection );
+    connect( ui->widgetControl, &ControlWidget::signalHit, ui->scrollArea, &ScrollArea::slotDrawOverlay, Qt::UniqueConnection );
 
     // center app
     // \sa https://wiki.qt.io/Center_a_Window_on_the_Screen
