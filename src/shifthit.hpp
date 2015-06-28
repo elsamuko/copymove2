@@ -8,6 +8,7 @@
 
 class ShiftHit {
     public:
+        explicit ShiftHit() {}
         explicit ShiftHit( Shift shift, PointI size, size_t minHits );
         ~ShiftHit();
         bool operator <( const ShiftHit& b ) const;
@@ -35,6 +36,9 @@ class ShiftHit {
         }
         size_t hits() const {
             return mHits.size();
+        }
+        PointI imageSize() const {
+            return mImageSize;
         }
         int dx() const {
             return mShift.dx();

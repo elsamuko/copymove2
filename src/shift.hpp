@@ -8,7 +8,7 @@
 
 class Shift {
     public:
-        Shift( int dx, int dy );
+        Shift( int dx = 0, int dy = 0 );
         bool operator <( const Shift& b ) const;
         bool operator >( const Shift& b ) const;
 

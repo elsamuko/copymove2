@@ -18,6 +18,7 @@ class ControlWidget : public QWidget {
 
     signals:
         void signalRun( SorterParams params );
+        void signalHit( QImage image );
 
     public slots:
         void slotResults( std::vector<ShiftHit>::const_iterator begin, std::vector<ShiftHit>::const_iterator end );
