@@ -29,7 +29,7 @@ class DCTSorter {
         GreyImage mGrey;
         ShiftImages mResult;
         std::vector<Block> mBlocks;
-        std::map<Shift, std::list<std::pair<Block, Block>>> mShifts;
+        std::map<Shift, std::list<std::pair<PointI, PointI>>> mShifts;
         std::vector<ShiftHit> mShiftHits;
 
         PointI mImageSize;

@@ -12,8 +12,8 @@ class ShiftHit {
         ~ShiftHit();
         bool operator <( const ShiftHit& b ) const;
         bool operator >( const Shift& b ) const;
-        void setBlocks( const std::list<std::pair<Block, Block>>& blocks );
-        std::list<std::pair<Block, Block>>& getBlocks();
+        void setBlocks( const std::list<std::pair<PointI, PointI> >& blocks );
+        std::list<std::pair<PointI, PointI> >& getBlocks();
         bool looksGood() const;
 
         friend std::ostream& operator <<( std::ostream& stream, const ShiftHit& b );
@@ -32,6 +32,9 @@ class ShiftHit {
         int distance() const {
             assert( mMeanCalculated );
             return mGeometricAverageDistance;
+        }
+        size_t hits() const {
+            return mHits.size();
         }
         int dx() const {
             return mShift.dx();
@@ -56,7 +59,7 @@ class ShiftHit {
 
         Shift mShift;
         PointI mImageSize;
-        std::list<std::pair<Block, Block>> mBlocks;
+        std::list<std::pair<PointI, PointI>> mHits; // from -> to
         size_t mMinHits;
 
         // state checks

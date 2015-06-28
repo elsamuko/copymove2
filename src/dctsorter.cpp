@@ -181,9 +181,9 @@ void DCTSorter::findDuplicates() {
 
                 // if already exists as negative shift
                 if( mShifts.find( -shift ) != mShifts.end() ) {
-                    mShifts[ -shift ].push_back( std::make_pair( *c, *b ) );
+                    mShifts[ -shift ].push_back( std::make_pair( c->pos(), b->pos() ) );
                 } else {
-                    mShifts[ shift ].push_back( std::make_pair( *b, *c ) );
+                    mShifts[ shift ].push_back( std::make_pair( b->pos(), c->pos() ) );
                 }
             }
 
@@ -242,9 +242,9 @@ void DCTSorter::sortShifts() {
         Block white( 255 * ( size - i ) / size );
         ShiftHit& hit = mShiftHits[i];
         LOG( "Found " + hit.toString() );
-        std::list<std::pair<Block, Block>>& pairs = hit.getBlocks();
+        std::list<std::pair<PointI, PointI>>& pairs = hit.getBlocks();
 
-        for( std::pair<Block, Block>& pair : pairs ) {
+        for( std::pair<PointI, PointI>& pair : pairs ) {
             mResult.from.setBlock( white, pair.first.x(), pair.first.y() );
             mResult.to.setBlock( white, pair.second.x(), pair.second.y() );
         }
