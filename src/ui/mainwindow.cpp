@@ -3,6 +3,7 @@
 
 #include <QFileDialog>
 #include <QStandardPaths>
+#include <QDesktopWidget>
 
 #include "sorterconnection.hpp"
 
@@ -13,6 +14,11 @@ MainWindow::MainWindow( QWidget* parent ) :
     ui->setupUi( this );
 
     connect( ui->widgetControl, &ControlWidget::signalRun, mConnection, &SorterConnection::slotRun, Qt::UniqueConnection );
+    connect( mConnection, &SorterConnection::signalDone, ui->widgetControl, &ControlWidget::slotResults, Qt::UniqueConnection );
+
+    // center app
+    // \sa https://wiki.qt.io/Center_a_Window_on_the_Screen
+    this->setGeometry( QStyle::alignedRect( Qt::LeftToRight, Qt::AlignCenter, this->size(), qApp->desktop()->availableGeometry() ) );
 }
 
 MainWindow::~MainWindow() {

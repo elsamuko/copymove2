@@ -13,6 +13,7 @@ class SorterConnection : public QObject {
         void setImage( QImage image );
 
     signals:
+        void signalDone( std::vector<ShiftHit>::const_iterator begin, std::vector<ShiftHit>::const_iterator end );
 
     public slots:
         void slotRun( SorterParams params );
@@ -22,4 +23,5 @@ class SorterConnection : public QObject {
 
         QImage mImage;
         DCTSorter mSorter;
+        std::vector<ShiftHit> mShiftHits;
 };
