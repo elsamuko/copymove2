@@ -2,6 +2,7 @@
 
 #include <QWheelEvent>
 #include <QLabel>
+#include <QPainter>
 
 #include "log/log.hpp"
 
@@ -37,11 +38,26 @@ void ScrollArea::autoZoom() {
 void ScrollArea::setImage( const QImage image ) {
     Q_ASSERT( !image.isNull() );
 
+    if( image.format() != QImage::Format_ARGB32_Premultiplied ) {
+        image.convertToFormat( QImage::Format_ARGB32_Premultiplied );
+    }
+
     mImage = image;
     mLabel->setPixmap( QPixmap::fromImage( mImage ) );
     mLabel->adjustSize();
 
     autoZoom();
+}
+
+void ScrollArea::slotDrawOverlay( QImage overlay ) {
+    Q_ASSERT( overlay.format() == QImage::Format_ARGB32_Premultiplied );
+    Q_ASSERT( overlay.size() == mImage.size() );
+
+    QPixmap pixmap = QPixmap::fromImage( mImage );
+    QPainter painter( &pixmap );
+    painter.setCompositionMode( QPainter::CompositionMode_Overlay );
+    painter.drawImage( 0, 0, overlay );
+    mLabel->setPixmap( pixmap );
 }
 
 void ScrollArea::wheelEvent( QWheelEvent* event ) {

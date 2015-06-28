@@ -13,6 +13,7 @@ class ScrollArea : public QScrollArea {
     signals:
 
     public slots:
+        void slotDrawOverlay( QImage overlay );
 
     protected:
         virtual void wheelEvent( QWheelEvent* event );
