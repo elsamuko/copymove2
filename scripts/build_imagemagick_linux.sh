@@ -45,6 +45,7 @@ function doUnzip {
 }
 
 function doConfigure {
+    ./configure --help > "$PROJECT_DIR/options.txt"
     ./configure \
             --prefix="$BUILD_DIR" \
             --enable-shared=no \
