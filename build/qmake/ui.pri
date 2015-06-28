@@ -16,3 +16,5 @@ HEADERS += $${SRC_DIR}/ui/scrollarea.hpp
 SOURCES += $${SRC_DIR}/ui/sorterconnection.cpp
 HEADERS += $${SRC_DIR}/ui/sorterconnection.hpp
 
+SOURCES += $${SRC_DIR}/ui/filedealer.cpp
+HEADERS += $${SRC_DIR}/ui/filedealer.hpp
