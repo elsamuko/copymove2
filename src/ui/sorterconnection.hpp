@@ -10,6 +10,7 @@ class SorterConnection : public QObject {
         Q_OBJECT
     public:
         explicit SorterConnection( QObject* parent = 0 );
+        void setImage( QImage image );
 
     signals:
 

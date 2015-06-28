@@ -17,7 +17,7 @@ class DCTSorter {
             GreyImage from;
             GreyImage to;
         };
-        DCTSorter( size_t minHits );
+        DCTSorter( size_t minHits = 10 );
         void setGrey( const GreyImage& grey );
         GreyImage getGrey() const;
         DCTSorter::ShiftImages getShiftImages() const;

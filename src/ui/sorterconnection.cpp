@@ -4,6 +4,12 @@ SorterConnection::SorterConnection( QObject* parent ) :
     QObject( parent ) {
 }
 
+void SorterConnection::setImage(QImage image) {
+    mImage = image;
+    GreyImage grey = this->getGrey();
+    mSorter.setGrey( grey );
+}
+
 void SorterConnection::slotRun( SorterParams params ) {
     LOG( "Run requested" );
     mSorter.work();

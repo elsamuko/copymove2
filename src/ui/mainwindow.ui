@@ -28,45 +28,19 @@
         <set>Qt::AlignCenter</set>
        </property>
       </widget>
-      <widget class="QTabWidget" name="tabWidget">
+      <widget class="ControlWidget" name="widgetControl" native="true">
        <property name="minimumSize">
         <size>
-         <width>200</width>
+         <width>300</width>
          <height>0</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
-         <width>400</width>
+         <width>500</width>
          <height>16777215</height>
         </size>
        </property>
-       <property name="currentIndex">
-        <number>0</number>
-       </property>
-       <widget class="QWidget" name="tab">
-        <attribute name="title">
-         <string>Analysis</string>
-        </attribute>
-       </widget>
-       <widget class="QWidget" name="tabHits">
-        <attribute name="title">
-         <string>Hits</string>
-        </attribute>
-        <layout class="QGridLayout" name="gridLayout_2">
-         <item row="0" column="0">
-          <widget class="QComboBox" name="comboHits"/>
-         </item>
-         <item row="1" column="0">
-          <widget class="QTextBrowser" name="textHit"/>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QWidget" name="tabBlocks">
-        <attribute name="title">
-         <string>Blocks</string>
-        </attribute>
-       </widget>
       </widget>
      </widget>
     </item>
@@ -115,6 +89,12 @@
    <class>ScrollArea</class>
    <extends>QScrollArea</extends>
    <header>ui/scrollarea.hpp</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ControlWidget</class>
+   <extends>QWidget</extends>
+   <header>ui/controlwidget.hpp</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

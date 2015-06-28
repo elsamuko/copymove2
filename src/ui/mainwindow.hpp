@@ -3,6 +3,10 @@
 #include <QMainWindow>
 #include <QImage>
 
+#include "greyimage.hpp"
+
+class SorterConnection;
+
 namespace Ui {
     class MainWindow;
 }
@@ -22,4 +26,5 @@ class MainWindow : public QMainWindow {
         Ui::MainWindow* ui;
 
         QImage mImage;
+        SorterConnection* mConnection;
 };
