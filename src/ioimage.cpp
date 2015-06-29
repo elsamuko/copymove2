@@ -1,10 +1,10 @@
-#include "ioimage.hpp"
 
 #include <sstream>
-#include <fstream>
 #include <iostream>
 
-#include <log/log.hpp>
+#include "ioimage.hpp"
+#include "log/log.hpp"
+#include "fileutils.hpp"
 
 bool IOImage::initialized = false;
 
@@ -67,12 +67,6 @@ bool IOImage::isNull() const {
 //! \return true, if depth is 16 bit
 bool IOImage::is16Bit() const {
     return mImage.depth() == 16;
-}
-
-bool IOImage::fileExists( const std::string& filename ) const {
-    std::ifstream file( filename.c_str() );
-    return file.is_open();
-    // destructor closes file
 }
 
 GreyImage IOImage::getGrey() {
@@ -145,7 +139,7 @@ void IOImage::drawHit( ShiftHit& hit ) {
 //! \sa http://www.imagemagick.org/Magick++/Exception.html
 bool IOImage::load( const std::string filename ) {
 
-    if( fileExists( filename ) ) {
+    if( fileutils::fileExists( filename ) ) {
         try {
             mImage.read( filename );
         } catch( Magick::Exception& error ) {
@@ -182,7 +176,7 @@ bool IOImage::save( const std::string filename, int quality ) {
             LOG_ERROR( error.what() );
         }
 
-        if( fileExists( filename ) ) {
+        if( fileutils::fileExists( filename ) ) {
             return true;
         }
     } else {

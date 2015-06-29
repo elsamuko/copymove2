@@ -32,6 +32,4 @@ class IOImage {
     private:
         /* the wrapped image */
         Magick::Image mImage;
-
-        bool fileExists( const std::string& filename ) const;
 };

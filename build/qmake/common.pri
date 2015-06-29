@@ -18,3 +18,5 @@ HEADERS += $${SRC_DIR}/threadpool.hpp
 SOURCES += $${SRC_DIR}/sorterparams.cpp
 HEADERS += $${SRC_DIR}/sorterparams.hpp
 HEADERS += $${SRC_DIR}/scopeguard.hpp
+SOURCES += $${SRC_DIR}/fileutils.cpp
+HEADERS += $${SRC_DIR}/fileutils.hpp
