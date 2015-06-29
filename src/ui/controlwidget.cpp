@@ -45,12 +45,12 @@ void ControlWidget::on_comboHits_currentIndexChanged( int ) {
 
     std::list<std::pair<PointI, PointI>>& pairs = hit.getBlocks();
 
-    QBrush green = QBrush( QColor( 0, 255, 0, 255 ) );
-    QBrush red   = QBrush( QColor( 255, 0, 0, 255 ) );
+    QBrush reddish = QBrush( QColor( 235, 141,  89, 255 ) );
+    QBrush bluish  = QBrush( QColor( 145, 191, 255, 255 ) );
 
     for( std::pair<PointI, PointI>& pair : pairs ) {
-        painter.fillRect( QRect( pair.first.x(), pair.first.y(), Block::size, Block::size ), red );
-        painter.fillRect( QRect( pair.second.x(), pair.second.y(), Block::size, Block::size ), green );
+        painter.fillRect( QRect( pair.first.x(), pair.first.y(), Block::size, Block::size ), bluish );
+        painter.fillRect( QRect( pair.second.x(), pair.second.y(), Block::size, Block::size ), reddish );
     }
 
     LOG( "Sending hit " + hit.toString() );

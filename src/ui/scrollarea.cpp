@@ -56,7 +56,8 @@ void ScrollArea::slotDrawOverlay( QImage overlay ) {
 
     QPixmap pixmap = QPixmap::fromImage( mImage );
     QPainter painter( &pixmap );
-    painter.setCompositionMode( QPainter::CompositionMode_Overlay );
+    painter.setOpacity( 0.5 );
+    painter.setCompositionMode( QPainter::CompositionMode_ColorDodge );
     painter.drawImage( 0, 0, overlay );
     mLabel->setPixmap( pixmap );
 }
