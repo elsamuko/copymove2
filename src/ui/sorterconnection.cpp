@@ -6,12 +6,12 @@ SorterConnection::SorterConnection( QObject* parent ) :
 
 void SorterConnection::setImage( QImage image ) {
     mImage = image;
-    GreyImage grey = this->getGrey();
-    mSorter.setGrey( grey );
 }
 
 void SorterConnection::slotRun( SorterParams params ) {
     LOG( "Run requested" );
+    GreyImage grey = this->getGrey();
+    mSorter.setGrey( grey );
     mSorter.work();
     mShiftHits = mSorter.getShiftHits();
 
