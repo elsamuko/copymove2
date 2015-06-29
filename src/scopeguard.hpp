@@ -9,7 +9,7 @@
 
 #define STATE_CHECK( A ) \
     ScopeGuard UNIQUE_NAME( [this] { \
-        if( !A ) { \
+        if( A ) { \
             LOG_ERROR( "Bad State!" ); \
         } \
         assert( !A ); \
