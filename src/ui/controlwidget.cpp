@@ -30,6 +30,7 @@ void ControlWidget::slotResults( std::vector<ShiftHit>::const_iterator begin, st
 void ControlWidget::on_pushButton_clicked() {
     SorterParams params;
     params.setMinimalHits( ui->spinBoxMinHits->value() );
+    params.setQuality( ui->spinBoxQuality->value() );
     emit signalRun( params );
 }
 
