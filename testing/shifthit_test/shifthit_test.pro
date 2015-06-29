@@ -32,5 +32,7 @@ SOURCES += $${SRC_DIR}/ooura/shrtdct.cpp
 HEADERS += $${SRC_DIR}/ooura/shrtdct.hpp
 SOURCES += $${SRC_DIR}/greyimage.cpp
 HEADERS += $${SRC_DIR}/greyimage.hpp
+SOURCES += $${SRC_DIR}/fileutils.cpp
+HEADERS += $${SRC_DIR}/fileutils.hpp
 
 SOURCES += shifthit_test.cpp
