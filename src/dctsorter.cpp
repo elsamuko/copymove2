@@ -7,9 +7,7 @@
 #include "log/log.hpp"
 #include "scopeguard.hpp"
 
-DCTSorter::DCTSorter( size_t minHits ) :
-    mMinHits( minHits ) {
-}
+DCTSorter::DCTSorter() {}
 
 void DCTSorter::reset() {
     mBlocks.clear();
@@ -54,6 +52,11 @@ std::vector<ShiftHit> DCTSorter::getShiftHits() const {
     assert( mDuplicatesSearched );
     assert( mShiftsSorted );
     return mShiftHits;
+}
+
+void DCTSorter::setParams( const SorterParams& params ) {
+    mParams = params;
+    assert( mParams.valid() );
 }
 
 void DCTSorter::work() {
@@ -250,7 +253,7 @@ void DCTSorter::sortShifts() {
     mShiftHits.reserve( mShifts.size() );
 
     for( auto & count : mShifts ) {
-        ShiftHit hit( count.first, mImageSize, mMinHits );
+        ShiftHit hit( count.first, mImageSize, mParams.minimalHits() );
         hit.setBlocks( count.second );
 
         if( hit.looksGood() ) {

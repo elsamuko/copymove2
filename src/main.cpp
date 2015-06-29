@@ -25,38 +25,29 @@ int main( int argc, char** argv ) {
     if( image.isNull() ) {
         LOG_WARNING( "Invalid image, exiting..." );
         return 1;
-    };
+    }
 
 
     // algorithm
-    DCTSorter sorter( params.minimalHits() );
-
+    DCTSorter sorter;
+    sorter.setParams( params );
     sorter.setGrey( image.getGrey() );
-
     sorter.work();
 
 
     // debug
     image.setGrey( sorter.getGrey() );
-
     image.save( "z_interesting.jpg" );
-
     DCTSorter::ShiftImages shifts = sorter.getShiftImages();
-
     image.setGrey( shifts.from );
-
     image.save( "y_from.png" );
-
     image.setGrey( shifts.to );
-
     image.save( "y_to.png" );
 
 
     // result
     image.load( params.filename() );
-
     std::vector<ShiftHit> shiftHits = sorter.getShiftHits();
-
     std::reverse( shiftHits.begin(), shiftHits.end() );
 
     for( ShiftHit & hit : shiftHits ) {

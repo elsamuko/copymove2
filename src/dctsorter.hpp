@@ -10,6 +10,7 @@
 #include "offset.hpp"
 #include "threadpool.hpp"
 #include "shifthit.hpp"
+#include "sorterparams.hpp"
 
 class DCTSorter {
     public:
@@ -17,11 +18,12 @@ class DCTSorter {
             GreyImage from;
             GreyImage to;
         };
-        DCTSorter( size_t minHits = 10 );
+        DCTSorter();
         void setGrey( const GreyImage& grey );
         GreyImage getGrey() const;
         DCTSorter::ShiftImages getShiftImages() const;
         std::vector<ShiftHit> getShiftHits() const;
+        void setParams( const SorterParams& params );
         void work();
 
     private:
@@ -33,8 +35,7 @@ class DCTSorter {
         std::vector<ShiftHit> mShiftHits;
 
         PointI mImageSize;
-
-        size_t mMinHits;
+        SorterParams mParams;
 
         // state checks
         bool mGreyReceived;

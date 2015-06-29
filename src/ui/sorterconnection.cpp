@@ -12,6 +12,7 @@ void SorterConnection::slotRun( SorterParams params ) {
     LOG( "Run requested" );
     GreyImage grey = this->getGrey();
     mSorter.setGrey( grey );
+    mSorter.setParams( params );
     mSorter.work();
     mShiftHits = mSorter.getShiftHits();
 

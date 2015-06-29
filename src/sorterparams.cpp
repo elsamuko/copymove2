@@ -1,4 +1,5 @@
 #include "sorterparams.hpp"
 
-SorterParams::SorterParams() {
+SorterParams::SorterParams() :
+    mMinimalHits( 10 ) {
 }
