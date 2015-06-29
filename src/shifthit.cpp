@@ -1,7 +1,8 @@
-#include "shifthit.hpp"
 #include <sstream>
 #include <iomanip>
 #include <cfloat>
+
+#include "shifthit.hpp"
 
 ShiftHit::ShiftHit( Shift shift, PointI size , size_t minHits ) :
     mShift( shift ),
