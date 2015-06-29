@@ -15,12 +15,16 @@ SorterParams cliparser::parseCLI( int argc, char** argv ) {
         cmd.add( filename );
 
         TCLAP::ValueArg<size_t> minimalHits( "m", "min", "Minimum of blocks needed to count as hit", false, 10, "number" );
-        // TCLAP::ValueArg<int>    minimalHits( "m", "min", "Minimum of blocks needed to count as hit", false, 10, "int");
         cmd.add( minimalHits );
+
+        TCLAP::ValueArg<size_t> quality( "q", "quality", "Quality, the higher, the more similar two blocks have to be (1-10)", false, 5, "number" );
+        cmd.add( quality );
 
         cmd.parse( argc, argv );
 
         params.setFilename( filename.getValue() );
+        params.setMinimalHits( minimalHits.getValue() );
+        params.setQuality( quality.getValue() );
         params.setValid( true );
 
     } catch( TCLAP::ArgException& e ) {

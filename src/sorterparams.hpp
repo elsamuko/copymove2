@@ -21,6 +21,13 @@ class SorterParams {
             mMinimalHits = hits;
         }
 
+        size_t quality() const {
+            return mQuality;
+        }
+        void setQuality( const size_t quality ) {
+            mQuality = quality;
+        }
+
         std::string filename() const {
             return mFilename;
         }
@@ -31,5 +38,6 @@ class SorterParams {
     private:
         bool mValidParams;
         size_t mMinimalHits;
+        size_t mQuality;
         std::string mFilename;
 };

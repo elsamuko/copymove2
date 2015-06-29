@@ -93,6 +93,7 @@ void DCTSorter::readGreyToBlocks() {
             mThreadPool.add( [this, current, x, y] {
                 mBlocks[current].setX( x );
                 mBlocks[current].setY( y );
+                mBlocks[current].setQuality( mParams.quality() );
                 mGrey.getBlock( mBlocks[current], x, y );
                 mBlocks[current].calculateStandardDeviation();
             } );

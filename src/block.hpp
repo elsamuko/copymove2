@@ -33,6 +33,9 @@ class Block {
         int y() const;
         PointI pos() const;
         void setPos( const PointI& pos );
+        void setQuality( const size_t quality ) {
+            mQuality = 0.9 + float( quality ) / 100.f;
+        }
 
         int frequency( size_t position ) const;
 
