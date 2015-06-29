@@ -9,6 +9,12 @@ void SorterConnection::setImage( QImage image ) {
 }
 
 void SorterConnection::slotRun( SorterParams params ) {
+
+    if( mImage.isNull() ) {
+        LOG( "No image" );
+        return;
+    }
+
     LOG( "Run requested" );
     GreyImage grey = this->getGrey();
     mSorter.setGrey( grey );
