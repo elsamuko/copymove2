@@ -21,4 +21,7 @@ include( $${PRI_DIR}/common.pri )
 mac:   include( $${PRI_DIR}/mac.pri )
 linux: include( $${PRI_DIR}/linux.pri )
 
+include( $${PRI_DIR}/tclap.pri )
+HEADERS += $${SRC_DIR}/cliparser.hpp
+SOURCES += $${SRC_DIR}/cliparser.cpp
 SOURCES += $${SRC_DIR}/main.cpp
