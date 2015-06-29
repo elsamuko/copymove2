@@ -34,16 +34,22 @@ class DCTSorter {
 
         PointI mImageSize;
 
-        std::vector<Block> mOriginals;
-        std::vector<Block> mCopies;
-
         size_t mMinHits;
+
+        // state checks
+        bool mGreyReceived;
+        bool mWorked;
+        bool mBlocksSet;
+        bool mDCTCalculated;
+        bool mBlocksSorted;
+        bool mDuplicatesSearched;
+        bool mShiftsSorted;
 
         void readGreyToBlocks();
         void dctBlocks();
         void sortBlocks();
         void sortShifts();
-        void findDuplicates();
-
+        void searchDuplicates();
         void debugBlocks();
+        void reset();
 };

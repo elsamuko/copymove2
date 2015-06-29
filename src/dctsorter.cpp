@@ -1,16 +1,36 @@
 #include <algorithm>
 #include <utility>
+#include <sstream>
+#include <fstream>
 
 #include "dctsorter.hpp"
 #include "log/log.hpp"
-#include <sstream>
-#include <fstream>
+#include "scopeguard.hpp"
 
 DCTSorter::DCTSorter( size_t minHits ) :
     mMinHits( minHits ) {
 }
 
+void DCTSorter::reset() {
+    mBlocks.clear();
+    mShifts.clear();
+    mShiftHits.clear();
+
+    mGreyReceived       = false;
+    mWorked             = false;
+    mBlocksSet          = false;
+    mDCTCalculated      = false;
+    mBlocksSorted       = false;
+    mDuplicatesSearched = false;
+    mShiftsSorted       = false;
+}
+
 void DCTSorter::setGrey( const GreyImage& grey ) {
+    this->reset();
+
+    LOG( "Set grey..." );
+    STATE_CHECK( mGreyReceived );
+
     mGrey = grey;
     mResult.from = GreyImage( grey.width(), grey.height() );
     mResult.to   = GreyImage( grey.width(), grey.height() );
@@ -26,10 +46,20 @@ DCTSorter::ShiftImages DCTSorter::getShiftImages() const {
 }
 
 std::vector<ShiftHit> DCTSorter::getShiftHits() const {
+    assert( mGreyReceived );
+    assert( mWorked );
+    assert( mBlocksSet );
+    assert( mDCTCalculated );
+    assert( mBlocksSorted );
+    assert( mDuplicatesSearched );
+    assert( mShiftsSorted );
     return mShiftHits;
 }
 
 void DCTSorter::work() {
+    LOG( "Do work..." );
+    STATE_CHECK( mWorked );
+
     readGreyToBlocks();
     // for( Block& b : mBlocks ) { LOG( b.toString() ); }
     dctBlocks();
@@ -37,12 +67,13 @@ void DCTSorter::work() {
     // for( Block& b : mBlocks ) { LOG( b.toString() ); }
     sortBlocks();
     // for( Block& b : mBlocks ) { LOG( b.toString() ); }
-    findDuplicates();
+    searchDuplicates();
     sortShifts();
 }
 
 void DCTSorter::readGreyToBlocks() {
     LOG( "Read image..." );
+    STATE_CHECK( mBlocksSet );
 
     const size_t width = mGrey.width();
     const size_t height = mGrey.height();
@@ -75,6 +106,7 @@ void DCTSorter::readGreyToBlocks() {
 
 void DCTSorter::dctBlocks() {
     LOG( "DCT..." );
+    STATE_CHECK( mDCTCalculated );
 
     size_t blocks  = mBlocks.size();
     size_t threads = mThreadPool.size();
@@ -148,12 +180,15 @@ void DCTSorter::dctBlocks() {
 //}
 
 void DCTSorter::sortBlocks() {
-    LOG( "Sorting..." );
+    LOG( "Sorting blocks..." );
+    STATE_CHECK( mBlocksSorted );
+
     std::sort( mBlocks.begin(), mBlocks.end() );
 }
 
-void DCTSorter::findDuplicates() {
-    LOG( "Collecting shifts..." );
+void DCTSorter::searchDuplicates() {
+    LOG( "Searching duplicates..." );
+    STATE_CHECK( mDuplicatesSearched );
 
     std::vector<Block>::iterator b = mBlocks.begin();
     std::vector<Block>::iterator c = b;
@@ -210,6 +245,7 @@ void DCTSorter::debugBlocks() {
 
 void DCTSorter::sortShifts() {
     LOG( "Sorting shifts..." );
+    STATE_CHECK( mShiftsSorted );
 
     mShiftHits.reserve( mShifts.size() );
 
