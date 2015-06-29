@@ -39,10 +39,11 @@ void ScrollArea::setImage( const QImage image ) {
     Q_ASSERT( !image.isNull() );
 
     if( image.format() != QImage::Format_ARGB32_Premultiplied ) {
-        image.convertToFormat( QImage::Format_ARGB32_Premultiplied );
+        mImage = image.convertToFormat( QImage::Format_ARGB32_Premultiplied );
+    } else {
+        mImage = image;
     }
 
-    mImage = image;
     mLabel->setPixmap( QPixmap::fromImage( mImage ) );
     mLabel->adjustSize();
 
