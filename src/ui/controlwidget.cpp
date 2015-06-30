@@ -12,6 +12,7 @@ ControlWidget::ControlWidget( QWidget* parent ) :
 
     ui->buttonRun->show();
     ui->progressBar->hide();
+    ui->progressBar->reset();
 }
 
 ControlWidget::~ControlWidget() {
@@ -22,6 +23,7 @@ void ControlWidget::slotResults( std::vector<ShiftHit>::const_iterator begin, st
 
     ui->buttonRun->show();
     ui->progressBar->hide();
+    ui->progressBar->reset();
 
     ui->comboHits->clear();
 
@@ -31,6 +33,15 @@ void ControlWidget::slotResults( std::vector<ShiftHit>::const_iterator begin, st
         data.setValue<ShiftHit>( *it );
         ui->comboHits->addItem( ranking, data );
     }
+}
+
+void ControlWidget::slotProgress( size_t progress ) {
+    ui->progressBar->setValue( progress );
+}
+
+void ControlWidget::slotReset() {
+    ui->buttonRun->show();
+    ui->progressBar->hide();
 }
 
 void ControlWidget::on_comboHits_currentIndexChanged( int ) {

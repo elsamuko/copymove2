@@ -22,6 +22,8 @@ class ControlWidget : public QWidget {
 
     public slots:
         void slotResults( std::vector<ShiftHit>::const_iterator begin, std::vector<ShiftHit>::const_iterator end );
+        void slotProgress( size_t progress );
+        void slotReset();
 
     private slots:
         void on_buttonRun_clicked();

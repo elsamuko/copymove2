@@ -1,10 +1,13 @@
 #pragma once
 
+#include <QFuture>
 #include <QObject>
 #include <QImage>
 
 #include "dctsorter.hpp"
 #include "sorterparams.hpp"
+
+Q_DECLARE_METATYPE( std::vector<ShiftHit>::const_iterator )
 
 class SorterConnection : public QObject {
         Q_OBJECT
@@ -14,6 +17,8 @@ class SorterConnection : public QObject {
 
     signals:
         void signalDone( std::vector<ShiftHit>::const_iterator begin, std::vector<ShiftHit>::const_iterator end );
+        void signalProgress( size_t );
+        void signalReset();
 
     public slots:
         void slotRun( SorterParams params );
@@ -24,4 +29,5 @@ class SorterConnection : public QObject {
         QImage mImage;
         DCTSorter mSorter;
         std::vector<ShiftHit> mShiftHits;
+        QFuture<void> mWhenFinished;
 };
