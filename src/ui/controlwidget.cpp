@@ -31,6 +31,7 @@ void ControlWidget::on_pushButton_clicked() {
     SorterParams params;
     params.setMinimalHits( ui->spinBoxMinHits->value() );
     params.setQuality( ui->spinBoxQuality->value() );
+    params.setValid( true );
     emit signalRun( params );
 }
 
