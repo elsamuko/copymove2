@@ -56,6 +56,7 @@ std::vector<ShiftHit> DCTSorter::getShiftHits() const {
 
 void DCTSorter::setParams( const SorterParams& params ) {
     mParams = params;
+    LOG( "Params: " + params.toString() );
     assert( mParams.valid() );
 }
 
