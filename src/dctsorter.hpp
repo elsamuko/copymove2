@@ -3,6 +3,7 @@
 #include <vector>
 #include <list>
 #include <map>
+#include <functional>
 
 #include "greyimage.hpp"
 #include "block.hpp"
@@ -25,6 +26,7 @@ class DCTSorter {
         std::vector<ShiftHit> getShiftHits() const;
         void setParams( const SorterParams& params );
         void work();
+        void setProgressCallback( const std::function<void( size_t )>& callback );
 
     private:
         ThreadPool mThreadPool;
@@ -46,6 +48,8 @@ class DCTSorter {
         bool mDuplicatesSearched;
         bool mShiftsSorted;
 
+        std::function<void( size_t )> mProgressCallback;
+
         void readGreyToBlocks();
         void dctBlocks();
         void sortBlocks();
@@ -53,4 +57,5 @@ class DCTSorter {
         void searchDuplicates();
         void debugBlocks();
         void reset();
+        void setProgress( size_t percentage );
 };

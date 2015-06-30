@@ -23,6 +23,12 @@ void DCTSorter::reset() {
     mShiftsSorted       = false;
 }
 
+void DCTSorter::setProgress( size_t percentage ) {
+    if( mProgressCallback ) {
+        mProgressCallback( percentage );
+    }
+}
+
 void DCTSorter::setGrey( const GreyImage& grey ) {
     this->reset();
 
@@ -64,15 +70,22 @@ void DCTSorter::work() {
     LOG( "Do work..." );
     STATE_CHECK( mWorked );
 
+    setProgress( 1 );
     readGreyToBlocks();
-    // for( Block& b : mBlocks ) { LOG( b.toString() ); }
+    setProgress( 20 );
     dctBlocks();
+    setProgress( 40 );
     // debugBlocks();
-    // for( Block& b : mBlocks ) { LOG( b.toString() ); }
     sortBlocks();
-    // for( Block& b : mBlocks ) { LOG( b.toString() ); }
+    setProgress( 60 );
     searchDuplicates();
+    setProgress( 80 );
     sortShifts();
+    setProgress( 99 );
+}
+
+void DCTSorter::setProgressCallback( const std::function<void( size_t )>& callback ) {
+    mProgressCallback = callback;
 }
 
 void DCTSorter::readGreyToBlocks() {
