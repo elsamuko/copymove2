@@ -9,6 +9,9 @@ ControlWidget::ControlWidget( QWidget* parent ) :
     QWidget( parent ),
     ui( new Ui::ControlWidget ) {
     ui->setupUi( this );
+
+    ui->buttonRun->show();
+    ui->progressBar->hide();
 }
 
 ControlWidget::~ControlWidget() {
@@ -16,6 +19,9 @@ ControlWidget::~ControlWidget() {
 }
 
 void ControlWidget::slotResults( std::vector<ShiftHit>::const_iterator begin, std::vector<ShiftHit>::const_iterator end ) {
+
+    ui->buttonRun->show();
+    ui->progressBar->hide();
 
     ui->comboHits->clear();
 
@@ -25,14 +31,6 @@ void ControlWidget::slotResults( std::vector<ShiftHit>::const_iterator begin, st
         data.setValue<ShiftHit>( *it );
         ui->comboHits->addItem( ranking, data );
     }
-}
-
-void ControlWidget::on_pushButton_clicked() {
-    SorterParams params;
-    params.setMinimalHits( ui->spinBoxMinHits->value() );
-    params.setQuality( ui->spinBoxQuality->value() );
-    params.setValid( true );
-    emit signalRun( params );
 }
 
 void ControlWidget::on_comboHits_currentIndexChanged( int ) {
@@ -57,4 +55,14 @@ void ControlWidget::on_comboHits_currentIndexChanged( int ) {
 
     LOG( "Sending hit " + hit.toString() );
     emit signalHit( image );
+}
+
+void ControlWidget::on_buttonRun_clicked() {
+    SorterParams params;
+    params.setMinimalHits( ui->spinBoxMinHits->value() );
+    params.setQuality( ui->spinBoxQuality->value() );
+    params.setValid( true );
+    ui->buttonRun->hide();
+    ui->progressBar->show();
+    emit signalRun( params );
 }

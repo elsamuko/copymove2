@@ -24,7 +24,7 @@ class ControlWidget : public QWidget {
         void slotResults( std::vector<ShiftHit>::const_iterator begin, std::vector<ShiftHit>::const_iterator end );
 
     private slots:
-        void on_pushButton_clicked();
+        void on_buttonRun_clicked();
         void on_comboHits_currentIndexChanged( int );
 
     private:
