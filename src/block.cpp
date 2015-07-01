@@ -6,6 +6,7 @@
 
 #include "ooura/shrtdct.hpp"
 #include "log/log.hpp"
+#include "scopeguard.hpp"
 
 Block::Block( float color , size_t quality ) {
     mTransformed = false;
@@ -62,16 +63,16 @@ void Block::assignFrequencies() {
 }
 
 void Block::dct() {
-    assert( !mTransformed );
-    mTransformed = true;
-    ooura::ddct<Block::size>( -1, mData );
+    STATE_CHECK( mTransformed );
 
+    ooura::ddct<Block::size>( -1, mData );
     assignFrequencies();
 }
 
 void Block::idct() {
     assert( mTransformed );
     mTransformed = false;
+
     ooura::ddct<Block::size>( 1, mData );
 }
 
@@ -178,11 +179,8 @@ void Block::setPos( const PointI& pos ) {
 }
 
 int Block::frequency( size_t position ) const {
-    if( !mTransformed ) {
-        LOG_ERROR( this->toString() );
-    }
-
     assert( mTransformed );
+
     assert( position < mFrequencies.size() );
     return mFrequencies[position];
 }
@@ -198,18 +196,16 @@ bool Block::transformed() const {
 }
 
 bool Block::interesting() const {
-    if( !mMeanCalculated ) {
-        LOG_ERROR( this->toString() );
-    }
-
     assert( mMeanCalculated );
+
     float tmp = std::max( 1.f, mMean * 0.1f );
     return mStandardDeviation > tmp;
 }
 
 void Block::calculateStandardDeviation() {
-    assert( !mMeanCalculated );
+    STATE_CHECK( mMeanCalculated );
     assert( mDataReceived );
+
     mMean = 0.f;
     mStandardDeviation = 0.f;
     float diff = 0.f;
@@ -231,6 +227,4 @@ void Block::calculateStandardDeviation() {
 
     mStandardDeviation /= ( float )( Block::size * Block::size );
     mStandardDeviation = std::sqrt( mStandardDeviation );
-
-    mMeanCalculated = true;
 }
