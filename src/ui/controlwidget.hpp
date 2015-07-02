@@ -30,8 +30,13 @@ class ControlWidget : public QWidget {
     private slots:
         void on_buttonRun_clicked();
         void on_comboHits_currentIndexChanged( int );
+        void on_spinBoxFirstX_valueChanged( int first );
+        void on_spinBoxFirstY_valueChanged( int first );
+        void on_spinBoxSecondX_valueChanged( int second );
+        void on_spinBoxSecondY_valueChanged( int second );
 
     private:
+        void updateBlockStats();
         Ui::ControlWidget* ui;
         QImage mImage;
 };
