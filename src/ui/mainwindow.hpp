@@ -29,7 +29,6 @@ class MainWindow : public QMainWindow {
 
         Ui::MainWindow* ui;
 
-        QImage mImage;
         SorterConnection* mConnection;
 
         /* io helper class */
