@@ -10,7 +10,7 @@
 
 class Block {
     public:
-        enum { size = 16, frequencies = 9 };
+        enum : int { size = 16, frequencies = 9 };
         explicit Block( float color = 0.f, size_t quality = 5 );
 
         void dct();
