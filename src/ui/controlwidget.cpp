@@ -19,6 +19,11 @@ ControlWidget::~ControlWidget() {
     delete ui;
 }
 
+void ControlWidget::setImage( QImage image ) {
+    mImage = image;
+    signalImage( image, true );
+}
+
 void ControlWidget::slotResults( std::vector<ShiftHit>::const_iterator begin, std::vector<ShiftHit>::const_iterator end ) {
 
     ui->buttonRun->show();
@@ -48,24 +53,34 @@ void ControlWidget::on_comboHits_currentIndexChanged( int ) {
     ShiftHit hit = ui->comboHits->currentData().value<ShiftHit>();
     ui->textHit->setText( QString::fromStdString( hit.toString() ) );
 
-    QImage image( hit.imageSize().x(), hit.imageSize().y(), QImage::Format_ARGB32_Premultiplied );
-    image.fill( 0 );
+    QImage copy  = mImage.scaled( mImage.size() );
+    QImage overlay( mImage.size(), QImage::Format_ARGB32_Premultiplied );
+    overlay.fill( 0 );
 
-    QPainter painter( &image );
-    // painter.setRenderHint( QPainter::Antialiasing, true );
+    {
+        QPainter painter( &overlay );
+        // painter.setRenderHint( QPainter::Antialiasing, true );
 
-    std::list<std::pair<PointI, PointI>>& pairs = hit.getBlocks();
+        std::list<std::pair<PointI, PointI>>& pairs = hit.getBlocks();
 
-    QBrush reddish = QBrush( QColor( 235, 141,  89, 255 ) );
-    QBrush bluish  = QBrush( QColor( 145, 191, 255, 255 ) );
+        QBrush reddish = QBrush( QColor( 235, 141,  89, 255 ) );
+        QBrush bluish  = QBrush( QColor( 145, 191, 255, 255 ) );
 
-    for( std::pair<PointI, PointI>& pair : pairs ) {
-        painter.fillRect( QRect( pair.first.x(), pair.first.y(), Block::size, Block::size ), bluish );
-        painter.fillRect( QRect( pair.second.x(), pair.second.y(), Block::size, Block::size ), reddish );
+        for( std::pair<PointI, PointI>& pair : pairs ) {
+            painter.fillRect( QRect( pair.first.x(), pair.first.y(), Block::size, Block::size ), bluish );
+            painter.fillRect( QRect( pair.second.x(), pair.second.y(), Block::size, Block::size ), reddish );
+        }
+    }
+
+    {
+        QPainter painter( &copy );
+        painter.setOpacity( 0.5 );
+        painter.setCompositionMode( QPainter::CompositionMode_ColorDodge );
+        painter.drawImage( 0, 0, overlay );
     }
 
     LOG( "Sending hit " + hit.toString() );
-    emit signalHit( image );
+    emit signalImage( copy, false );
 }
 
 void ControlWidget::on_buttonRun_clicked() {

@@ -21,45 +21,32 @@ ScrollArea::ScrollArea( QWidget* parent ) :
 
 void ScrollArea::autoZoom() {
 
-    if( mImage.isNull() ) {
+    if( mImageSize.isEmpty() ) {
         return;
     }
 
     float scaledW   = this->size().width();
-    float originalW = mImage.size().width();
+    float originalW = mImageSize.width();
 
     float scaledH   = this->size().height();
-    float originalH = mImage.size().height();
+    float originalH = mImageSize.height();
 
     mZoom = std::min( scaledW / originalW, scaledH / originalH ) * 0.97;
     this->zoom();
 }
 
-void ScrollArea::setImage( const QImage image ) {
-    Q_ASSERT( !image.isNull() );
+void ScrollArea::slotDrawImage( QImage image, bool fit ) {
+    Q_ASSERT( image.format() == QImage::Format_ARGB32_Premultiplied );
 
-    if( image.format() != QImage::Format_ARGB32_Premultiplied ) {
-        mImage = image.convertToFormat( QImage::Format_ARGB32_Premultiplied );
-    } else {
-        mImage = image;
-    }
+    mImageSize = image.size();
 
-    mLabel->setPixmap( QPixmap::fromImage( mImage ) );
-    mLabel->adjustSize();
-
-    autoZoom();
-}
-
-void ScrollArea::slotDrawOverlay( QImage overlay ) {
-    Q_ASSERT( overlay.format() == QImage::Format_ARGB32_Premultiplied );
-    Q_ASSERT( overlay.size() == mImage.size() );
-
-    QPixmap pixmap = QPixmap::fromImage( mImage );
-    QPainter painter( &pixmap );
-    painter.setOpacity( 0.5 );
-    painter.setCompositionMode( QPainter::CompositionMode_ColorDodge );
-    painter.drawImage( 0, 0, overlay );
+    QPixmap pixmap = QPixmap::fromImage( image );
     mLabel->setPixmap( pixmap );
+
+    if( fit ) {
+        mLabel->adjustSize();
+        autoZoom();
+    }
 }
 
 void ScrollArea::wheelEvent( QWheelEvent* event ) {

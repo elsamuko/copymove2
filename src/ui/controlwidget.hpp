@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QWidget>
+#include <QImage>
 
 #include "sorterparams.hpp"
 #include "shifthit.hpp"
@@ -15,10 +16,11 @@ class ControlWidget : public QWidget {
     public:
         explicit ControlWidget( QWidget* parent = 0 );
         ~ControlWidget();
+        void setImage( QImage image );
 
     signals:
         void signalRun( SorterParams params );
-        void signalHit( QImage image );
+        void signalImage( QImage image, bool fit );
 
     public slots:
         void slotResults( std::vector<ShiftHit>::const_iterator begin, std::vector<ShiftHit>::const_iterator end );
@@ -31,4 +33,5 @@ class ControlWidget : public QWidget {
 
     private:
         Ui::ControlWidget* ui;
+        QImage mImage;
 };

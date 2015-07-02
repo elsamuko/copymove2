@@ -8,12 +8,11 @@ class ScrollArea : public QScrollArea {
         Q_OBJECT
     public:
         explicit ScrollArea( QWidget* parent = 0 );
-        void setImage( const QImage image );
 
     signals:
 
     public slots:
-        void slotDrawOverlay( QImage overlay );
+        void slotDrawImage( QImage image , bool fit );
 
     protected:
         virtual void wheelEvent( QWheelEvent* event );
@@ -25,5 +24,5 @@ class ScrollArea : public QScrollArea {
 
         float mZoom;
         QLabel* mLabel;
-        QImage mImage;
+        QSize mImageSize;
 };
