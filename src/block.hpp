@@ -44,7 +44,7 @@ class Block {
         template<class T>
         static float cosineSimilarity( const T& a, const T& b, float normA, float normB );
 
-        template<int from = 0, int to = 4>
+        float cosineSimilarity( const Block& other );
         bool hasSimilarFreqs( const Block& other );
 
         bool transformed() const;
@@ -106,16 +106,6 @@ float Block::cosineSimilarity( const T& a, const T& b, float normA, float normB 
 
     float similarity = dotP / ( normA * normB );
     return similarity;
-}
-
-// TODO: replace with cosine similarity
-template<int from, int to>
-bool Block::hasSimilarFreqs( const Block& other ) {
-    assert( mTransformed );
-
-    float similarity = cosineSimilarity( this->mFrequencies, other.mFrequencies, this->mFrequencyNorm, other.mFrequencyNorm );
-    bool similar = similarity > mQuality;
-    return similar;
 }
 
 constexpr int power10( int digits ) {

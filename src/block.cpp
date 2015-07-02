@@ -191,6 +191,12 @@ int Block::manhattanDistance( const Block& that ) const {
     return dx + dy;
 }
 
+// debug function
+float Block::cosineSimilarity( const Block& other ) {
+    float similarity = Block::cosineSimilarity( this->mFrequencies, other.mFrequencies, this->mFrequencyNorm, other.mFrequencyNorm );
+    return similarity;
+}
+
 bool Block::transformed() const {
     return mTransformed;
 }
@@ -227,4 +233,13 @@ void Block::calculateStandardDeviation() {
 
     mStandardDeviation /= ( float )( Block::size * Block::size );
     mStandardDeviation = std::sqrt( mStandardDeviation );
+}
+
+
+bool Block::hasSimilarFreqs( const Block& other ) {
+    assert( mTransformed );
+
+    float similarity = cosineSimilarity( this->mFrequencies, other.mFrequencies, this->mFrequencyNorm, other.mFrequencyNorm );
+    bool similar = similarity > mQuality;
+    return similar;
 }
