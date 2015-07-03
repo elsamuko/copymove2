@@ -55,7 +55,6 @@ function doConfigure {
             --without-dps \
             --without-lqr \
             --without-fpx \
-            --without-lqr \
             --without-jbig \
             --without-openjp2 \
             --without-openexr \
