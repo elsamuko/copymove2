@@ -2,6 +2,7 @@
 
 #include <QWheelEvent>
 #include <QLabel>
+#include <QScrollBar>
 #include <QPainter>
 
 #include "log/log.hpp"
@@ -31,7 +32,7 @@ void ScrollArea::autoZoom() {
     float scaledH   = this->size().height();
     float originalH = mImageSize.height();
 
-    mZoom = std::min( scaledW / originalW, scaledH / originalH ) * 0.97;
+    mZoom = std::min( scaledW / originalW, scaledH / originalH ) * 0.99;
     this->zoom();
 }
 
@@ -67,6 +68,34 @@ void ScrollArea::wheelEvent( QWheelEvent* event ) {
 
 void ScrollArea::mouseDoubleClickEvent( QMouseEvent* ) {
     this->autoZoom();
+}
+
+void ScrollArea::mousePressEvent( QMouseEvent* event ) {
+    mMousePressed = true;
+    mMousePosition = event->pos();
+    update();
+}
+
+void ScrollArea::mouseReleaseEvent( QMouseEvent* ) {
+    mMousePressed = false;
+    update();
+}
+
+void ScrollArea::mouseMoveEvent( QMouseEvent* event ) {
+    if( mMousePressed ) {
+
+        // get inverted delta
+        QPointF position = event->pos();
+        QPointF diff = mMousePosition - position;
+
+        // scroll by delta
+        horizontalScrollBar()->setValue( horizontalScrollBar()->value() + diff.x() );
+        verticalScrollBar()->setValue( verticalScrollBar()->value() + diff.y() );
+
+        // update
+        mMousePosition = position;
+        update();
+    }
 }
 
 void ScrollArea::zoom() {

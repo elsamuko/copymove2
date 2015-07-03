@@ -17,6 +17,9 @@ class ScrollArea : public QScrollArea {
     protected:
         virtual void wheelEvent( QWheelEvent* event );
         virtual void mouseDoubleClickEvent( QMouseEvent* );
+        virtual void mousePressEvent( QMouseEvent* event );
+        virtual void mouseReleaseEvent( QMouseEvent* );
+        virtual void mouseMoveEvent( QMouseEvent* );
 
     private:
         void zoom();
@@ -25,4 +28,7 @@ class ScrollArea : public QScrollArea {
         float mZoom;
         QLabel* mLabel;
         QSize mImageSize;
+
+        bool mMousePressed;
+        QPointF mMousePosition;
 };
