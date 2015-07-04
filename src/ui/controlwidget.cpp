@@ -109,6 +109,13 @@ void ControlWidget::on_comboHits_currentIndexChanged( int ) {
         painter.setOpacity( 0.5 );
         painter.setCompositionMode( QPainter::CompositionMode_ColorDodge );
         painter.drawImage( 0, 0, overlay );
+
+        painter.setOpacity( 1.f );
+        painter.setCompositionMode( QPainter::CompositionMode_Source );
+        painter.setPen( QPen( Qt::black, 3 ) );
+        painter.drawLine( hit.x(), hit.y(), hit.x() + hit.dx(), hit.y() + hit.dy() );
+        painter.setPen( QPen( Qt::green, 2 ) );
+        painter.drawLine( hit.x(), hit.y(), hit.x() + hit.dx(), hit.y() + hit.dy() );
     }
 
     LOG( "Sending hit " + hit.toString() );
