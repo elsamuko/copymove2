@@ -36,6 +36,7 @@ void ControlWidget::setImage( QImage image ) {
 
     ui->tabBlocks->setEnabled( true );
     ui->tabAnalysis->setEnabled( true );
+    ui->comboHits->clear();
     mImage = image;
     signalImage( image, true );
 
@@ -91,7 +92,6 @@ void ControlWidget::on_comboHits_currentIndexChanged( int ) {
 
     {
         QPainter painter( &overlay );
-        // painter.setRenderHint( QPainter::Antialiasing, true );
 
         std::list<std::pair<PointI, PointI>>& pairs = hit.getBlocks();
 
@@ -105,17 +105,22 @@ void ControlWidget::on_comboHits_currentIndexChanged( int ) {
     }
 
     {
+        // paint hits
         QPainter painter( &copy );
         painter.setOpacity( 0.5 );
         painter.setCompositionMode( QPainter::CompositionMode_ColorDodge );
         painter.drawImage( 0, 0, overlay );
 
+        // paint shift
         painter.setOpacity( 1.f );
         painter.setCompositionMode( QPainter::CompositionMode_Source );
+        painter.setRenderHint( QPainter::Antialiasing, true );
+        QPoint from( hit.x() + Block::size / 2, hit.y() + Block::size / 2 );
+        QPoint to( hit.x() + hit.dx() + Block::size / 2, hit.y() + hit.dy() + Block::size / 2 );
         painter.setPen( QPen( Qt::black, 3 ) );
-        painter.drawLine( hit.x(), hit.y(), hit.x() + hit.dx(), hit.y() + hit.dy() );
+        painter.drawLine( from, to );
         painter.setPen( QPen( Qt::green, 2 ) );
-        painter.drawLine( hit.x(), hit.y(), hit.x() + hit.dx(), hit.y() + hit.dy() );
+        painter.drawLine( from, to );
     }
 
     LOG( "Sending hit " + hit.toString() );
