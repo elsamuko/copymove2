@@ -111,12 +111,39 @@ void ControlWidget::on_comboHits_currentIndexChanged( int ) {
         painter.setCompositionMode( QPainter::CompositionMode_ColorDodge );
         painter.drawImage( 0, 0, overlay );
 
-        // paint shift
+        // shift
+        QPoint from( hit.x() + Block::size / 2, hit.y() + Block::size / 2 );
+        QPoint to( hit.x() + hit.dx() + Block::size / 2, hit.y() + hit.dy() + Block::size / 2 );
         painter.setOpacity( 1.f );
         painter.setCompositionMode( QPainter::CompositionMode_Source );
         painter.setRenderHint( QPainter::Antialiasing, true );
-        QPoint from( hit.x() + Block::size / 2, hit.y() + Block::size / 2 );
-        QPoint to( hit.x() + hit.dx() + Block::size / 2, hit.y() + hit.dy() + Block::size / 2 );
+
+        // paint average of <mitHits> best hits
+        QPoint distMinHits( hit.distanceMinHits(), hit.distanceMinHits() );
+        QRect arcRect2( from - distMinHits, from + distMinHits );
+        painter.setPen( QPen( Qt::black, 3 ) );
+        painter.drawArc( arcRect2, 0, 16 * 360 );
+        painter.setPen( QPen( Qt::yellow, 2 ) );
+        painter.drawArc( arcRect2, 0, 16 * 360 );
+
+        // paint geometric median
+        QPoint distMedian( hit.distance(), hit.distance() );
+        QRect arcRect( from - distMedian, from + distMedian );
+        painter.setPen( QPen( Qt::black, 3 ) );
+        painter.drawArc( arcRect, 0, 16 * 360 );
+        painter.setPen( QPen( Qt::red, 2 ) );
+        painter.drawArc( arcRect, 0, 16 * 360 );
+
+        // paint average
+        QPoint mean( hit.mean().x() + Block::size / 2, hit.mean().y() + Block::size / 2 );
+        QPoint distRadius( hit.radius(), hit.radius() );
+        QRect arcRect3( mean - distRadius, mean + distRadius );
+        painter.setPen( QPen( Qt::black, 3 ) );
+        painter.drawArc( arcRect3, 0, 16 * 360 );
+        painter.setPen( QPen( Qt::blue, 2 ) );
+        painter.drawArc( arcRect3, 0, 16 * 360 );
+
+        // paint shift
         painter.setPen( QPen( Qt::black, 3 ) );
         painter.drawLine( from, to );
         painter.setPen( QPen( Qt::green, 2 ) );
