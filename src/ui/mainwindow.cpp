@@ -24,6 +24,8 @@ MainWindow::MainWindow( QWidget* parent ) :
     // center app
     // \sa https://wiki.qt.io/Center_a_Window_on_the_Screen
     this->setGeometry( QStyle::alignedRect( Qt::LeftToRight, Qt::AlignCenter, this->size(), qApp->desktop()->availableGeometry() ) );
+
+    ui->actionRun->setDisabled( true );
 }
 
 MainWindow::~MainWindow() {
@@ -59,6 +61,8 @@ void MainWindow::slotOpenImage( QString filename ) {
 
         this->mConnection->setImage( image );
         ui->widgetControl->setImage( image );
+
+        ui->actionRun->setEnabled( true );
     }
 }
 
@@ -71,4 +75,8 @@ void MainWindow::setupRecentImagesMenu() {
 
     this->ui->menuFile->insertMenu( ui->actionExit, recent );
     this->ui->menuFile->insertSeparator( ui->actionExit );
+}
+
+void MainWindow::on_actionRun_triggered() {
+    ui->widgetControl->on_buttonRun_clicked();
 }

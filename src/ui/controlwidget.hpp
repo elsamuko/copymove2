@@ -23,12 +23,12 @@ class ControlWidget : public QWidget {
         void signalImage( QImage image, bool fit );
 
     public slots:
+        void on_buttonRun_clicked();
         void slotResults( std::vector<ShiftHit>::const_iterator begin, std::vector<ShiftHit>::const_iterator end );
         void slotProgress( size_t progress );
         void slotReset();
 
     private slots:
-        void on_buttonRun_clicked();
         void on_comboHits_currentIndexChanged( int );
         void on_spinBoxFirstX_valueChanged( int first );
         void on_spinBoxFirstY_valueChanged( int first );

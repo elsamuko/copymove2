@@ -24,6 +24,8 @@ class MainWindow : public QMainWindow {
         void on_actionOpen_triggered();
         void slotOpenImage( QString filename );
 
+        void on_actionRun_triggered();
+
     private:
         void setupRecentImagesMenu();
 
