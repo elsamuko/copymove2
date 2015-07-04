@@ -4,6 +4,7 @@
 #include <QLabel>
 #include <QScrollBar>
 #include <QPainter>
+#include <QDebug>
 
 #include "log/log.hpp"
 
@@ -36,10 +37,16 @@ void ScrollArea::autoZoom() {
     this->zoom();
 }
 
+void ScrollArea::scrollBy( const QPointF& diff ) {
+    horizontalScrollBar()->setValue( horizontalScrollBar()->value() + diff.x() );
+    verticalScrollBar()->setValue( verticalScrollBar()->value() + diff.y() );
+}
+
 void ScrollArea::slotDrawImage( QImage image, bool fit ) {
     Q_ASSERT( image.format() == QImage::Format_ARGB32_Premultiplied );
 
     mImageSize = image.size();
+    mLastRect = this->mLabel->rect();
 
     QPixmap pixmap = QPixmap::fromImage( image );
     mLabel->setPixmap( pixmap );
@@ -48,6 +55,19 @@ void ScrollArea::slotDrawImage( QImage image, bool fit ) {
         mLabel->adjustSize();
         autoZoom();
     }
+}
+
+void ScrollArea::centerZoom() {
+    QPointF diff;
+
+    int dw = mLabel->rect().width() - mLastRect.width();
+    diff.setX( dw / 2 );
+
+    int dh = mLabel->rect().height() - mLastRect.height();
+    diff.setY( dh / 2 );
+
+    scrollBy( diff );
+    mLastRect = mLabel->rect();
 }
 
 void ScrollArea::wheelEvent( QWheelEvent* event ) {
@@ -61,7 +81,10 @@ void ScrollArea::wheelEvent( QWheelEvent* event ) {
         delta /= 120.f;
         delta = std::min( std::max( delta, -1.f ), 1.f );
 
-        mZoom += mZoom * delta / 25.f;
+        // zoom factor 1/25
+        delta /= 25.f;
+
+        mZoom += mZoom * delta;
         this->zoom();
     }
 }
@@ -89,8 +112,7 @@ void ScrollArea::mouseMoveEvent( QMouseEvent* event ) {
         QPointF diff = mMousePosition - position;
 
         // scroll by delta
-        horizontalScrollBar()->setValue( horizontalScrollBar()->value() + diff.x() );
-        verticalScrollBar()->setValue( verticalScrollBar()->value() + diff.y() );
+        scrollBy( diff );
 
         // update
         mMousePosition = position;
@@ -99,6 +121,7 @@ void ScrollArea::mouseMoveEvent( QMouseEvent* event ) {
 }
 
 void ScrollArea::zoom() {
-    mLabel->resize( mZoom * mLabel->pixmap()->size() );
     LOG( "Zoom : " + std::to_string( mZoom ) );
+    mLabel->resize( mZoom * mLabel->pixmap()->size() );
+    centerZoom();
 }

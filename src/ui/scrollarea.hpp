@@ -24,6 +24,8 @@ class ScrollArea : public QScrollArea {
     private:
         void zoom();
         void autoZoom();
+        void centerZoom();
+        void scrollBy( const QPointF& diff );
 
         float mZoom;
         QLabel* mLabel;
@@ -31,4 +33,5 @@ class ScrollArea : public QScrollArea {
 
         bool mMousePressed;
         QPointF mMousePosition;
+        QRect mLastRect;
 };
