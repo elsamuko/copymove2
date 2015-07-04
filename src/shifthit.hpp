@@ -21,10 +21,16 @@ class ShiftHit {
         std::string toString() const;
 
         int x() const {
+            assert( mMedianCalculated );
             return mGeometricAverage.x();
         }
         int y() const {
+            assert( mMedianCalculated );
             return mGeometricAverage.y();
+        }
+        PointI mean() const {
+            assert( mMeanCalculated );
+            return mMean;
         }
         int radius() const {
             assert( mMeanCalculated );
@@ -33,6 +39,10 @@ class ShiftHit {
         int distance() const {
             assert( mMeanCalculated );
             return mGeometricAverageDistance;
+        }
+        int distanceMinHits() const {
+            assert( mMeanCalculated );
+            return mMinHitsAverageDistance;
         }
         size_t hits() const {
             return mHits.size();
@@ -81,6 +91,7 @@ class ShiftHit {
 
         // geometric median + distance
         PointF mGeometricAverage;
+        size_t mWithinGeometricAverage;
         float mGeometricAverageDistance;
         float mMinHitsAverageDistance;
 };

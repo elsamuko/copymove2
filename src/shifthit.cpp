@@ -23,7 +23,8 @@ ShiftHit::~ShiftHit() {
 
 bool ShiftHit::operator <( const ShiftHit& that ) const {
     assert( mMedianCalculated );
-    bool less = ( this->mHits.size() < that.mHits.size() );
+    // bool less = ( this->mHits.size() < that.mHits.size() );
+    bool less = ( this->mWithinGeometricAverage < that.mWithinGeometricAverage );
     return less;
 }
 
@@ -110,13 +111,21 @@ void ShiftHit::calculateGeometricDistance() {
     points.reserve( mHits.size() );
 
     for( auto & fromTo : mHits ) {
-        points.emplace_back( fromTo.first.x(), fromTo.first.y() );
+        points.emplace_back( fromTo.first );
     }
 
     std::tuple<PointF, float, float> median = ShiftHit::geometricMedian( points, mMinHits );
     mGeometricAverage = std::get<0>( median );
     mGeometricAverageDistance = std::get<1>( median );
     mMinHitsAverageDistance = std::get<2>( median );
+
+    mWithinGeometricAverage = std::accumulate( points.cbegin(), points.cend(), 0, [this]( const int sum, const PointF & p ) {
+        if( mGeometricAverage.distance( p ) < mGeometricAverageDistance ) {
+            return sum + 1;
+        } else {
+            return sum;
+        }
+    } );
 
     mMedianCalculated = true;
 }
@@ -162,9 +171,9 @@ std::list<std::pair<PointI, PointI> >& ShiftHit::getBlocks() {
 bool ShiftHit::looksGood() const {
     assert( mMeanCalculated );
     assert( mMedianCalculated );
-    bool centerCriterium = mMean.distance( mGeometricAverage ) < 25;         // arith. mean and geometric median are close
-    bool spreadCriterium = mGeometricAverageDistance < mImageSize.abs() / 8; // hit is not too spread
-    bool clusterCriterium = mMinHitsAverageDistance < mImageSize.abs() / 16; // best <minHits> hits are not too spread
-    bool sizeCriterium   = mHits.size() > mMinHits;                          // minimum of hits
+    // bool centerCriterium = mMean.distance( mGeometricAverage ) < mImageSize.abs() / 8; // arith. mean and geometric median are close
+    // bool spreadCriterium = mGeometricAverageDistance < mImageSize.abs() / 8;           // hit is not too spread
+    bool clusterCriterium = mMinHitsAverageDistance < mImageSize.abs() / 16;           // best <minHits> hits are not too spread
+    bool sizeCriterium   = mHits.size() > mMinHits;                                    // minimum of hits
     return /*centerCriterium && spreadCriterium &&*/ clusterCriterium && sizeCriterium;
 }
