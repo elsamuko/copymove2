@@ -55,7 +55,6 @@ function doConfigure {
             --without-dps \
             --without-lqr \
             --without-fpx \
-            --without-lqr \
             --without-jbig \
             --without-openjp2 \
             --without-openexr \
@@ -69,7 +68,8 @@ function doConfigure {
             --without-wmf \
             --without-gvc \
             --disable-openmp \
-            --disable-docs
+            --disable-docs \
+            --with-gcc-arch=core2
 }
 
 function doBuild {

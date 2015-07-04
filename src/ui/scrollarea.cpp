@@ -2,7 +2,9 @@
 
 #include <QWheelEvent>
 #include <QLabel>
+#include <QScrollBar>
 #include <QPainter>
+#include <QDebug>
 
 #include "log/log.hpp"
 
@@ -21,45 +23,51 @@ ScrollArea::ScrollArea( QWidget* parent ) :
 
 void ScrollArea::autoZoom() {
 
-    if( mImage.isNull() ) {
+    if( mImageSize.isEmpty() ) {
         return;
     }
 
     float scaledW   = this->size().width();
-    float originalW = mImage.size().width();
+    float originalW = mImageSize.width();
 
     float scaledH   = this->size().height();
-    float originalH = mImage.size().height();
+    float originalH = mImageSize.height();
 
-    mZoom = std::min( scaledW / originalW, scaledH / originalH ) * 0.97;
+    mZoom = std::min( scaledW / originalW, scaledH / originalH ) * 0.99;
     this->zoom();
 }
 
-void ScrollArea::setImage( const QImage image ) {
-    Q_ASSERT( !image.isNull() );
-
-    if( image.format() != QImage::Format_ARGB32_Premultiplied ) {
-        mImage = image.convertToFormat( QImage::Format_ARGB32_Premultiplied );
-    } else {
-        mImage = image;
-    }
-
-    mLabel->setPixmap( QPixmap::fromImage( mImage ) );
-    mLabel->adjustSize();
-
-    autoZoom();
+void ScrollArea::scrollBy( const QPointF& diff ) {
+    horizontalScrollBar()->setValue( horizontalScrollBar()->value() + diff.x() );
+    verticalScrollBar()->setValue( verticalScrollBar()->value() + diff.y() );
 }
 
-void ScrollArea::slotDrawOverlay( QImage overlay ) {
-    Q_ASSERT( overlay.format() == QImage::Format_ARGB32_Premultiplied );
-    Q_ASSERT( overlay.size() == mImage.size() );
+void ScrollArea::slotDrawImage( QImage image, bool fit ) {
+    Q_ASSERT( image.format() == QImage::Format_ARGB32_Premultiplied );
 
-    QPixmap pixmap = QPixmap::fromImage( mImage );
-    QPainter painter( &pixmap );
-    painter.setOpacity( 0.5 );
-    painter.setCompositionMode( QPainter::CompositionMode_ColorDodge );
-    painter.drawImage( 0, 0, overlay );
+    mImageSize = image.size();
+    mLastRect = this->mLabel->rect();
+
+    QPixmap pixmap = QPixmap::fromImage( image );
     mLabel->setPixmap( pixmap );
+
+    if( fit ) {
+        mLabel->adjustSize();
+        autoZoom();
+    }
+}
+
+void ScrollArea::centerZoom() {
+    QPointF diff;
+
+    int dw = mLabel->rect().width() - mLastRect.width();
+    diff.setX( dw / 2 );
+
+    int dh = mLabel->rect().height() - mLastRect.height();
+    diff.setY( dh / 2 );
+
+    scrollBy( diff );
+    mLastRect = mLabel->rect();
 }
 
 void ScrollArea::wheelEvent( QWheelEvent* event ) {
@@ -73,7 +81,10 @@ void ScrollArea::wheelEvent( QWheelEvent* event ) {
         delta /= 120.f;
         delta = std::min( std::max( delta, -1.f ), 1.f );
 
-        mZoom += mZoom * delta / 25.f;
+        // zoom factor 1/25
+        delta /= 25.f;
+
+        mZoom += mZoom * delta;
         this->zoom();
     }
 }
@@ -82,7 +93,35 @@ void ScrollArea::mouseDoubleClickEvent( QMouseEvent* ) {
     this->autoZoom();
 }
 
+void ScrollArea::mousePressEvent( QMouseEvent* event ) {
+    mMousePressed = true;
+    mMousePosition = event->pos();
+    update();
+}
+
+void ScrollArea::mouseReleaseEvent( QMouseEvent* ) {
+    mMousePressed = false;
+    update();
+}
+
+void ScrollArea::mouseMoveEvent( QMouseEvent* event ) {
+    if( mMousePressed ) {
+
+        // get inverted delta
+        QPointF position = event->pos();
+        QPointF diff = mMousePosition - position;
+
+        // scroll by delta
+        scrollBy( diff );
+
+        // update
+        mMousePosition = position;
+        update();
+    }
+}
+
 void ScrollArea::zoom() {
-    mLabel->resize( mZoom * mLabel->pixmap()->size() );
     LOG( "Zoom : " + std::to_string( mZoom ) );
+    mLabel->resize( mZoom * mLabel->pixmap()->size() );
+    centerZoom();
 }

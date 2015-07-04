@@ -55,7 +55,6 @@ function doConfigure {
             --without-dps \
             --without-lqr \
             --without-fpx \
-            --without-lqr \
             --without-jbig \
             --without-openjp2 \
             --without-openexr \
@@ -69,7 +68,8 @@ function doConfigure {
             --without-wmf \
             --without-gvc \
             --disable-openmp \
-            --disable-docs
+            --disable-docs \
+            --with-gcc-arch=core2
 }
 
 function doBuild {
@@ -78,6 +78,7 @@ function doBuild {
     export CC="clang"
     export CXX="clang++"
     export LDFLAGS="-L/opt/local/lib -lc++"
+    export CPPFLAGS="-I/opt/local/include"
     export CXXFLAGS="-std=c++11 -stdlib=libc++ -mmacosx-version-min=10.7"
     export CFLAGS="-I/opt/local/include -mmacosx-version-min=10.7"
 

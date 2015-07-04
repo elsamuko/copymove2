@@ -16,8 +16,10 @@ MainWindow::MainWindow( QWidget* parent ) :
     setupRecentImagesMenu();
 
     connect( ui->widgetControl, &ControlWidget::signalRun, mConnection, &SorterConnection::slotRun, Qt::UniqueConnection );
-    connect( mConnection, &SorterConnection::signalDone, ui->widgetControl, &ControlWidget::slotResults, Qt::UniqueConnection );
-    connect( ui->widgetControl, &ControlWidget::signalHit, ui->scrollArea, &ScrollArea::slotDrawOverlay, Qt::UniqueConnection );
+    connect( ui->widgetControl, &ControlWidget::signalImage, ui->scrollArea, &ScrollArea::slotDrawImage, Qt::UniqueConnection );
+    connect( mConnection, &SorterConnection::signalDone, ui->widgetControl, &ControlWidget::slotResults, Qt::QueuedConnection );
+    connect( mConnection, &SorterConnection::signalReset, ui->widgetControl, &ControlWidget::slotReset, Qt::UniqueConnection );
+    connect( mConnection, &SorterConnection::signalProgress, ui->widgetControl, &ControlWidget::slotProgress, Qt::QueuedConnection );
 
     // center app
     // \sa https://wiki.qt.io/Center_a_Window_on_the_Screen
@@ -47,9 +49,16 @@ void MainWindow::on_actionOpen_triggered() {
 }
 
 void MainWindow::slotOpenImage( QString filename ) {
-    if( !filename.isEmpty() && mImage.load( filename ) ) {
-        ui->scrollArea->setImage( mImage );
-        this->mConnection->setImage( mImage );
+    QImage image;
+
+    if( !filename.isEmpty() && image.load( filename ) ) {
+
+        if( image.format() != QImage::Format_ARGB32_Premultiplied ) {
+            image = image.convertToFormat( QImage::Format_ARGB32_Premultiplied );
+        }
+
+        this->mConnection->setImage( image );
+        ui->widgetControl->setImage( image );
     }
 }
 

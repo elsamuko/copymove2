@@ -1,3 +1,6 @@
+
+#include <QtConcurrent/QtConcurrent>
+
 #include "sorterconnection.hpp"
 
 SorterConnection::SorterConnection( QObject* parent ) :
@@ -11,21 +14,34 @@ void SorterConnection::setImage( QImage image ) {
 void SorterConnection::slotRun( SorterParams params ) {
 
     if( mImage.isNull() ) {
+        emit signalReset();
         LOG( "No image" );
         return;
     }
 
-    LOG( "Run requested" );
-    GreyImage grey = this->getGrey();
-    mSorter.setGrey( grey );
+    if( !params.valid() ) {
+        emit signalReset();
+        LOG( "Invalid params" );
+        return;
+    }
+
     mSorter.setParams( params );
-    mSorter.work();
-    mShiftHits = mSorter.getShiftHits();
 
-    auto begin = mShiftHits.cbegin();
-    auto end   = mShiftHits.cend();
+    mWhenFinished = QtConcurrent::run( [this] {
+        LOG( "Run requested" );
+        GreyImage grey = this->getGrey();
+        mSorter.setGrey( grey );
+        mSorter.setProgressCallback( [this]( size_t progress ) {
+            emit signalProgress( progress );
+        } );
+        mSorter.work();
+        mShiftHits = mSorter.getShiftHits();
 
-    emit signalDone( begin, end );
+        auto begin = mShiftHits.cbegin();
+        auto end   = mShiftHits.cend();
+
+        emit signalDone( begin, end );
+    } );
 }
 
 GreyImage SorterConnection::getGrey() const {

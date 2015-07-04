@@ -35,6 +35,9 @@ class SorterParams {
             mFilename = filename;
         }
 
+        friend std::ostream& operator <<( std::ostream& stream, const SorterParams& p );
+        std::string toString() const;
+
     private:
         bool mValidParams;
         size_t mMinimalHits;
