@@ -55,7 +55,7 @@ class ShiftHit {
             return mRanking;
         }
 
-        static std::pair<PointF, float> geometricMedian( const std::list<PointF>& points );
+        static std::tuple<PointF, float, float> geometricMedian( const std::vector<PointF>& points , const size_t minHits );
 
     private:
         void calculateStandardDeviation();
@@ -82,4 +82,5 @@ class ShiftHit {
         // geometric median + distance
         PointF mGeometricAverage;
         float mGeometricAverageDistance;
+        float mMinHitsAverageDistance;
 };
