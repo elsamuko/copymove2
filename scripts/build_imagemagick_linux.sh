@@ -68,7 +68,8 @@ function doConfigure {
             --without-wmf \
             --without-gvc \
             --disable-openmp \
-            --disable-docs
+            --disable-docs \
+            --with-gcc-arch=core2
 }
 
 function doBuild {
