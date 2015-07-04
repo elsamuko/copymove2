@@ -1,6 +1,10 @@
 #include "mainwindow.hpp"
 #include <QApplication>
 
+#ifdef _WIN32
+#   include <regex>
+#endif
+
 static inline void customMessageHandler( QtMsgType type, const QMessageLogContext& context, const QString& message ) {
 
     const char* cfile     = context.file ? context.file : "unknown";
