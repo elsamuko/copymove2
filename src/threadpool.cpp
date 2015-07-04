@@ -2,6 +2,7 @@
 #include <chrono>
 
 #include "threadpool.hpp"
+#include "log/log.hpp"
 
 // heavily influenced by
 // https://github.com/progschj/ThreadPool
@@ -11,6 +12,7 @@ ThreadPool::ThreadPool() {
     mJobCount.store( 0 );
 
     size_t count = std::thread::hardware_concurrency();
+    LOG( "Starting threadpool with " + std::to_string( count ) + " threads" );
     assert( count > 0 );
 
     while( count-- ) {
@@ -33,6 +35,8 @@ ThreadPool::ThreadPool() {
 }
 
 ThreadPool::~ThreadPool() {
+    LOG( "Stopping threadpool" );
+
     mRunning.store( false );
     waitForAllJobs();
 
