@@ -63,6 +63,14 @@ void MainWindow::slotOpenImage( QString filename ) {
         ui->widgetControl->setImage( image );
 
         ui->actionRun->setEnabled( true );
+
+        // set window title
+        QFileInfo info( filename );
+        QString windowTitle = "CopyMove2 - ";
+        windowTitle += info.fileName() + " ";
+        windowTitle += QString::number( image.width() )  + "x";
+        windowTitle += QString::number( image.height() );
+        this->setWindowTitle( windowTitle );
     }
 }
 

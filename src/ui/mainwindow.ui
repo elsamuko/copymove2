@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>qcopymove</string>
+   <string>CopyMove2</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../../resources/resources.qrc">
