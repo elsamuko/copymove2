@@ -71,15 +71,14 @@ void ScrollArea::slotDrawImage( QImage image, bool fit ) {
     Q_ASSERT( image.format() == QImage::Format_ARGB32_Premultiplied );
 
     mImage = image;
-    mLastRect = this->mLabel->rect();
-
-    QPixmap pixmap = QPixmap::fromImage( mImage );
-    mLabel->setPixmap( pixmap );
+    paintBlocks();
 
     if( fit ) {
         mLabel->adjustSize();
         autoZoom();
     }
+
+    mLastRect = this->mLabel->rect();
 }
 
 void ScrollArea::slotSetFirstBlock( const PointI pos ) {
@@ -168,8 +167,8 @@ void ScrollArea::contextMenu( const QPoint& pos ) {
     qDebug() << imagePos;
 
     QMenu menu;
-    QAction* first  = menu.addAction( tr( "Set as first block" ) );
-    QAction* second = menu.addAction( tr( "Set as second block" ) );
+    QAction* first  = menu.addAction( tr( "Set first block" ) );
+    QAction* second = menu.addAction( tr( "Set second block" ) );
 
     QAction* selection = menu.exec( mapToGlobal( pos ) );
 
