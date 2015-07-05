@@ -18,6 +18,7 @@ include( $${PRI_DIR}/setup.pri )
 include( $${PRI_DIR}/ui.pri )
 include( $${PRI_DIR}/log.pri )
 include( $${PRI_DIR}/common.pri )
+include( $${PRI_DIR}/version.pri )
 mac:   include( $${PRI_DIR}/mac.pri )
 linux: include( $${PRI_DIR}/linux.pri )
 
