@@ -38,7 +38,7 @@ void ControlWidget::setImage( QImage image ) {
     ui->tabAnalysis->setEnabled( true );
     ui->comboHits->clear();
     mImage = image;
-    signalImage( image, true );
+    emit signalImage( image, true );
 
     // positions
     ui->spinBoxFirstX->setMaximum( size.width() - Block::size );
@@ -75,6 +75,16 @@ void ControlWidget::slotResults( std::vector<ShiftHit>::const_iterator begin, st
 
 void ControlWidget::slotProgress( size_t progress ) {
     ui->progressBar->setValue( progress );
+}
+
+void ControlWidget::slotSetFirstBlock( QPoint pos ) {
+    ui->spinBoxFirstX->setValue( pos.x() );
+    ui->spinBoxFirstY->setValue( pos.y() );
+}
+
+void ControlWidget::slotSetSecondBlock( QPoint pos ) {
+    ui->spinBoxSecondX->setValue( pos.x() );
+    ui->spinBoxSecondY->setValue( pos.y() );
 }
 
 void ControlWidget::slotReset() {

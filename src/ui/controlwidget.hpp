@@ -21,11 +21,15 @@ class ControlWidget : public QWidget {
     signals:
         void signalRun( SorterParams params );
         void signalImage( QImage image, bool fit );
+        void signalSendFirstBlock( PointI pos );
+        void signalSendSecondBlock( PointI pos );
 
     public slots:
         void on_buttonRun_clicked();
         void slotResults( std::vector<ShiftHit>::const_iterator begin, std::vector<ShiftHit>::const_iterator end );
         void slotProgress( size_t progress );
+        void slotSetFirstBlock( QPoint pos );
+        void slotSetSecondBlock( QPoint pos );
         void slotReset();
 
     private slots:

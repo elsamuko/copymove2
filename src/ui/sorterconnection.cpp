@@ -45,7 +45,7 @@ void SorterConnection::slotRun( SorterParams params ) {
 }
 
 GreyImage SorterConnection::getGrey() const {
-    const uchar* bits   = mImage.constBits();
+    const uchar* bits = mImage.constBits();
     GreyImage grey( mImage.width(), mImage.height() );
 
     for( int y = 0; y < mImage.height(); y++ ) {

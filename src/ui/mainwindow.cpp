@@ -21,6 +21,14 @@ MainWindow::MainWindow( QWidget* parent ) :
     connect( mConnection, &SorterConnection::signalReset, ui->widgetControl, &ControlWidget::slotReset, Qt::UniqueConnection );
     connect( mConnection, &SorterConnection::signalProgress, ui->widgetControl, &ControlWidget::slotProgress, Qt::QueuedConnection );
 
+    // send block pos from scrollarea to control widget...
+    connect( ui->scrollArea, &ScrollArea::signalSendFirstBlock, ui->widgetControl, &ControlWidget::slotSetFirstBlock, Qt::UniqueConnection );
+    connect( ui->scrollArea, &ScrollArea::signalSendSecondBlock, ui->widgetControl, &ControlWidget::slotSetSecondBlock, Qt::UniqueConnection );
+
+    // ... and back
+    connect( ui->widgetControl, &ControlWidget::signalSendFirstBlock, ui->scrollArea, &ScrollArea::slotSetFirstBlock, Qt::UniqueConnection );
+    connect( ui->widgetControl, &ControlWidget::signalSendSecondBlock, ui->scrollArea, &ScrollArea::slotSetSecondBlock, Qt::UniqueConnection );
+
     // center app
     // \sa https://wiki.qt.io/Center_a_Window_on_the_Screen
     this->setGeometry( QStyle::alignedRect( Qt::LeftToRight, Qt::AlignCenter, this->size(), qApp->desktop()->availableGeometry() ) );

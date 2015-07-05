@@ -5,8 +5,11 @@
 #include <QScrollBar>
 #include <QPainter>
 #include <QDebug>
+#include <QMenu>
+#include <QAction>
 
 #include "log/log.hpp"
+#include "block.hpp"
 
 ScrollArea::ScrollArea( QWidget* parent ) :
     QScrollArea( parent ),
@@ -19,19 +22,21 @@ ScrollArea::ScrollArea( QWidget* parent ) :
     mLabel->setScaledContents( true );
     this->setWidget( mLabel );
     this->setWidgetResizable( true );
+
+    connect( this, &ScrollArea::customContextMenuRequested, this, &ScrollArea::contextMenu, Qt::UniqueConnection );
 }
 
 void ScrollArea::autoZoom() {
 
-    if( mImageSize.isEmpty() ) {
+    if( mImage.size().isEmpty() ) {
         return;
     }
 
     float scaledW   = this->size().width();
-    float originalW = mImageSize.width();
+    float originalW = mImage.size().width();
 
     float scaledH   = this->size().height();
-    float originalH = mImageSize.height();
+    float originalH = mImage.size().height();
 
     mZoom = std::min( scaledW / originalW, scaledH / originalH ) * 0.99;
     this->zoom();
@@ -42,19 +47,51 @@ void ScrollArea::scrollBy( const QPointF& diff ) {
     verticalScrollBar()->setValue( verticalScrollBar()->value() + diff.y() );
 }
 
+void ScrollArea::paintBlocks() {
+    QPixmap pixmap = QPixmap::fromImage( mImage );
+    QPainter painter( &pixmap );
+    painter.setRenderHint( QPainter::Antialiasing, true );
+
+    QRect first = QRect( mFirstBlock, mFirstBlock + QPoint( Block::size, Block::size ) );
+    painter.setPen( QPen( Qt::black, 3 ) );
+    painter.drawRect( first );
+    painter.setPen( QPen( Qt::cyan, 2 ) );
+    painter.drawRect( first );
+
+    QRect second = QRect( mSecondBlock, mSecondBlock + QPoint( Block::size, Block::size ) );
+    painter.setPen( QPen( Qt::black, 3 ) );
+    painter.drawRect( second );
+    painter.setPen( QPen( Qt::red, 2 ) );
+    painter.drawRect( second );
+
+    mLabel->setPixmap( pixmap );
+}
+
 void ScrollArea::slotDrawImage( QImage image, bool fit ) {
     Q_ASSERT( image.format() == QImage::Format_ARGB32_Premultiplied );
 
-    mImageSize = image.size();
+    mImage = image;
     mLastRect = this->mLabel->rect();
 
-    QPixmap pixmap = QPixmap::fromImage( image );
+    QPixmap pixmap = QPixmap::fromImage( mImage );
     mLabel->setPixmap( pixmap );
 
     if( fit ) {
         mLabel->adjustSize();
         autoZoom();
     }
+}
+
+void ScrollArea::slotSetFirstBlock( const PointI pos ) {
+    mFirstBlock.setX( pos.x() );
+    mFirstBlock.setY( pos.y() );
+    paintBlocks();
+}
+
+void ScrollArea::slotSetSecondBlock( const PointI pos ) {
+    mSecondBlock.setX( pos.x() );
+    mSecondBlock.setY( pos.y() );
+    paintBlocks();
 }
 
 void ScrollArea::centerZoom() {
@@ -120,8 +157,38 @@ void ScrollArea::mouseMoveEvent( QMouseEvent* event ) {
     }
 }
 
+void ScrollArea::contextMenu( const QPoint& pos ) {
+
+    if( mImage.isNull() ) {
+        return;
+    }
+
+    QPointF imagePos = pos - mLabel->pos();
+    imagePos /= mZoom;
+    qDebug() << imagePos;
+
+    QMenu menu;
+    QAction* first  = menu.addAction( tr( "Set as first block" ) );
+    QAction* second = menu.addAction( tr( "Set as second block" ) );
+
+    QAction* selection = menu.exec( mapToGlobal( pos ) );
+
+    if( selection == first ) {
+        mFirstBlock = imagePos.toPoint();
+        emit signalSendFirstBlock( imagePos.toPoint() );
+    }
+
+    if( selection == second ) {
+        mSecondBlock = imagePos.toPoint();
+        emit signalSendSecondBlock( imagePos.toPoint() );
+    }
+
+    paintBlocks();
+    mMousePressed = false;
+}
+
 void ScrollArea::zoom() {
-    LOG( "Zoom : " + std::to_string( mZoom ) );
+    // LOG( "Zoom : " + std::to_string( mZoom ) );
     mLabel->resize( mZoom * mLabel->pixmap()->size() );
     centerZoom();
 }
