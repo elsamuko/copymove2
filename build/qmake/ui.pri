@@ -10,6 +10,10 @@ SOURCES += $${SRC_DIR}/ui/controlwidget.cpp
 HEADERS += $${SRC_DIR}/ui/controlwidget.hpp
 FORMS   += $${SRC_DIR}/ui/controlwidget.ui
 
+SOURCES += $${SRC_DIR}/ui/about.cpp
+HEADERS += $${SRC_DIR}/ui/about.hpp
+FORMS   += $${SRC_DIR}/ui/about.ui
+
 SOURCES += $${SRC_DIR}/ui/scrollarea.cpp
 HEADERS += $${SRC_DIR}/ui/scrollarea.hpp
 

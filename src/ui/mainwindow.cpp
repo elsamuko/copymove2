@@ -6,6 +6,7 @@
 #include <QDesktopWidget>
 
 #include "sorterconnection.hpp"
+#include "ui/about.hpp"
 
 MainWindow::MainWindow( QWidget* parent ) :
     QMainWindow( parent ),
@@ -95,4 +96,9 @@ void MainWindow::setupRecentImagesMenu() {
 
 void MainWindow::on_actionRun_triggered() {
     ui->widgetControl->on_buttonRun_clicked();
+}
+
+void MainWindow::on_actionAbout_triggered() {
+    About about;
+    about.exec();
 }
