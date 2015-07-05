@@ -1,7 +1,7 @@
 # Qt config
 QT += core gui widgets
 
-TARGET = qcopymove2
+TARGET = CopyMove2
 TEMPLATE = app
 
 macx:       PLATFORM=mac
