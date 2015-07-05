@@ -190,16 +190,18 @@ void ControlWidget::on_spinBoxSecondY_valueChanged( int second ) {
 
 void ControlWidget::updateBlockStats() {
 
-    const uchar* bits   = mImage.constBits();
-    QSize size =  mImage.size();
+    const uchar* bits = mImage.constBits();
+    QSize size = mImage.size();
+    int channels = 4; // BGRA
 
     Block first;
     first.setPos( PointI( ui->spinBoxFirstX->value(), ui->spinBoxFirstY->value() ) );
+    emit signalSendFirstBlock( first.pos() );
 
     for( int y = 0; y < Block::size; ++y ) {
         for( int x = 0; x < Block::size; ++x ) {
             int pos = size.width() * ( first.y() + y ) + ( first.x() + x );
-            first[x][y] = bits[pos + 1]; // green
+            first[x][y] = bits[channels * pos + 1]; // green
         }
     }
 
@@ -208,11 +210,12 @@ void ControlWidget::updateBlockStats() {
 
     Block second;
     second.setPos( PointI( ui->spinBoxSecondX->value(), ui->spinBoxSecondY->value() ) );
+    emit signalSendSecondBlock( second.pos() );
 
     for( int y = 0; y < Block::size; ++y ) {
         for( int x = 0; x < Block::size; ++x ) {
             int pos = size.width() * ( second.y() + y ) + ( second.x() + x );
-            second[x][y] = bits[pos + 1]; // green
+            second[x][y] = bits[channels * pos + 1]; // green
         }
     }
 
