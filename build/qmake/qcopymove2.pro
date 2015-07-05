@@ -22,3 +22,6 @@ mac:   include( $${PRI_DIR}/mac.pri )
 linux: include( $${PRI_DIR}/linux.pri )
 
 RESOURCES += $${MAIN_DIR}/resources/resources.qrc
+
+mac: ICON = $${MAIN_DIR}/resources/icons/logo.icns
+
