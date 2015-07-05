@@ -8,15 +8,15 @@
 #include "log/log.hpp"
 
 class Point_test : public QObject {
-    Q_OBJECT
+        Q_OBJECT
 
-public:
-    Point_test();
+    public:
+        Point_test();
 
-private Q_SLOTS:
-    void testMinus();
-    void testPlus();
-    void testMulti();
+    private Q_SLOTS:
+        void testMinus();
+        void testPlus();
+        void testMulti();
 };
 
 Point_test::Point_test() {

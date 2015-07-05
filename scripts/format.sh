@@ -23,3 +23,7 @@ function format_code {
 format_code "$MAIN_DIR/src/*.cpp"
 format_code "$MAIN_DIR/src/*.hpp"
 format_code "$MAIN_DIR/src/*.h"
+
+format_code "$MAIN_DIR/testing/*.cpp"
+format_code "$MAIN_DIR/testing/*.hpp"
+

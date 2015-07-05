@@ -5,13 +5,13 @@
 #include "greyimage.hpp"
 
 class GreyImage_test : public QObject {
-    Q_OBJECT
+        Q_OBJECT
 
-public:
-    GreyImage_test();
+    public:
+        GreyImage_test();
 
-private Q_SLOTS:
-    void testReadFromGrey();
+    private Q_SLOTS:
+        void testReadFromGrey();
 };
 
 GreyImage_test::GreyImage_test() {

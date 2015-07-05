@@ -12,16 +12,16 @@
 #include "log/log.hpp"
 
 class Block_test : public QObject {
-    Q_OBJECT
+        Q_OBJECT
 
-public:
-    Block_test();
+    public:
+        Block_test();
 
-private Q_SLOTS:
-    void testComparison();
-    void testDCT();
-    void testSort();
-    void testOctave();
+    private Q_SLOTS:
+        void testComparison();
+        void testDCT();
+        void testSort();
+        void testOctave();
 };
 
 Block_test::Block_test() {
@@ -70,7 +70,7 @@ void Block_test::testSort() {
     blocks[0][0][0] = 65536;
     blocks[0].setX( 4 );
 
-    for( Block& b : blocks ) {
+    for( Block & b : blocks ) {
         b.dct();
     }
 
@@ -82,6 +82,7 @@ void Block_test::testSort() {
 
 void Block_test::testOctave() {
     std::ofstream file( "sample.png", std::ofstream::binary );
+
     if( file.is_open() ) {
         file.write( ( const char* ) sample_png, sizeof( sample_png ) );
         file.close();
@@ -93,7 +94,7 @@ void Block_test::testOctave() {
 
     GreyImage grey = image.getGrey();
     Block b;
-    grey.getBlock( b, 0, 0);
+    grey.getBlock( b, 0, 0 );
     b.calculateStandardDeviation();
 
     LOG( b.toString() );
@@ -102,26 +103,26 @@ void Block_test::testOctave() {
 
     if( Block::size == 8 ) {
         // -20    2  -17   -3   -8    0   -6   13   12
-        QVERIFY( b.frequency(0) == -20 );
-        QVERIFY( b.frequency(1) ==   2 );
-        QVERIFY( b.frequency(2) == -17 );
-        QVERIFY( b.frequency(3) ==  -3 );
-        QVERIFY( b.frequency(4) ==  -8 );
-        QVERIFY( b.frequency(5) ==   0 );
-        QVERIFY( b.frequency(6) ==  -6 );
-        QVERIFY( b.frequency(7) ==  13 );
-        QVERIFY( b.frequency(8) ==  12 );
+        QVERIFY( b.frequency( 0 ) == -20 );
+        QVERIFY( b.frequency( 1 ) ==   2 );
+        QVERIFY( b.frequency( 2 ) == -17 );
+        QVERIFY( b.frequency( 3 ) ==  -3 );
+        QVERIFY( b.frequency( 4 ) ==  -8 );
+        QVERIFY( b.frequency( 5 ) ==   0 );
+        QVERIFY( b.frequency( 6 ) ==  -6 );
+        QVERIFY( b.frequency( 7 ) ==  13 );
+        QVERIFY( b.frequency( 8 ) ==  12 );
     } else if( Block::size == 16 ) {
         // 11  -20    1  -12    1   -7    3    3   -9
-        QVERIFY( b.frequency(0) ==  11 );
-        QVERIFY( b.frequency(1) == -20 );
-        QVERIFY( b.frequency(2) ==   1 );
-        QVERIFY( b.frequency(3) == -12 );
-        QVERIFY( b.frequency(4) ==   1 );
-        QVERIFY( b.frequency(5) ==  -7 );
-        QVERIFY( b.frequency(6) ==   3 );
-        QVERIFY( b.frequency(7) ==   3 );
-        QVERIFY( b.frequency(8) ==  -9 );
+        QVERIFY( b.frequency( 0 ) ==  11 );
+        QVERIFY( b.frequency( 1 ) == -20 );
+        QVERIFY( b.frequency( 2 ) ==   1 );
+        QVERIFY( b.frequency( 3 ) == -12 );
+        QVERIFY( b.frequency( 4 ) ==   1 );
+        QVERIFY( b.frequency( 5 ) ==  -7 );
+        QVERIFY( b.frequency( 6 ) ==   3 );
+        QVERIFY( b.frequency( 7 ) ==   3 );
+        QVERIFY( b.frequency( 8 ) ==  -9 );
     }
 }
 

@@ -8,13 +8,13 @@
 #include "log/log.hpp"
 
 class Shift_test : public QObject {
-    Q_OBJECT
+        Q_OBJECT
 
-public:
-    Shift_test();
+    public:
+        Shift_test();
 
-private Q_SLOTS:
-    void testMinus();
+    private Q_SLOTS:
+        void testMinus();
 };
 
 Shift_test::Shift_test() {
