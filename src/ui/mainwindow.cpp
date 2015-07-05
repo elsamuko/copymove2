@@ -13,7 +13,7 @@ MainWindow::MainWindow( QWidget* parent ) :
     QMainWindow( parent ),
     ui( new Ui::MainWindow ),
     mConnection( new SorterConnection( this ) ),
-    mFileDealer( new FileDealer ( this ) ) {
+    mFileDealer( new FileDealer( this ) ) {
 
     ui->setupUi( this );
     setupRecentImagesMenu();
