@@ -28,3 +28,5 @@ mac: ICON = $${MAIN_DIR}/resources/icons/logo.icns
 mac: QMAKE_POST_LINK += macdeployqt $${DESTDIR}/$${TARGET}.$${TEMPLATE};
 mac: QMAKE_POST_LINK += $${MAIN_DIR}/scripts/fix_qt_frameworks_mac.sh $${DESTDIR}/$${TARGET}.$${TEMPLATE};
 
+linux: QMAKE_LFLAGS += -Wl,--rpath=\\\$\$ORIGIN/lib
+
