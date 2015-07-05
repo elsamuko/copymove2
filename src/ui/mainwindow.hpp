@@ -3,10 +3,8 @@
 #include <QMainWindow>
 #include <QImage>
 
-#include "greyimage.hpp"
-#include "ui/filedealer.hpp"
-
 class SorterConnection;
+class FileDealer;
 
 namespace Ui {
     class MainWindow;
@@ -34,5 +32,5 @@ class MainWindow : public QMainWindow {
         SorterConnection* mConnection;
 
         /* io helper class */
-        FileDealer mFileDealer;
+        FileDealer* mFileDealer;
 };

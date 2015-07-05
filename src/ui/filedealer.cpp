@@ -176,7 +176,7 @@ void FileDealer::updateRecentFileActions( bool open ) {
             mRecentFileActions[i]->setVisible( true );
 
             if( mType == ImagesType ) {
-                mRecentFileActions[i]->setShortcut( Qt::ALT + numKeys[actionNo] );
+                mRecentFileActions[i]->setShortcut( Qt::CTRL + numKeys[actionNo] );
             }
 
             actionNo++;

@@ -6,12 +6,14 @@
 #include <QDesktopWidget>
 
 #include "sorterconnection.hpp"
+#include "ui/filedealer.hpp"
 #include "ui/about.hpp"
 
 MainWindow::MainWindow( QWidget* parent ) :
     QMainWindow( parent ),
     ui( new Ui::MainWindow ),
-    mConnection( new SorterConnection( this ) ) {
+    mConnection( new SorterConnection( this ) ),
+    mFileDealer( new FileDealer ( this ) ) {
 
     ui->setupUi( this );
     setupRecentImagesMenu();
@@ -49,7 +51,7 @@ void MainWindow::on_actionOpen_triggered() {
 
     QString filename;
     bool ok;
-    std::tie( ok, filename ) = mFileDealer.getOpenFilename();
+    std::tie( ok, filename ) = mFileDealer->getOpenFilename();
 
     if( ok ) {
         this->slotOpenImage( filename );
@@ -84,11 +86,11 @@ void MainWindow::slotOpenImage( QString filename ) {
 }
 
 void MainWindow::setupRecentImagesMenu() {
-    mFileDealer.setType( FileDealer::ImagesType );
+    mFileDealer->setType( FileDealer::ImagesType );
     QMenu* recent = new QMenu( tr( "Recent" ), this->ui->menuFile );
-    mFileDealer.setupRecentMenu( recent );
+    mFileDealer->setupRecentMenu( recent );
 
-    connect( &mFileDealer, &FileDealer::signalOpen, this, &MainWindow::slotOpenImage, Qt::UniqueConnection );
+    connect( mFileDealer, &FileDealer::signalOpen, this, &MainWindow::slotOpenImage, Qt::UniqueConnection );
 
     this->ui->menuFile->insertMenu( ui->actionExit, recent );
     this->ui->menuFile->insertSeparator( ui->actionExit );

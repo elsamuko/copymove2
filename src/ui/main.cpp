@@ -1,5 +1,7 @@
-#include "mainwindow.hpp"
 #include <QApplication>
+
+#include "mainwindow.hpp"
+#include "log/log.hpp"
 
 #ifdef _WIN32
 #   include <regex>
