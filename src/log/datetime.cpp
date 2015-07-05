@@ -41,3 +41,9 @@ std::string datetime::now() {
 
     return now.str();
 }
+
+int datetime::compilationYear() {
+    std::tm tm;
+    strptime( __DATE__, "%b %d %Y", &tm );
+    return 1900 + tm.tm_year;
+}

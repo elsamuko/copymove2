@@ -4,4 +4,5 @@
 
 namespace datetime {
     std::string now();
+    int compilationYear();
 }
