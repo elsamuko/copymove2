@@ -16,5 +16,8 @@
 !*.sh
 !*.m
 
+!*.qrc
+!*.svg
+
 tmp
 libs
