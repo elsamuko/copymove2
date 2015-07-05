@@ -6,5 +6,23 @@
         <file>actions/exit.png</file>
         <file>actions/open.png</file>
         <file>actions/run.png</file>
+        <file>actions/about.png</file>
+    </qresource>
+    <qresource prefix="/licenses">
+        <file>licenses/fontconfig.txt</file>
+        <file>licenses/imagemagick.txt</file>
+        <file>licenses/lcms2.txt</file>
+        <file>licenses/libbz2.txt</file>
+        <file>licenses/libfreetype.txt</file>
+        <file>licenses/libiconv.txt</file>
+        <file>licenses/libjpeg.txt</file>
+        <file>licenses/libltdl.txt</file>
+        <file>licenses/liblzma.txt</file>
+        <file>licenses/libopenjpeg.txt</file>
+        <file>licenses/libpng.txt</file>
+        <file>licenses/libtiff.txt</file>
+        <file>licenses/libxml2.txt</file>
+        <file>licenses/libz.txt</file>
+        <file>licenses/qt.txt</file>
     </qresource>
 </RCC>
