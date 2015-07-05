@@ -20,3 +20,5 @@ include( $${PRI_DIR}/log.pri )
 include( $${PRI_DIR}/common.pri )
 mac:   include( $${PRI_DIR}/mac.pri )
 linux: include( $${PRI_DIR}/linux.pri )
+
+RESOURCES += $${MAIN_DIR}/resources/resources.qrc

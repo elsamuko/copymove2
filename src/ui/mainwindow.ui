@@ -73,6 +73,10 @@
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionOpen">
+   <property name="icon">
+    <iconset resource="../../resources/resources.qrc">
+     <normaloff>:/actions/actions/open.png</normaloff>:/actions/actions/open.png</iconset>
+   </property>
    <property name="text">
     <string>Open</string>
    </property>
@@ -81,6 +85,10 @@
    </property>
   </action>
   <action name="actionExit">
+   <property name="icon">
+    <iconset resource="../../resources/resources.qrc">
+     <normaloff>:/actions/actions/exit.png</normaloff>:/actions/actions/exit.png</iconset>
+   </property>
    <property name="text">
     <string>Exit</string>
    </property>
@@ -89,6 +97,10 @@
    </property>
   </action>
   <action name="actionRun">
+   <property name="icon">
+    <iconset resource="../../resources/resources.qrc">
+     <normaloff>:/actions/actions/run.png</normaloff>:/actions/actions/run.png</iconset>
+   </property>
    <property name="text">
     <string>Run</string>
    </property>
@@ -112,6 +124,8 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../../resources/resources.qrc"/>
+ </resources>
  <connections/>
 </ui>
