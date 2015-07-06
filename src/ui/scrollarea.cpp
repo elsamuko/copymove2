@@ -23,7 +23,7 @@ ScrollArea::ScrollArea( QWidget* parent ) :
     this->setWidget( mLabel );
     this->setWidgetResizable( true );
 
-    connect( this, &ScrollArea::customContextMenuRequested, this, &ScrollArea::contextMenu, Qt::UniqueConnection );
+    CHECK_QT_CONNECT( connect( this, &ScrollArea::customContextMenuRequested, this, &ScrollArea::contextMenu, Qt::UniqueConnection ) );
 }
 
 void ScrollArea::autoZoom() {

@@ -6,6 +6,7 @@
 #include <QDebug>
 
 #include "filedealer.hpp"
+#include "log/log.hpp"
 
 FileDealer::FileDealer( QObject* parent ) :
     QObject( parent ) {
@@ -113,7 +114,7 @@ void FileDealer::setupRecentMenu( QMenu* recent ) {
     for( int i = 0; i < MaxRecentFiles; ++i ) {
         mRecentFileActions[i] = new QAction( this );
         mRecentFileActions[i]->setVisible( false );
-        connect( mRecentFileActions[i], SIGNAL( triggered() ), this, SLOT( openRecent() ) );
+        CHECK_QT_CONNECT( connect( mRecentFileActions[i], SIGNAL( triggered() ), this, SLOT( openRecent() ) ) );
     }
 
     this->updateRecentFileActions();

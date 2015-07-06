@@ -18,19 +18,19 @@ MainWindow::MainWindow( QWidget* parent ) :
     ui->setupUi( this );
     setupRecentImagesMenu();
 
-    connect( ui->widgetControl, &ControlWidget::signalRun, mConnection, &SorterConnection::slotRun, Qt::UniqueConnection );
-    connect( ui->widgetControl, &ControlWidget::signalImage, ui->scrollArea, &ScrollArea::slotDrawImage, Qt::UniqueConnection );
-    connect( mConnection, &SorterConnection::signalDone, ui->widgetControl, &ControlWidget::slotResults, Qt::QueuedConnection );
-    connect( mConnection, &SorterConnection::signalReset, ui->widgetControl, &ControlWidget::slotReset, Qt::UniqueConnection );
-    connect( mConnection, &SorterConnection::signalProgress, ui->widgetControl, &ControlWidget::slotProgress, Qt::QueuedConnection );
+    CHECK_QT_CONNECT( connect( ui->widgetControl, &ControlWidget::signalRun, mConnection, &SorterConnection::slotRun, Qt::UniqueConnection ) );
+    CHECK_QT_CONNECT( connect( ui->widgetControl, &ControlWidget::signalImage, ui->scrollArea, &ScrollArea::slotDrawImage, Qt::UniqueConnection ) );
+    CHECK_QT_CONNECT( connect( mConnection, &SorterConnection::signalDone, ui->widgetControl, &ControlWidget::slotResults, Qt::QueuedConnection ) );
+    CHECK_QT_CONNECT( connect( mConnection, &SorterConnection::signalReset, ui->widgetControl, &ControlWidget::slotReset, Qt::UniqueConnection ) );
+    CHECK_QT_CONNECT( connect( mConnection, &SorterConnection::signalProgress, ui->widgetControl, &ControlWidget::slotProgress, Qt::QueuedConnection ) );
 
     // send block pos from scrollarea to control widget...
-    connect( ui->scrollArea, &ScrollArea::signalSendFirstBlock, ui->widgetControl, &ControlWidget::slotSetFirstBlock, Qt::UniqueConnection );
-    connect( ui->scrollArea, &ScrollArea::signalSendSecondBlock, ui->widgetControl, &ControlWidget::slotSetSecondBlock, Qt::UniqueConnection );
+    CHECK_QT_CONNECT( connect( ui->scrollArea, &ScrollArea::signalSendFirstBlock, ui->widgetControl, &ControlWidget::slotSetFirstBlock, Qt::UniqueConnection ) );
+    CHECK_QT_CONNECT( connect( ui->scrollArea, &ScrollArea::signalSendSecondBlock, ui->widgetControl, &ControlWidget::slotSetSecondBlock, Qt::UniqueConnection ) );
 
     // ... and back
-    connect( ui->widgetControl, &ControlWidget::signalSendFirstBlock, ui->scrollArea, &ScrollArea::slotSetFirstBlock, Qt::UniqueConnection );
-    connect( ui->widgetControl, &ControlWidget::signalSendSecondBlock, ui->scrollArea, &ScrollArea::slotSetSecondBlock, Qt::UniqueConnection );
+    CHECK_QT_CONNECT( connect( ui->widgetControl, &ControlWidget::signalSendFirstBlock, ui->scrollArea, &ScrollArea::slotSetFirstBlock, Qt::UniqueConnection ) );
+    CHECK_QT_CONNECT( connect( ui->widgetControl, &ControlWidget::signalSendSecondBlock, ui->scrollArea, &ScrollArea::slotSetSecondBlock, Qt::UniqueConnection ) );
 
     // center app
     // \sa https://wiki.qt.io/Center_a_Window_on_the_Screen
