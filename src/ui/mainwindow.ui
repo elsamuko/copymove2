@@ -25,9 +25,6 @@
        <enum>Qt::Horizontal</enum>
       </property>
       <widget class="ScrollArea" name="scrollArea">
-       <property name="cursor" stdset="0">
-        <cursorShape>CrossCursor</cursorShape>
-       </property>
        <property name="contextMenuPolicy">
         <enum>Qt::CustomContextMenu</enum>
        </property>
