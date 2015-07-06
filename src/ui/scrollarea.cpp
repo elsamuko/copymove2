@@ -50,21 +50,26 @@ void ScrollArea::scrollBy( const QPointF& diff ) {
 }
 
 void ScrollArea::paintBlocks() {
+
+    if( mPixmap.isNull() ) {
+        return;
+    }
+
     QPixmap tmp = mPixmap;
     QPainter painter( &tmp );
     painter.setRenderHint( QPainter::Antialiasing, true );
-
-    QRect first = QRect( mFirstBlockTopLeft, mFirstBlockTopLeft + QPoint( Block::size, Block::size ) );
-    painter.setPen( QPen( Qt::black, 3 ) );
-    painter.drawRect( first );
-    painter.setPen( QPen( Qt::cyan, 2 ) );
-    painter.drawRect( first );
 
     QRect second = QRect( mSecondBlockTopLeft, mSecondBlockTopLeft + QPoint( Block::size, Block::size ) );
     painter.setPen( QPen( Qt::black, 3 ) );
     painter.drawRect( second );
     painter.setPen( QPen( Qt::red, 2 ) );
     painter.drawRect( second );
+
+    QRect first = QRect( mFirstBlockTopLeft, mFirstBlockTopLeft + QPoint( Block::size, Block::size ) );
+    painter.setPen( QPen( Qt::black, 3 ) );
+    painter.drawRect( first );
+    painter.setPen( QPen( Qt::cyan, 2 ) );
+    painter.drawRect( first );
 
     mLabel->setPixmap( tmp );
 }
