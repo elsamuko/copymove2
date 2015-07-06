@@ -182,11 +182,11 @@ void ScrollArea::mouseMoveEvent( QMouseEvent* event ) {
     QPointF position = event->pos();
 
     if( mFirstBlockGrabbed ) {
-        mFirstBlockTopLeft = toRelativePosition( position ).toPoint();
+        mFirstBlockTopLeft = toRelativePosition( position ).toPoint() - QPoint( Block::size / 2, Block::size / 2 );
         emit signalSendFirstBlock( mFirstBlockTopLeft );
         paintBlocks();
     } else if( mSecondBlockGrabbed ) {
-        mSecondBlockTopLeft = toRelativePosition( position ).toPoint();
+        mSecondBlockTopLeft = toRelativePosition( position ).toPoint() - QPoint( Block::size / 2, Block::size / 2 );
         emit signalSendSecondBlock( mSecondBlockTopLeft );
         paintBlocks();
     } else if( mMousePressed ) {
