@@ -42,9 +42,13 @@ void ControlWidget::setImage( QImage image ) {
 
     // positions
     ui->spinBoxFirstX->setMaximum( size.width() - Block::size );
+    ui->spinBoxFirstX->setValue( ui->spinBoxFirstX->minimum() );
     ui->spinBoxFirstY->setMaximum( size.height() - Block::size );
+    ui->spinBoxFirstY->setValue( ui->spinBoxFirstY->minimum() );
     ui->spinBoxSecondX->setMaximum( size.width() - Block::size );
+    ui->spinBoxSecondX->setValue( ui->spinBoxSecondX->minimum() );
     ui->spinBoxSecondY->setMaximum( size.height() - Block::size );
+    ui->spinBoxSecondY->setValue( ui->spinBoxSecondY->minimum() );
 
     // shift
     ui->spinBoxComparedDX->setMaximum( size.width() - Block::size );
