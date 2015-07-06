@@ -30,15 +30,15 @@ ScrollArea::ScrollArea( QWidget* parent ) :
 
 void ScrollArea::autoZoom() {
 
-    if( mImage.size().isEmpty() ) {
+    if( mPixmap.size().isEmpty() ) {
         return;
     }
 
     float scaledW   = this->size().width();
-    float originalW = mImage.size().width();
+    float originalW = mPixmap.size().width();
 
     float scaledH   = this->size().height();
-    float originalH = mImage.size().height();
+    float originalH = mPixmap.size().height();
 
     mZoom = std::min( scaledW / originalW, scaledH / originalH ) * 0.99;
     this->zoom();
@@ -50,8 +50,8 @@ void ScrollArea::scrollBy( const QPointF& diff ) {
 }
 
 void ScrollArea::paintBlocks() {
-    QPixmap pixmap = QPixmap::fromImage( mImage );
-    QPainter painter( &pixmap );
+    QPixmap tmp = mPixmap;
+    QPainter painter( &tmp );
     painter.setRenderHint( QPainter::Antialiasing, true );
 
     QRect first = QRect( mFirstBlockTopLeft, mFirstBlockTopLeft + QPoint( Block::size, Block::size ) );
@@ -66,13 +66,13 @@ void ScrollArea::paintBlocks() {
     painter.setPen( QPen( Qt::red, 2 ) );
     painter.drawRect( second );
 
-    mLabel->setPixmap( pixmap );
+    mLabel->setPixmap( tmp );
 }
 
 void ScrollArea::slotDrawImage( QImage image, bool fit ) {
     Q_ASSERT( image.format() == QImage::Format_ARGB32_Premultiplied );
 
-    mImage = image;
+    mPixmap = QPixmap::fromImage( image );
     paintBlocks();
 
     if( fit ) {
@@ -195,7 +195,7 @@ void ScrollArea::mouseMoveEvent( QMouseEvent* event ) {
 
 void ScrollArea::contextMenu( const QPoint& pos ) {
 
-    if( mImage.isNull() ) {
+    if( mPixmap.isNull() ) {
         return;
     }
 

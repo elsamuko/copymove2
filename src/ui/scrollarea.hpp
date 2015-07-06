@@ -42,7 +42,7 @@ class ScrollArea : public QScrollArea {
 
         float mZoom;
         QLabel* mLabel;
-        QImage mImage;
+        QPixmap mPixmap;
 
         QPoint mFirstBlockTopLeft;
         QPoint mSecondBlockTopLeft;
