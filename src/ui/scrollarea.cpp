@@ -23,6 +23,8 @@ ScrollArea::ScrollArea( QWidget* parent ) :
     this->setWidget( mLabel );
     this->setWidgetResizable( true );
 
+    releaseBlockGrab();
+
     CHECK_QT_CONNECT( connect( this, &ScrollArea::customContextMenuRequested, this, &ScrollArea::contextMenu, Qt::UniqueConnection ) );
 }
 
@@ -52,13 +54,13 @@ void ScrollArea::paintBlocks() {
     QPainter painter( &pixmap );
     painter.setRenderHint( QPainter::Antialiasing, true );
 
-    QRect first = QRect( mFirstBlock, mFirstBlock + QPoint( Block::size, Block::size ) );
+    QRect first = QRect( mFirstBlockTopLeft, mFirstBlockTopLeft + QPoint( Block::size, Block::size ) );
     painter.setPen( QPen( Qt::black, 3 ) );
     painter.drawRect( first );
     painter.setPen( QPen( Qt::cyan, 2 ) );
     painter.drawRect( first );
 
-    QRect second = QRect( mSecondBlock, mSecondBlock + QPoint( Block::size, Block::size ) );
+    QRect second = QRect( mSecondBlockTopLeft, mSecondBlockTopLeft + QPoint( Block::size, Block::size ) );
     painter.setPen( QPen( Qt::black, 3 ) );
     painter.drawRect( second );
     painter.setPen( QPen( Qt::red, 2 ) );
@@ -82,14 +84,14 @@ void ScrollArea::slotDrawImage( QImage image, bool fit ) {
 }
 
 void ScrollArea::slotSetFirstBlock( const PointI pos ) {
-    mFirstBlock.setX( pos.x() );
-    mFirstBlock.setY( pos.y() );
+    mFirstBlockTopLeft.setX( pos.x() );
+    mFirstBlockTopLeft.setY( pos.y() );
     paintBlocks();
 }
 
 void ScrollArea::slotSetSecondBlock( const PointI pos ) {
-    mSecondBlock.setX( pos.x() );
-    mSecondBlock.setY( pos.y() );
+    mSecondBlockTopLeft.setX( pos.x() );
+    mSecondBlockTopLeft.setY( pos.y() );
     paintBlocks();
 }
 
@@ -129,31 +131,66 @@ void ScrollArea::mouseDoubleClickEvent( QMouseEvent* ) {
     this->autoZoom();
 }
 
+void ScrollArea::checkBlockGrab() {
+    Q_ASSERT( mMousePressed );
+
+    QPointF relative = this->toRelativePosition( mMousePosition );
+    QRectF firstBlock( mFirstBlockTopLeft, QSize( Block::size, Block::size ) );
+    QRectF secondBlock( mSecondBlockTopLeft, QSize( Block::size, Block::size ) );
+
+    if( firstBlock.contains( relative ) ) {
+        mFirstBlockGrabbed = true;
+    } else if( secondBlock.contains( relative ) ) {
+        mSecondBlockGrabbed = true;
+    }
+}
+
 void ScrollArea::mousePressEvent( QMouseEvent* event ) {
     mMousePressed = true;
     mMousePosition = event->pos();
+    checkBlockGrab();
     update();
+}
+
+void ScrollArea::releaseBlockGrab() {
+    mFirstBlockGrabbed = false;
+    mSecondBlockGrabbed = false;
 }
 
 void ScrollArea::mouseReleaseEvent( QMouseEvent* ) {
     mMousePressed = false;
+    releaseBlockGrab();
     update();
 }
 
+QPointF ScrollArea::toRelativePosition( const QPointF& absolute ) {
+    QPointF relative = absolute - mLabel->pos();
+    relative /= mZoom;
+    return relative;
+}
+
 void ScrollArea::mouseMoveEvent( QMouseEvent* event ) {
-    if( mMousePressed ) {
 
+    QPointF position = event->pos();
+
+    if( mFirstBlockGrabbed ) {
+        mFirstBlockTopLeft = toRelativePosition( position ).toPoint();
+        emit signalSendFirstBlock( mFirstBlockTopLeft );
+        paintBlocks();
+    } else if( mSecondBlockGrabbed ) {
+        mSecondBlockTopLeft = toRelativePosition( position ).toPoint();
+        emit signalSendSecondBlock( mSecondBlockTopLeft );
+        paintBlocks();
+    } else if( mMousePressed ) {
         // get inverted delta
-        QPointF position = event->pos();
         QPointF diff = mMousePosition - position;
-
         // scroll by delta
         scrollBy( diff );
-
-        // update
-        mMousePosition = position;
-        update();
     }
+
+    // update
+    mMousePosition = position;
+    update();
 }
 
 void ScrollArea::contextMenu( const QPoint& pos ) {
@@ -162,8 +199,7 @@ void ScrollArea::contextMenu( const QPoint& pos ) {
         return;
     }
 
-    QPointF imagePos = pos - mLabel->pos();
-    imagePos /= mZoom;
+    QPointF imagePos = this->toRelativePosition( pos );
     qDebug() << imagePos;
 
     QMenu menu;
@@ -173,13 +209,13 @@ void ScrollArea::contextMenu( const QPoint& pos ) {
     QAction* selection = menu.exec( mapToGlobal( pos ) );
 
     if( selection == first ) {
-        mFirstBlock = imagePos.toPoint();
-        emit signalSendFirstBlock( imagePos.toPoint() );
+        mFirstBlockTopLeft = imagePos.toPoint();
+        emit signalSendFirstBlock( mFirstBlockTopLeft );
     }
 
     if( selection == second ) {
-        mSecondBlock = imagePos.toPoint();
-        emit signalSendSecondBlock( imagePos.toPoint() );
+        mSecondBlockTopLeft = imagePos.toPoint();
+        emit signalSendSecondBlock( mSecondBlockTopLeft );
     }
 
     paintBlocks();

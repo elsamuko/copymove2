@@ -36,13 +36,18 @@ class ScrollArea : public QScrollArea {
         void centerZoom();
         void scrollBy( const QPointF& diff );
         void paintBlocks();
+        void checkBlockGrab();
+        void releaseBlockGrab();
+        QPointF toRelativePosition( const QPointF& absolute );
 
         float mZoom;
         QLabel* mLabel;
         QImage mImage;
 
-        QPoint mFirstBlock;
-        QPoint mSecondBlock;
+        QPoint mFirstBlockTopLeft;
+        QPoint mSecondBlockTopLeft;
+        bool mFirstBlockGrabbed;
+        bool mSecondBlockGrabbed;
 
         bool mMousePressed;
         QPointF mMousePosition;
