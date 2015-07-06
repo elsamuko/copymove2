@@ -122,16 +122,17 @@ std::ostream& operator<< ( std::ostream& stream, const Block& b ) {
 
     stream.width( 3 );
     stream << std::round( b.mMean ) << " +- ";
-
-    stream.width( 3 );
     stream << std::round( b.mStandardDeviation ) << " {";
 
     for( auto & f : b.mFrequencies ) {
-        stream.width( 5 );
         stream << Block::roundBy<0>( f ) << ", ";
     }
 
-    stream << " }" << std::endl;
+    // remove last ", "
+    long pos = stream.tellp();
+    stream.seekp( pos - 2 );
+
+    stream << "}" << std::endl;
 
     return stream;
 }
