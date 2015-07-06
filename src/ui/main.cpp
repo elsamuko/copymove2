@@ -1,11 +1,12 @@
 #include <QApplication>
 
+#ifdef _WIN32
+#include <regex>
+#endif // _WIN32
+
 #include "mainwindow.hpp"
 #include "log/log.hpp"
 
-#ifdef _WIN32
-#   include <regex>
-#endif
 
 static inline void customMessageHandler( QtMsgType type, const QMessageLogContext& context, const QString& message ) {
 
@@ -23,19 +24,20 @@ static inline void customMessageHandler( QtMsgType type, const QMessageLogContex
 
     switch( type ) {
         case QtDebugMsg:
-            LOGQT( LEVEL_INFO, message.toStdString(), cfile, context.line, function.c_str() );
+            logging::writeLog( LEVEL_INFO, cfile, context.line, function.c_str(), message.toStdString() );
             break;
 
         case QtWarningMsg:
-            LOGQT( LEVEL_WARNING, message.toStdString(), cfile, context.line, function.c_str() );
+            logging::writeLog( LEVEL_WARNING, cfile, context.line, function.c_str(), message.toStdString() );
             break;
 
         case QtCriticalMsg:
-            LOGQT( LEVEL_ERROR, message.toStdString(), cfile, context.line, function.c_str() );
+            logging::writeLog( LEVEL_ERROR, cfile, context.line, function.c_str(), message.toStdString() );
             break;
 
         case QtFatalMsg:
-            LOGQT( LEVEL_ERROR, message.toStdString(), cfile, context.line, function.c_str() );
+            logging::writeLog( LEVEL_ERROR, cfile, context.line, function.c_str(), message.toStdString() );
+            logging::writeLog( LEVEL_ERROR, cfile, context.line, function.c_str(), "Aborting..." );
     }
 
     if( type == QtFatalMsg ) {
