@@ -114,7 +114,7 @@ void FileDealer::setupRecentMenu( QMenu* recent ) {
     for( int i = 0; i < MaxRecentFiles; ++i ) {
         mRecentFileActions[i] = new QAction( this );
         mRecentFileActions[i]->setVisible( false );
-        CHECK_QT_CONNECT( connect( mRecentFileActions[i], SIGNAL( triggered() ), this, SLOT( openRecent() ) ) );
+        CHECK_QT_CONNECT( connect( mRecentFileActions[i], &QAction::triggered, this, &FileDealer::openRecent ) );
     }
 
     this->updateRecentFileActions();
