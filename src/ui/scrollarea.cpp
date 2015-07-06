@@ -23,7 +23,7 @@ ScrollArea::ScrollArea( QWidget* parent ) :
     this->setWidget( mLabel );
     this->setWidgetResizable( true );
 
-    releaseBlockGrab();
+    this->releaseBlockGrab();
 
     CHECK_QT_CONNECT( connect( this, &ScrollArea::customContextMenuRequested, this, &ScrollArea::contextMenu, Qt::UniqueConnection ) );
 }
@@ -140,8 +140,10 @@ void ScrollArea::checkBlockGrab() {
 
     if( firstBlock.contains( relative ) ) {
         mFirstBlockGrabbed = true;
+        mLabel->setCursor( Qt::BlankCursor );
     } else if( secondBlock.contains( relative ) ) {
         mSecondBlockGrabbed = true;
+        mLabel->setCursor( Qt::BlankCursor );
     }
 }
 
@@ -155,6 +157,7 @@ void ScrollArea::mousePressEvent( QMouseEvent* event ) {
 void ScrollArea::releaseBlockGrab() {
     mFirstBlockGrabbed = false;
     mSecondBlockGrabbed = false;
+    mLabel->setCursor( Qt::CrossCursor );
 }
 
 void ScrollArea::mouseReleaseEvent( QMouseEvent* ) {
@@ -219,6 +222,7 @@ void ScrollArea::contextMenu( const QPoint& pos ) {
     }
 
     paintBlocks();
+    releaseBlockGrab();
     mMousePressed = false;
 }
 
