@@ -38,6 +38,10 @@ class ControlWidget : public QWidget {
         void on_spinBoxFirstY_valueChanged( int first );
         void on_spinBoxSecondX_valueChanged( int second );
         void on_spinBoxSecondY_valueChanged( int second );
+        void on_checkBoxShowShift_stateChanged( int );
+        void on_checkBoxShowBestHits_stateChanged( int );
+        void on_checkBoxShowMedian_stateChanged( int );
+        void on_checkBoxShowAverage_stateChanged( int );
 
     private:
         void updateBlockStats();

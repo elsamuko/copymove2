@@ -132,36 +132,44 @@ void ControlWidget::on_comboHits_currentIndexChanged( int ) {
         painter.setCompositionMode( QPainter::CompositionMode_Source );
         painter.setRenderHint( QPainter::Antialiasing, true );
 
-        // paint average of <mitHits> best hits
-        QPoint distMinHits( hit.distanceMinHits(), hit.distanceMinHits() );
-        QRect arcRect2( from - distMinHits, from + distMinHits );
-        painter.setPen( QPen( Qt::black, 3 ) );
-        painter.drawArc( arcRect2, 0, 16 * 360 );
-        painter.setPen( QPen( Qt::yellow, 2 ) );
-        painter.drawArc( arcRect2, 0, 16 * 360 );
+        // paint average of <minHits> best hits
+        if( ui->checkBoxShowBestHits->isChecked() ) {
+            QPoint distMinHits( hit.distanceMinHits(), hit.distanceMinHits() );
+            QRect arcRect2( from - distMinHits, from + distMinHits );
+            painter.setPen( QPen( Qt::black, 3 ) );
+            painter.drawArc( arcRect2, 0, 16 * 360 );
+            painter.setPen( QPen( Qt::yellow, 2 ) );
+            painter.drawArc( arcRect2, 0, 16 * 360 );
+        }
 
         // paint geometric median
-        QPoint distMedian( hit.distance(), hit.distance() );
-        QRect arcRect( from - distMedian, from + distMedian );
-        painter.setPen( QPen( Qt::black, 3 ) );
-        painter.drawArc( arcRect, 0, 16 * 360 );
-        painter.setPen( QPen( Qt::red, 2 ) );
-        painter.drawArc( arcRect, 0, 16 * 360 );
+        if( ui->checkBoxShowMedian->isChecked() ) {
+            QPoint distMedian( hit.distance(), hit.distance() );
+            QRect arcRect( from - distMedian, from + distMedian );
+            painter.setPen( QPen( Qt::black, 3 ) );
+            painter.drawArc( arcRect, 0, 16 * 360 );
+            painter.setPen( QPen( Qt::red, 2 ) );
+            painter.drawArc( arcRect, 0, 16 * 360 );
+        }
 
         // paint average
-        QPoint mean( hit.mean().x() + Block::size / 2, hit.mean().y() + Block::size / 2 );
-        QPoint distRadius( hit.radius(), hit.radius() );
-        QRect arcRect3( mean - distRadius, mean + distRadius );
-        painter.setPen( QPen( Qt::black, 3 ) );
-        painter.drawArc( arcRect3, 0, 16 * 360 );
-        painter.setPen( QPen( Qt::blue, 2 ) );
-        painter.drawArc( arcRect3, 0, 16 * 360 );
+        if( ui->checkBoxShowAverage->isChecked() ) {
+            QPoint mean( hit.mean().x() + Block::size / 2, hit.mean().y() + Block::size / 2 );
+            QPoint distRadius( hit.radius(), hit.radius() );
+            QRect arcRect3( mean - distRadius, mean + distRadius );
+            painter.setPen( QPen( Qt::black, 3 ) );
+            painter.drawArc( arcRect3, 0, 16 * 360 );
+            painter.setPen( QPen( Qt::blue, 2 ) );
+            painter.drawArc( arcRect3, 0, 16 * 360 );
+        }
 
         // paint shift
-        painter.setPen( QPen( Qt::black, 3 ) );
-        painter.drawLine( from, to );
-        painter.setPen( QPen( Qt::green, 2 ) );
-        painter.drawLine( from, to );
+        if( ui->checkBoxShowShift->isChecked() ) {
+            painter.setPen( QPen( Qt::black, 3 ) );
+            painter.drawLine( from, to );
+            painter.setPen( QPen( Qt::green, 2 ) );
+            painter.drawLine( from, to );
+        }
     }
 
     LOG( "Sending hit " + hit.toString() );
@@ -256,4 +264,20 @@ void ControlWidget::updateBlockStats() {
         int sat = 50 + ( similarity - 0.9 ) * 500;
         ui->labelSimilarityValue->setStyleSheet( "QLabel { background-color : hsl(" + QString::number( hue ) + ", " + QString::number( sat ) + "%, 100%); }" );
     }
+}
+
+void ControlWidget::on_checkBoxShowShift_stateChanged( int ) {
+    on_comboHits_currentIndexChanged( 0 );
+}
+
+void ControlWidget::on_checkBoxShowBestHits_stateChanged( int ) {
+    on_comboHits_currentIndexChanged( 0 );
+}
+
+void ControlWidget::on_checkBoxShowMedian_stateChanged( int ) {
+    on_comboHits_currentIndexChanged( 0 );
+}
+
+void ControlWidget::on_checkBoxShowAverage_stateChanged( int ) {
+    on_comboHits_currentIndexChanged( 0 );
 }

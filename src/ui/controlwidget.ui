@@ -122,15 +122,62 @@
        <string>Hits</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_2">
-       <item row="0" column="0">
+       <item row="4" column="0">
+        <widget class="QCheckBox" name="checkBoxShowBestHits">
+         <property name="text">
+          <string>Show radius of best hits</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0">
+        <widget class="QCheckBox" name="checkBoxShowAverage">
+         <property name="text">
+          <string>Show average</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0">
+        <widget class="QCheckBox" name="checkBoxShowMedian">
+         <property name="text">
+          <string>Show geometric median</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QCheckBox" name="checkBoxShowShift">
+         <property name="text">
+          <string>Show shift vector</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0" colspan="2">
+        <widget class="QTextBrowser" name="textHit"/>
+       </item>
+       <item row="0" column="0" colspan="2">
         <widget class="QComboBox" name="comboHits">
          <property name="focusPolicy">
           <enum>Qt::StrongFocus</enum>
          </property>
         </widget>
        </item>
-       <item row="1" column="0">
-        <widget class="QTextBrowser" name="textHit"/>
+       <item row="3" column="1" rowspan="4">
+        <widget class="QLabel" name="labelHitPreview">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
