@@ -100,6 +100,11 @@ void ScrollArea::slotSetSecondBlock( const PointI pos ) {
     paintBlocks();
 }
 
+void ScrollArea::slotZoomActualPixels() {
+    mZoom = 1.f;
+    this->zoom();
+}
+
 void ScrollArea::centerZoom() {
     QPointF diff;
 

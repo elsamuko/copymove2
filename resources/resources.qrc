@@ -7,6 +7,7 @@
         <file>actions/open.png</file>
         <file>actions/run.png</file>
         <file>actions/about.png</file>
+        <file>actions/fit_actual.png</file>
     </qresource>
     <qresource prefix="/licenses">
         <file>licenses/fontconfig.txt</file>

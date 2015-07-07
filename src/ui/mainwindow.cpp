@@ -104,3 +104,7 @@ void MainWindow::on_actionAbout_triggered() {
     About about;
     about.exec();
 }
+
+void MainWindow::on_actionActual_Pixels_triggered() {
+    ui->scrollArea->slotZoomActualPixels();
+}
