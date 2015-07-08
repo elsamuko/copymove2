@@ -51,7 +51,6 @@ class DCTSorter {
         std::function<void( size_t )> mProgressCallback;
 
         void readGreyToBlocks();
-        void dctBlocks();
         void sortBlocks();
         void sortShifts();
         void searchDuplicates();
