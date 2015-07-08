@@ -95,7 +95,6 @@ void DCTSorter::readGreyToBlocks() {
     const size_t height = mGrey.height();
     const size_t hB = height - Block::size;
     const size_t wB = width  - Block::size;
-    std::vector<std::vector<float>> tmp( Block::size, std::vector<float>( Block::size, 0.f ) );
     mBlocks = std::vector<Block>( hB * wB, Block( 0.f, mParams.quality(), false ) );
     std::atomic_int i( 0 );
 
@@ -103,7 +102,7 @@ void DCTSorter::readGreyToBlocks() {
     for( size_t y = 0; y < hB; ++y ) {
         for( size_t x = 0; x < wB; ++x ) {
             int current = i++;
-            mThreadPool.add( [this, current, x, y, &tmp] {
+            mThreadPool.add( [this, current, x, y] {
                 Block& block = mBlocks[current];
                 block.setX( x );
                 block.setY( y );
