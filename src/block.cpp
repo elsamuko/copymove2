@@ -8,14 +8,19 @@
 #include "log/log.hpp"
 #include "scopeguard.hpp"
 
-Block::Block( float color , size_t quality ) {
+Block::Block( float color, size_t quality, bool initializeData ) {
     mTransformed = false;
     mMeanCalculated = false;
+    mDataCleared = false;
     mDataReceived = false;
     mMean = 0.f;
     mStandardDeviation = 0.f;
     mQuantization = 20.f;
-    mData = std::vector<std::vector<float>>( Block::size, std::vector<float>( Block::size, color ) );
+
+    if( initializeData ) {
+        initData( color );
+    }
+
     mFrequencies = std::vector<int>( Block::frequencies, 0 );
     mFrequencyNorm = 0;
     mPos.set( 0, 0 );
@@ -63,6 +68,7 @@ void Block::assignFrequencies() {
 }
 
 void Block::dct() {
+    assert( !mDataCleared );
     STATE_CHECK( mTransformed );
 
     ooura::ddct<Block::size>( -1, mData );
@@ -70,6 +76,7 @@ void Block::dct() {
 }
 
 void Block::idct() {
+    assert( !mDataCleared );
     assert( mTransformed );
     mTransformed = false;
 
@@ -97,11 +104,13 @@ bool Block::operator >( const Block& b ) const {
 }
 
 std::vector<float>& Block::operator[]( const size_t pos ) {
+    assert( !mDataCleared );
     mDataReceived = true;
     return mData[pos];
 }
 
 const std::vector<float>& Block::operator[]( const size_t pos ) const {
+    assert( !mDataCleared );
     return mData[pos];
 }
 
@@ -124,7 +133,7 @@ std::ostream& operator<< ( std::ostream& stream, const Block& b ) {
     stream << std::round( b.mMean ) << " +- ";
     stream << std::round( b.mStandardDeviation ) << " {";
 
-    for( auto & f : b.mFrequencies ) {
+    for( auto& f : b.mFrequencies ) {
         stream << Block::roundBy<0>( f ) << ", ";
     }
 
@@ -144,6 +153,7 @@ std::string Block::toString() const {
 }
 
 std::vector<std::vector<float> > Block::data() const {
+    assert( !mDataCleared );
     return mData;
 }
 
@@ -153,6 +163,16 @@ void Block::setData( const std::vector<std::vector<float> >& data ) {
     assert( data[0].size() == Block::size );
     mData = data;
     mTransformed = false;
+    mDataCleared = false;
+}
+
+void Block::initData( float color ) {
+    mData = std::vector<std::vector<float>>( Block::size, std::vector<float>( Block::size, color ) );
+}
+
+void Block::clearData() {
+    STATE_CHECK( mDataCleared );
+    mData.clear();
 }
 
 void Block::setX( int x ) {
@@ -212,6 +232,7 @@ bool Block::interesting() const {
 void Block::calculateStandardDeviation() {
     STATE_CHECK( mMeanCalculated );
     assert( mDataReceived );
+    assert( !mDataCleared );
 
     mMean = 0.f;
     mStandardDeviation = 0.f;

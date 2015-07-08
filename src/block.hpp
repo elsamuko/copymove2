@@ -11,7 +11,7 @@
 class Block {
     public:
         enum : int { size = 16, frequencies = 9 };
-        explicit Block( float color = 0.f, size_t quality = 5 );
+        explicit Block( float color = 0.f, size_t quality = 5, bool initializeData = true );
 
         void dct();
         void idct();
@@ -26,6 +26,8 @@ class Block {
 
         std::vector<std::vector<float>> data() const;
         void setData( const std::vector<std::vector<float>>& data );
+        void initData( float color = 0.f );
+        void clearData();
 
         void setX( int x );
         int x() const;
@@ -59,6 +61,7 @@ class Block {
         void assignFrequencies();
 
         // state checks
+        bool mDataCleared;
         bool mDataReceived;
         bool mTransformed;
         bool mMeanCalculated;
