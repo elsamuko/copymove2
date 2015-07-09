@@ -25,5 +25,6 @@
         <file>licenses/libxml2.txt</file>
         <file>licenses/libz.txt</file>
         <file>licenses/qt.txt</file>
+        <file>licenses/tclap.txt</file>
     </qresource>
 </RCC>

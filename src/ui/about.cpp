@@ -50,6 +50,7 @@ About::About( QWidget* parent ) :
     ui->boxLicense->insertItem( i++, "libxml2",     QVariant( dir + "libxml2.txt" ) );
     ui->boxLicense->insertItem( i++, "libz",        QVariant( dir + "libz.txt" ) );
     ui->boxLicense->insertItem( i++, "Qt",          QVariant( dir + "qt.txt" ) );
+    ui->boxLicense->insertItem( i++, "TCLAP",       QVariant( dir + "tclap.txt" ) );
 }
 
 About::~About() {
