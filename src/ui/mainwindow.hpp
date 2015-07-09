@@ -26,6 +26,7 @@ class MainWindow : public QMainWindow {
         void on_actionActual_Pixels_triggered();
 
     private:
+        void scaleImage( QImage& image );
         void setupRecentImagesMenu();
 
         Ui::MainWindow* ui;

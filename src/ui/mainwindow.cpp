@@ -11,6 +11,11 @@
 #include "ui/filedealer.hpp"
 #include "ui/about.hpp"
 
+// MegaPixel literal
+constexpr unsigned long long int operator "" _MP( unsigned long long int in ) {
+    return in * 1E6;
+};
+
 MainWindow::MainWindow( QWidget* parent ) :
     QMainWindow( parent ),
     ui( new Ui::MainWindow ),
@@ -67,6 +72,22 @@ void MainWindow::on_actionOpen_triggered() {
     this->activateWindow();
 }
 
+void MainWindow::scaleImage( QImage& image ) {
+    size_t megapixels = image.width() * image.height();
+
+    if( megapixels > 3_MP ) {
+        LOG( "Image is bigger than 3 MP, resizing..." );
+
+        float ratio = ( ( float )3_MP ) / megapixels;
+
+        int newHeight = image.height() * std::sqrt( ratio );
+        int newWidth  = image.width()  * std::sqrt( ratio );
+
+        image = image.scaled( newWidth, newHeight, Qt::KeepAspectRatio, Qt::SmoothTransformation );
+        qDebug() << "Image is now" << image.width() << "x" << image.height();
+    }
+}
+
 void MainWindow::slotOpenImage( QString filename ) {
     QImage image;
 
@@ -77,6 +98,10 @@ void MainWindow::slotOpenImage( QString filename ) {
         }
 
         qDebug() << "Open " << filename;
+
+        // resize if bigger than 3 MP
+        scaleImage( image );
+
         ui->widgetControl->setImage( image );
         this->mConnection->setImage( image );
         ui->actionRun->setEnabled( true );
