@@ -40,7 +40,7 @@ ThreadPool::~ThreadPool() {
     mRunning.store( false );
     waitForAllJobs();
 
-    for( std::thread & worker : mWorkers ) {
+    for( std::thread& worker : mWorkers ) {
         worker.join();
     }
 }

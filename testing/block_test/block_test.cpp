@@ -70,7 +70,7 @@ void Block_test::testSort() {
     blocks[0][0][0] = 65536;
     blocks[0].setX( 4 );
 
-    for( Block & b : blocks ) {
+    for( Block& b : blocks ) {
         b.dct();
     }
 

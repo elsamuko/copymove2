@@ -164,7 +164,7 @@ void FileDealer::updateRecentFileActions( bool open ) {
 
     int actionNo = 0;
 
-    foreach( QAction * action, mRecentFileActions ) {
+    foreach( QAction* action, mRecentFileActions ) {
         action->setVisible( false );
     }
 

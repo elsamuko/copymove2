@@ -48,7 +48,7 @@ namespace TCLAP {
             /**
              * Constructor.  Does nothing.
              */
-            XorHandler( ) : _orList( std::vector< std::vector<Arg*> >() ) {}
+            XorHandler( ) : _orList( std::vector< std::vector<Arg * > >() ) {}
 
             /**
              * Add a list of Arg*'s that will be orred together.

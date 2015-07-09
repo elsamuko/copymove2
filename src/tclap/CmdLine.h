@@ -322,15 +322,15 @@ namespace TCLAP {
                              const std::string& v,
                              bool help )
         :
-        _argList( std::list<Arg*>() ),
+        _argList( std::list<Arg * >() ),
         _progName( "not_set_yet" ),
         _message( m ),
         _version( v ),
         _numRequired( 0 ),
         _delimiter( delim ),
         _xorHandler( XorHandler() ),
-        _argDeleteOnExitList( std::list<Arg*>() ),
-        _visitorDeleteOnExitList( std::list<Visitor*>() ),
+        _argDeleteOnExitList( std::list<Arg * >() ),
+        _visitorDeleteOnExitList( std::list<Visitor * >() ),
         _output( 0 ),
         _handleExceptions( true ),
         _userSetOutput( false ),

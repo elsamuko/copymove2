@@ -52,7 +52,7 @@ int main( int argc, char** argv ) {
         std::vector<ShiftHit> shiftHits = sorter.getShiftHits();
         std::reverse( shiftHits.begin(), shiftHits.end() );
 
-        for( ShiftHit & hit : shiftHits ) {
+        for( ShiftHit& hit : shiftHits ) {
             image.drawHit( hit );
         }
 

@@ -47,7 +47,7 @@ std::ostream& operator <<( std::ostream& stream, const ShiftHit& b ) {
     if( b.mVerbose ) {
         stream << ": { ";
 
-        for( auto & fromTo : b.mHits ) {
+        for( auto& fromTo : b.mHits ) {
             stream << "{";
             stream << fromTo.first.x() << ",";
             stream << fromTo.first.y() << "}, ";
@@ -74,10 +74,10 @@ std::tuple<PointF, float, float> ShiftHit::geometricMedian( const std::vector<Po
     PointF result;
     std::vector<PointF> copy = points;
 
-    for( const PointF & a : points ) {
+    for( const PointF& a : points ) {
         float squareSum = 0;
 
-        for( const PointF & b : points ) {
+        for( const PointF& b : points ) {
             squareSum += a.distance( b );
         }
 
@@ -110,7 +110,7 @@ void ShiftHit::calculateGeometricDistance() {
     std::vector<PointF> points;
     points.reserve( mHits.size() );
 
-    for( auto & fromTo : mHits ) {
+    for( auto& fromTo : mHits ) {
         points.emplace_back( fromTo.first );
     }
 
@@ -138,13 +138,13 @@ void ShiftHit::calculateStandardDeviation() {
     mStandardDeviation = 0.f;
     PointF diff;
 
-    for( auto & fromTo : mHits ) {
+    for( auto& fromTo : mHits ) {
         mMean += fromTo.first;
     }
 
     mMean /= ( float )( mHits.size() );
 
-    for( auto & fromTo : mHits ) {
+    for( auto& fromTo : mHits ) {
         diff = PointF( fromTo.first ) - mMean;
         mStandardDeviation += diff.sqr();
     }
