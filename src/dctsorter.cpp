@@ -70,12 +70,12 @@ void DCTSorter::work() {
     LOG( "Do work..." );
     STATE_CHECK( mWorked );
 
-    setProgress( 20 );
+    setProgress( 10 );
     readGreyToBlocks();
-    setProgress( 40 );
+    setProgress( 60 );
     // debugBlocks();
     sortBlocks();
-    setProgress( 60 );
+    setProgress( 70 );
     searchDuplicates();
     setProgress( 80 );
     sortShifts();
