@@ -37,18 +37,17 @@ static void rotateLog() {
     std::rename( filename.c_str(), backup1.c_str() );
 }
 
+
+std::once_flag flag;
+
 void initLogFile() {
-    static bool initialized = false;
-
-    if( !initialized ) {
-        initialized = true;
-
+    std::call_once( flag, [] {
 #if __APPLE__
         std::string cache = std::string( getenv( "HOME" ) ) + "/Library/Caches/com.fd-imaging.copymove";
         mkdir( cache.c_str(), 0777 );
 #endif
         rotateLog();
-    }
+    } );
 }
 
 std::string threadId() {
@@ -93,10 +92,10 @@ bool logging::writeLog( const char* level, const char* cfile, int sourceline, co
 #endif // _WIN32
     file = file.substr( 0, file.find_last_of( "." ) );
 
-    logline.width( 15 );
+    logline.width( 17 );
     logline << file << " ";
 
-    logline.width( 30 );
+    logline.width( 33 );
     logline << function << "(";
     logline.width( 4 );
     logline.setf( std::ios::right );

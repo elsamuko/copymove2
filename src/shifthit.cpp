@@ -29,20 +29,18 @@ bool ShiftHit::operator <( const ShiftHit& that ) const {
 }
 
 std::ostream& operator <<( std::ostream& stream, const ShiftHit& b ) {
-    stream << "#"      << std::setw( 2 ) << std::round( b.mRanking );
-    stream << "    ";
-    stream << " ["     << std::setw( 4 ) << std::round( b.mMean.x() );
-    stream << ", "     << std::setw( 4 ) << std::round( b.mMean.y() );
-    stream << "] +- "  << std::setw( 4 ) << std::round( b.mStandardDeviation );
-    stream << "    ";
-    stream << " ["     << std::setw( 4 ) << std::round( b.mGeometricAverage.x() );
-    stream << ", "     << std::setw( 4 ) << std::round( b.mGeometricAverage.y() );
-    stream << "] +- "  << std::setw( 4 ) << std::round( b.mGeometricAverageDistance );
-    stream << " +- "   << std::setw( 4 ) << std::round( b.mMinHitsAverageDistance );
-    stream << "  dm "  << std::setw( 4 ) << std::round( b.mMean.distance( b.mGeometricAverage ) );
-    stream << "  -> [" << std::setw( 5 ) << b.mShift.dx();
-    stream << ", "     << std::setw( 5 ) << b.mShift.dy();
-    stream << "] w/ "  << std::setw( 4 ) << b.mHits.size() << " hits";
+    stream << "#"        << std::setw( 2 ) << std::round( b.mRanking );
+    stream << " ["       << std::setw( 4 ) << std::round( b.mMean.x() );
+    stream << ", "       << std::setw( 4 ) << std::round( b.mMean.y() );
+    stream << "] +- "    << std::setw( 4 ) << std::round( b.mStandardDeviation );
+    stream << "   ["     << std::setw( 4 ) << std::round( b.mGeometricAverage.x() );
+    stream << ", "       << std::setw( 4 ) << std::round( b.mGeometricAverage.y() );
+    stream << "] +- "    << std::setw( 4 ) << std::round( b.mGeometricAverageDistance );
+    stream << "  [min "  << std::setw( 4 ) << std::round( b.mMinHitsAverageDistance );
+    stream << "]  [dgm " << std::setw( 4 ) << std::round( b.mMean.distance( b.mGeometricAverage ) );
+    stream << "]  -> ["  << std::setw( 5 ) << b.mShift.dx();
+    stream << ", "       << std::setw( 5 ) << b.mShift.dy();
+    stream << "] w/ "    << std::setw( 4 ) << b.mHits.size() << " hits";
 
     if( b.mVerbose ) {
         stream << ": { ";
