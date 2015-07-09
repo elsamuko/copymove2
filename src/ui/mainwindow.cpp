@@ -4,6 +4,8 @@
 #include <QFileDialog>
 #include <QStandardPaths>
 #include <QDesktopWidget>
+#include <QDragEnterEvent>
+#include <QMimeData>
 
 #include "sorterconnection.hpp"
 #include "ui/filedealer.hpp"
@@ -70,6 +72,7 @@ void MainWindow::slotOpenImage( QString filename ) {
             image = image.convertToFormat( QImage::Format_ARGB32_Premultiplied );
         }
 
+        qDebug() << "Open " << filename;
         this->mConnection->setImage( image );
         ui->widgetControl->setImage( image );
 
@@ -107,4 +110,41 @@ void MainWindow::on_actionAbout_triggered() {
 
 void MainWindow::on_actionActual_Pixels_triggered() {
     ui->scrollArea->slotZoomActualPixels();
+}
+
+void MainWindow::dragEnterEvent( QDragEnterEvent* event ) {
+    event->accept();
+}
+
+//! \see mainwindow.ui: acceptDrops
+void MainWindow::dropEvent( QDropEvent* event ) {
+    const QMimeData* data = event->mimeData();
+
+    if( data->hasUrls() ) {
+        QList<QUrl> urls = data->urls();
+
+        if( !urls.empty() ) {
+            /* open first image */
+            QString filename = urls[0].path();
+
+#ifdef WIN32
+
+            // avoid "/C:/image.jpg"
+            if( filename.startsWith( '/' ) ) {
+                filename.remove( 0, 1 );
+            }
+
+#endif // WIN32
+
+            QFileInfo info( filename );
+
+            if( info.exists() && mFileDealer->knows( info.suffix() ) ) {
+                mFileDealer->setFilename( filename );
+                slotOpenImage( filename );
+            } else {
+                qWarning() << "Cannot open " << filename;
+                ui->statusBar->showMessage( "Invalid file type", 2000 );
+            }
+        }
+    }
 }
