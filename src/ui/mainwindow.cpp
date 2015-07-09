@@ -34,6 +34,10 @@ MainWindow::MainWindow( QWidget* parent ) :
     CHECK_QT_CONNECT( connect( ui->widgetControl, &ControlWidget::signalSendFirstBlock, ui->scrollArea, &ScrollArea::slotSetFirstBlock, Qt::UniqueConnection ) );
     CHECK_QT_CONNECT( connect( ui->widgetControl, &ControlWidget::signalSendSecondBlock, ui->scrollArea, &ScrollArea::slotSetSecondBlock, Qt::UniqueConnection ) );
 
+    // open image with double blick
+    CHECK_QT_CONNECT( connect( ui->scrollArea, &ScrollArea::signalOpenImage, ui->actionOpen, &QAction::trigger, Qt::UniqueConnection ) );
+
+
     // center app
     // \sa https://wiki.qt.io/Center_a_Window_on_the_Screen
     this->setGeometry( QStyle::alignedRect( Qt::LeftToRight, Qt::AlignCenter, this->size(), qApp->desktop()->availableGeometry() ) );

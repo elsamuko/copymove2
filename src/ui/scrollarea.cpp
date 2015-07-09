@@ -18,11 +18,12 @@ ScrollArea::ScrollArea( QWidget* parent ) :
     this->setBackgroundRole( QPalette::Shadow );
 
     mLabel = new QLabel( this );
-    mLabel->setSizePolicy( QSizePolicy::Ignored, QSizePolicy::Ignored );
+    mLabel->setText( tr( "Drop or open image.\nOr double click." ) );
     mLabel->setScaledContents( true );
+    mLabel->setAlignment( Qt::AlignHCenter | Qt::AlignVCenter );
+
     this->setWidget( mLabel );
     this->setWidgetResizable( true );
-
     this->releaseBlockGrab();
 
     CHECK_QT_CONNECT( connect( this, &ScrollArea::customContextMenuRequested, this, &ScrollArea::contextMenu, Qt::UniqueConnection ) );
@@ -138,7 +139,11 @@ void ScrollArea::wheelEvent( QWheelEvent* event ) {
 }
 
 void ScrollArea::mouseDoubleClickEvent( QMouseEvent* ) {
-    this->autoZoom();
+    if( mPixmap.isNull() ) {
+        emit signalOpenImage();
+    } else {
+        this->autoZoom();
+    }
 }
 
 void ScrollArea::checkBlockGrab() {
