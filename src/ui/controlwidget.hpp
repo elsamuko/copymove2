@@ -33,7 +33,7 @@ class ControlWidget : public QWidget {
         void slotReset();
 
     private slots:
-        void on_comboHits_currentIndexChanged( int );
+        void on_comboHits_currentIndexChanged( int index );
         void on_spinBoxFirstX_valueChanged( int first );
         void on_spinBoxFirstY_valueChanged( int first );
         void on_spinBoxSecondX_valueChanged( int second );

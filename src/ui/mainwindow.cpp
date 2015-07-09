@@ -77,9 +77,8 @@ void MainWindow::slotOpenImage( QString filename ) {
         }
 
         qDebug() << "Open " << filename;
-        this->mConnection->setImage( image );
         ui->widgetControl->setImage( image );
-
+        this->mConnection->setImage( image );
         ui->actionRun->setEnabled( true );
 
         // set window title

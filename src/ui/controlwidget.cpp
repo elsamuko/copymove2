@@ -34,9 +34,15 @@ void ControlWidget::setImage( QImage image ) {
         return;
     }
 
-    ui->tabBlocks->setEnabled( true );
-    ui->tabAnalysis->setEnabled( true );
+    // analysis
     ui->comboHits->clear();
+    ui->textHit->clear();
+    ui->tabAnalysis->setEnabled( true );
+
+    // blocks
+    ui->tabBlocks->setEnabled( true );
+
+    // image
     mImage = image;
     emit signalImage( image, true );
 
@@ -96,7 +102,13 @@ void ControlWidget::slotReset() {
     ui->progressBar->hide();
 }
 
-void ControlWidget::on_comboHits_currentIndexChanged( int ) {
+void ControlWidget::on_comboHits_currentIndexChanged( int index ) {
+
+    // -1 if emptied
+    if( index == -1 ) {
+        return;
+    }
+
     ShiftHit hit = ui->comboHits->currentData().value<ShiftHit>();
     ui->textHit->setText( QString::fromStdString( hit.toString() ) );
 
