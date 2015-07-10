@@ -14,7 +14,7 @@
 // MegaPixel literal
 constexpr unsigned long long int operator "" _MP( unsigned long long int in ) {
     return in * 1E6;
-};
+}
 
 MainWindow::MainWindow( QWidget* parent ) :
     QMainWindow( parent ),
