@@ -3,8 +3,9 @@
 
 #include <QFileDialog>
 #include <QStandardPaths>
-#include <QDesktopWidget>
+#include <QDesktopServices>
 #include <QDragEnterEvent>
+#include <QDesktopWidget>
 #include <QMimeData>
 
 #include "sorterconnection.hpp"
@@ -175,4 +176,8 @@ void MainWindow::dropEvent( QDropEvent* event ) {
             }
         }
     }
+}
+
+void MainWindow::on_actionShow_logfile_triggered() {
+    QDesktopServices::openUrl( QUrl( "file://" + QString::fromStdString( logging::logFilename() ) ) );
 }

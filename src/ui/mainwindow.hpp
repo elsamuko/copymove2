@@ -11,32 +11,33 @@ namespace Ui {
 }
 
 class MainWindow : public QMainWindow {
-        Q_OBJECT
+    Q_OBJECT
 
-    public:
-        explicit MainWindow( QWidget* parent = 0 );
-        ~MainWindow();
+public:
+    explicit MainWindow( QWidget* parent = 0 );
+    ~MainWindow();
 
-    private slots:
-        void on_actionExit_triggered();
-        void on_actionOpen_triggered();
-        void slotOpenImage( QString filename );
-        void on_actionRun_triggered();
-        void on_actionAbout_triggered();
-        void on_actionActual_Pixels_triggered();
+private slots:
+    void on_actionExit_triggered();
+    void on_actionOpen_triggered();
+    void slotOpenImage( QString filename );
+    void on_actionRun_triggered();
+    void on_actionAbout_triggered();
+    void on_actionActual_Pixels_triggered();
+    void on_actionShow_logfile_triggered();
 
-    private:
-        void scaleImage( QImage& image );
-        void setupRecentImagesMenu();
+private:
+    void scaleImage( QImage& image );
+    void setupRecentImagesMenu();
 
-        Ui::MainWindow* ui;
+    Ui::MainWindow* ui;
 
-        SorterConnection* mConnection;
+    SorterConnection* mConnection;
 
-        /* io helper class */
-        FileDealer* mFileDealer;
+    /* io helper class */
+    FileDealer* mFileDealer;
 
-        /* drag & drop */
-        virtual void dropEvent( QDropEvent* event );
-        virtual void dragEnterEvent( QDragEnterEvent* event );
+    /* drag & drop */
+    virtual void dropEvent( QDropEvent* event );
+    virtual void dragEnterEvent( QDragEnterEvent* event );
 };
