@@ -72,12 +72,12 @@ void DCTSorter::work() {
 
     setProgress( 10 );
     readGreyToBlocks();
-    setProgress( 60 );
+    setProgress( 70 );
     // debugBlocks();
     sortBlocks();
-    setProgress( 70 );
-    searchDuplicates();
     setProgress( 80 );
+    searchDuplicates();
+    setProgress( 90 );
     sortShifts();
     setProgress( 99 );
 }
@@ -96,13 +96,23 @@ void DCTSorter::readGreyToBlocks() {
     const size_t hB = height - Block::size;
     const size_t wB = width  - Block::size;
     mBlocks = std::vector<Block>( hB * wB, Block( 0.f, mParams.quality(), false ) );
-    std::atomic_int i( 0 );
+
+    // send small progress steps from 10-70 %
+    std::mutex m;
+    int size = hB * wB;
+    std::atomic_int pos( 0 );
+    std::function<void()> step( [&m, &pos, &size, this] {
+        if( ( pos++ % 10000 ) == 0 ) {
+            float progress = ( float ) pos.load() / size;
+            setProgress( 10 + progress * 60.f );
+        }
+    } );
 
     // read
     for( size_t y = 0; y < hB; ++y ) {
         for( size_t x = 0; x < wB; ++x ) {
-            int current = i++;
-            mThreadPool.add( [this, current, x, y] {
+            int current = y * wB + x;
+            mThreadPool.add( [this, current, x, y, &step] {
                 Block& block = mBlocks[current];
                 block.setX( x );
                 block.setY( y );
@@ -112,6 +122,7 @@ void DCTSorter::readGreyToBlocks() {
                 block.calculateStandardDeviation();
                 block.dct();
                 block.clearData(); // ...and clear it right back for less memory consumption
+                step();
             } );
         }
     }
