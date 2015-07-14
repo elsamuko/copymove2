@@ -9,6 +9,7 @@
 
 ThreadPool::ThreadPool() {
     mRunning.store( true );
+    mStopped.store( false );
     mJobCount.store( 0 );
 
     size_t count = std::thread::hardware_concurrency();
@@ -35,7 +36,7 @@ ThreadPool::ThreadPool() {
 }
 
 ThreadPool::~ThreadPool() {
-    LOG( "Stopping threadpool" );
+    LOG( "Destructing threadpool" );
 
     mRunning.store( false );
     waitForAllJobs();
@@ -72,12 +73,20 @@ bool ThreadPool::jobsAvailable() {
     return mJobCount.load() > 0;
 }
 
-void ThreadPool::add( const Job& job ) {
-    assert( mRunning.load() );
+bool ThreadPool::add( const Job& job ) {
+    if( !mRunning.load() ) {
+        return false;
+    }
+
+    if( mStopped.load() ) {
+        return false;
+    }
+
     std::unique_lock<std::mutex> lock( mJobMutex );
     mJobs.emplace( job );
     mJobCount++;
     mWaitingCondition.notify_one();
+    return true;
 }
 
 void ThreadPool::waitForAllJobs() {
@@ -87,6 +96,28 @@ void ThreadPool::waitForAllJobs() {
         std::this_thread::sleep_for( std::chrono::milliseconds( 10 ) );
         mWaitingCondition.notify_all();
     }
+}
+
+void ThreadPool::resume() {
+    mStopped.store( false );
+}
+
+void ThreadPool::suspend() {
+
+    LOG( "Stopping threadpool" );
+    mStopped.store( true );
+
+    // clear queue
+    {
+        std::unique_lock<std::mutex> lock( mJobMutex );
+        int size = mJobs.size();
+        mJobCount -= size;
+        std::queue<Job> empty;
+        std::swap( mJobs, empty );
+        LOG( "Jobs left: " + std::to_string( mJobs.size() ) );
+    }
+
+    this->waitForAllJobs();
 }
 
 int ThreadPool::size() const {

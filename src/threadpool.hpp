@@ -13,8 +13,10 @@ class ThreadPool {
         typedef std::function<void()> Job;
         ThreadPool();
         ~ThreadPool();
-        void add( const ThreadPool::Job& job );
+        bool add( const ThreadPool::Job& job );
         void waitForAllJobs();
+        void suspend();
+        void resume();
         int size() const;
     private:
         void workOff();
@@ -31,5 +33,6 @@ class ThreadPool {
         std::atomic_int mJobCount;
 
         std::atomic_bool mRunning;
+        std::atomic_bool mStopped;
 };
 
