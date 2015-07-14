@@ -31,6 +31,7 @@ int main( int argc, char** argv ) {
     // algorithm
     {
         DCTSorter sorter;
+        sorter.start();
         sorter.setParams( params );
         sorter.setGrey( image.getGrey() );
         sorter.work();
