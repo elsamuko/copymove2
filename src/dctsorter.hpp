@@ -20,12 +20,19 @@ class DCTSorter {
             GreyImage to;
         };
         DCTSorter();
+        ~DCTSorter();
+        enum State { Idling, Running, Stopping };
         void setGrey( const GreyImage& grey );
         GreyImage getGrey() const;
         DCTSorter::ShiftImages getShiftImages() const;
         std::vector<ShiftHit> getShiftHits() const;
         void setParams( const SorterParams& params );
+        void reset( bool hard = true );
         void work();
+        void start();
+        void stop();
+        void resume();
+        bool stopped() const;
         void setProgressCallback( const std::function<void( size_t )>& callback );
 
     private:
@@ -40,6 +47,9 @@ class DCTSorter {
         SorterParams mParams;
 
         // state checks
+        std::mutex mStateLock;
+        DCTSorter::State mState;
+
         bool mGreyReceived;
         bool mWorked;
         bool mBlocksSet;
@@ -55,6 +65,5 @@ class DCTSorter {
         void sortShifts();
         void searchDuplicates();
         void debugBlocks();
-        void reset();
         void setProgress( size_t percentage );
 };

@@ -7,12 +7,24 @@
 #include "log/log.hpp"
 #include "scopeguard.hpp"
 
-DCTSorter::DCTSorter() {}
+#define IF_STOPPED_RETURN if( mState != DCTSorter::Running ) { LOG( "Stopped" ); return; }
 
-void DCTSorter::reset() {
-    mBlocks.clear();
-    mShifts.clear();
-    mShiftHits.clear();
+DCTSorter::DCTSorter() {
+    reset( true );
+}
+
+DCTSorter::~DCTSorter() {
+    this->stop();
+}
+
+void DCTSorter::reset( bool hard ) {
+
+    if( hard ) {
+        mBlocks.clear();
+        mShifts.clear();
+        mShiftHits.clear();
+        mState = DCTSorter::Idling;
+    }
 
     mGreyReceived       = false;
     mWorked             = false;
@@ -24,14 +36,14 @@ void DCTSorter::reset() {
 }
 
 void DCTSorter::setProgress( size_t percentage ) {
+    LOG( std::to_string( percentage ) + "%" );
+
     if( mProgressCallback ) {
         mProgressCallback( percentage );
     }
 }
 
 void DCTSorter::setGrey( const GreyImage& grey ) {
-    this->reset();
-
     LOG( "Set grey..." );
     STATE_CHECK( mGreyReceived );
 
@@ -67,19 +79,46 @@ void DCTSorter::setParams( const SorterParams& params ) {
 }
 
 void DCTSorter::work() {
+    IF_STOPPED_RETURN;
     LOG( "Do work..." );
     STATE_CHECK( mWorked );
 
     setProgress( 10 );
     readGreyToBlocks();
+    IF_STOPPED_RETURN;
+
     setProgress( 70 );
     // debugBlocks();
     sortBlocks();
+    IF_STOPPED_RETURN;
+
     setProgress( 80 );
     searchDuplicates();
+    IF_STOPPED_RETURN;
+
     setProgress( 90 );
     sortShifts();
     setProgress( 99 );
+}
+
+void DCTSorter::start() {
+    mState = DCTSorter::Running;
+}
+
+void DCTSorter::stop() {
+    mState = DCTSorter::Stopping;
+    LOG( "Stop requested" );
+    mThreadPool.suspend();
+    this->reset( false );
+    mState = DCTSorter::Idling;
+}
+
+void DCTSorter::resume() {
+    mThreadPool.resume();
+}
+
+bool DCTSorter::stopped() const {
+    return mState != DCTSorter::Running;
 }
 
 void DCTSorter::setProgressCallback( const std::function<void( size_t )>& callback ) {
@@ -102,18 +141,22 @@ void DCTSorter::readGreyToBlocks() {
     int size = hB * wB;
     std::atomic_int pos( 0 );
     std::function<void()> step( [&m, &pos, &size, this] {
-        if( ( pos++ % 10000 ) == 0 ) {
+        if( ( pos++ % 25000 ) == 0 ) {
             float progress = ( float ) pos.load() / size;
-            setProgress( 10 + progress * 60.f );
+            int percent = 10 + progress * 60.f;
+            setProgress( percent );
         }
     } );
 
     // read
+    bool ok = true;
+
     for( size_t y = 0; y < hB; ++y ) {
         for( size_t x = 0; x < wB; ++x ) {
+            IF_STOPPED_RETURN;
             int current = y * wB + x;
-            mThreadPool.add( [this, current, x, y, &step] {
-                Block& block = mBlocks[current];
+            ok &= mThreadPool.add( [this, current, x, y, &step] {
+                Block block;
                 block.setX( x );
                 block.setY( y );
                 block.setQuality( mParams.quality() );
@@ -122,16 +165,23 @@ void DCTSorter::readGreyToBlocks() {
                 block.calculateStandardDeviation();
                 block.dct();
                 block.clearData(); // ...and clear it right back for less memory consumption
+                IF_STOPPED_RETURN;
+                mBlocks[current] = block;
                 step();
             } );
         }
     }
 
+    LOG( "Waiting..." );
     mThreadPool.waitForAllJobs();
+    IF_STOPPED_RETURN;
 
     // some stats
-    for( Block& block : mBlocks ) {
-        mGrey[block.x() + Block::size / 2][block.y() + Block::size / 2] = block.interesting() ? 255 : 0;
+    if( ok ) {
+        for( Block& block : mBlocks ) {
+            IF_STOPPED_RETURN;
+            mGrey[block.x() + Block::size / 2][block.y() + Block::size / 2] = block.interesting() ? 255 : 0;
+        }
     }
 }
 
