@@ -24,6 +24,10 @@ static inline void customMessageHandler( QtMsgType type, const QMessageLogContex
 
     switch( type ) {
         case QtDebugMsg:
+            logging::writeLog( LEVEL_DEBUG, cfile, context.line, function.c_str(), message.toStdString() );
+            break;
+
+        case QtInfoMsg:
             logging::writeLog( LEVEL_INFO, cfile, context.line, function.c_str(), message.toStdString() );
             break;
 
