@@ -242,7 +242,8 @@ void ScrollArea::contextMenu( const QPoint& pos ) {
 }
 
 void ScrollArea::zoom() {
-    // LOG( "Zoom : " + std::to_string( mZoom ) );
-    mLabel->resize( mZoom * mLabel->pixmap()->size() );
-    centerZoom();
+    if( mLabel->pixmap() ) {
+        mLabel->resize( mZoom * mLabel->pixmap()->size() );
+        centerZoom();
+    }
 }
