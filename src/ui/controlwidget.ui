@@ -38,9 +38,6 @@
       <layout class="QGridLayout" name="gridLayout_3">
        <item row="1" column="0" colspan="2">
         <widget class="QPushButton" name="buttonRun">
-         <property name="styleSheet">
-          <string notr="true">background-color: red;</string>
-         </property>
          <property name="text">
           <string>Run!</string>
          </property>
