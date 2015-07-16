@@ -22,6 +22,7 @@ class SorterConnection : public QObject {
 
     public slots:
         void slotRun( SorterParams params );
+        void slotStop();
 
     private:
         GreyImage getGrey() const;
@@ -30,4 +31,5 @@ class SorterConnection : public QObject {
         DCTSorter mSorter;
         std::vector<ShiftHit> mShiftHits;
         QFuture<void> mWhenFinished;
+        std::mutex mStateLock;
 };
