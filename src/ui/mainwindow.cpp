@@ -27,6 +27,7 @@ MainWindow::MainWindow( QWidget* parent ) :
     setupRecentImagesMenu();
 
     CHECK_QT_CONNECT( connect( ui->widgetControl, &ControlWidget::signalRun, mConnection, &SorterConnection::slotRun, Qt::UniqueConnection ) );
+    CHECK_QT_CONNECT( connect( ui->widgetControl, &ControlWidget::signalStop, mConnection, &SorterConnection::slotStop, Qt::UniqueConnection ) );
     CHECK_QT_CONNECT( connect( ui->widgetControl, &ControlWidget::signalImage, ui->scrollArea, &ScrollArea::slotDrawImage, Qt::UniqueConnection ) );
     CHECK_QT_CONNECT( connect( mConnection, &SorterConnection::signalDone, ui->widgetControl, &ControlWidget::slotResults, Qt::QueuedConnection ) );
     CHECK_QT_CONNECT( connect( mConnection, &SorterConnection::signalReset, ui->widgetControl, &ControlWidget::slotReset, Qt::UniqueConnection ) );

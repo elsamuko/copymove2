@@ -13,6 +13,7 @@ ControlWidget::ControlWidget( QWidget* parent ) :
     ui->setupUi( this );
 
     ui->buttonRun->show();
+    ui->buttonStop->hide();
     ui->progressBar->hide();
     ui->progressBar->reset();
 
@@ -70,6 +71,7 @@ void ControlWidget::slotResults( std::vector<ShiftHit>::const_iterator begin, st
 
     ui->buttonRun->show();
     ui->progressBar->hide();
+    ui->buttonStop->hide();
     ui->progressBar->reset();
     ui->tabHits->setEnabled( true );
 
@@ -100,6 +102,7 @@ void ControlWidget::slotSetSecondBlock( QPoint pos ) {
 void ControlWidget::slotReset() {
     ui->buttonRun->show();
     ui->progressBar->hide();
+    ui->buttonStop->hide();
 }
 
 void ControlWidget::on_comboHits_currentIndexChanged( int index ) {
@@ -195,7 +198,12 @@ void ControlWidget::on_buttonRun_clicked() {
     params.setValid( true );
     ui->buttonRun->hide();
     ui->progressBar->show();
+    ui->buttonStop->show();
     emit signalRun( params );
+}
+
+void ControlWidget::on_buttonStop_clicked() {
+    emit signalStop();
 }
 
 void ControlWidget::on_spinBoxFirstX_valueChanged( int first ) {

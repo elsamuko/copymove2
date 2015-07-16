@@ -20,6 +20,7 @@ class ControlWidget : public QWidget {
 
     signals:
         void signalRun( SorterParams params );
+        void signalStop();
         void signalImage( QImage image, bool fit );
         void signalSendFirstBlock( PointI pos );
         void signalSendSecondBlock( PointI pos );
@@ -42,6 +43,7 @@ class ControlWidget : public QWidget {
         void on_checkBoxShowBestHits_stateChanged( int );
         void on_checkBoxShowMedian_stateChanged( int );
         void on_checkBoxShowAverage_stateChanged( int );
+        void on_buttonStop_clicked();
 
     private:
         void updateBlockStats();
