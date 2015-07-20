@@ -18,7 +18,7 @@ class FileDealer : public QObject {
         std::pair<bool, QString> getSaveFilename();
         std::pair<bool, QString> getOpenFilename();
         void setupRecentMenu( QMenu* recent );
-        void updateRecentFileActions( bool open = true );
+        void updateRecentFileActions();
         void setType( FileType type );
         bool knows( const QString& suffix ) const;
 
@@ -38,11 +38,10 @@ class FileDealer : public QObject {
         QString mSettingsRecent;
         QString mDefaultSuffix;
         QStringList mPossibleSuffixes;
-        bool mUpdateRecentOnSave;
 
         enum { MaxRecentFiles = 5 };
 
         FileType mType;
         QList<QAction*> mRecentFileActions;
-        void setCurrentFile( bool open = true );
+        void setCurrentFile();
 };

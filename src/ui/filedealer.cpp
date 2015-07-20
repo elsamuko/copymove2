@@ -32,7 +32,6 @@ void FileDealer::setType( FileType type ) {
             mSettingsRecent = "recentImages";
             mDefaultSuffix = "jpg";
             mPossibleSuffixes << "jpg" << "jpeg" << "png";
-            mUpdateRecentOnSave = false;
         }
         break;
 
@@ -52,7 +51,7 @@ QString FileDealer::getFilename() const {
 
 void FileDealer::setFilename( const QString& filename ) {
     mFilename = filename;
-    setCurrentFile( true );
+    setCurrentFile();
 }
 
 std::pair<bool, QString> FileDealer::getSaveFilename() {
@@ -70,10 +69,6 @@ std::pair<bool, QString> FileDealer::getSaveFilename() {
     }
 
     mFilename = filename;
-
-    if( mUpdateRecentOnSave ) {
-        setCurrentFile( false );
-    }
 
     QFileInfo info( mFilename );
 
@@ -101,7 +96,7 @@ std::pair<bool, QString> FileDealer::getOpenFilename() {
         ok = false;
     } else {
         mFilename = filename;
-        setCurrentFile( true );
+        setCurrentFile();
     }
 
     return std::make_pair( ok, mFilename );
@@ -125,14 +120,14 @@ void FileDealer::setupRecentMenu( QMenu* recent ) {
 //! \brief Update GUI state according to mFilename
 //! \see void MainWindow::openImage( const QString& filename )
 //! \arg open, true, if recent menu is updated from opening a file
-void FileDealer::setCurrentFile( bool open ) {
+void FileDealer::setCurrentFile() {
     QSettings settings;
 
     /* set last opened directory */
     QFileInfo info( mFilename );
     QStringList files = settings.value( mSettingsRecent ).toStringList();
 
-    if( !open || info.exists() ) {
+    if( info.exists() ) {
         settings.setValue( mLastDirectory, info.absolutePath() );
         files.removeAll( mFilename );
         files.prepend( mFilename );
@@ -144,12 +139,12 @@ void FileDealer::setCurrentFile( bool open ) {
 
     settings.setValue( mSettingsRecent, files );
 
-    this->updateRecentFileActions( open );
+    this->updateRecentFileActions();
 }
 
 //! \brief Refreshs the Recent File Actions in menu and settings
 //! \arg open, true, if recent menu is updated from opening a file
-void FileDealer::updateRecentFileActions( bool open ) {
+void FileDealer::updateRecentFileActions() {
     QList<Qt::Key> numKeys;
     numKeys << Qt::Key_1
             << Qt::Key_2
@@ -171,7 +166,7 @@ void FileDealer::updateRecentFileActions( bool open ) {
     for( int i = 0; i < numRecentFiles; ++i ) {
         QFileInfo info( files[i] );
 
-        if( !open || info.exists() ) {
+        if( info.exists() ) {
             mRecentFileActions[i]->setText( info.fileName() );
             mRecentFileActions[i]->setData( files[i] );
             mRecentFileActions[i]->setVisible( true );
@@ -196,10 +191,10 @@ void FileDealer::openRecent() {
     QAction* action = qobject_cast<QAction*>( sender() );
 
     if( action ) {
-        QString filename;
-        filename = action->data().toString();
+        mFilename = action->data().toString();
+        setCurrentFile();
 
         /* received by  */
-        emit signalOpen( filename );
+        emit signalOpen( mFilename );
     }
 }
