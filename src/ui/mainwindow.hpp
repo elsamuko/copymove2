@@ -23,10 +23,12 @@ private slots:
     void slotOpenImage( QString filename );
     void on_actionRun_triggered();
     void on_actionAbout_triggered();
-    void on_actionActual_Pixels_triggered();
-    void on_actionShow_logfile_triggered();
+    void on_actionActualPixels_triggered();
+    void on_actionShowLogfile_triggered();
+    void on_actionZoomIn_triggered();
+    void on_actionZoomOut_triggered();
 
-private:
+    private:
     void scaleImage( QImage& image );
     void setupRecentImagesMenu();
 

@@ -181,6 +181,14 @@ void MainWindow::dropEvent( QDropEvent* event ) {
     }
 }
 
-void MainWindow::on_actionShow_logfile_triggered() {
+void MainWindow::on_actionShowLogfile_triggered() {
     QDesktopServices::openUrl( QUrl( "file://" + QString::fromStdString( logging::logFilename() ) ) );
+}
+
+void MainWindow::on_actionZoomIn_triggered() {
+    ui->scrollArea->slotZoomIn();
+}
+
+void MainWindow::on_actionZoomOut_triggered() {
+    ui->scrollArea->slotZoomOut();
 }

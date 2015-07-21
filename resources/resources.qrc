@@ -8,6 +8,8 @@
         <file>actions/run.png</file>
         <file>actions/about.png</file>
         <file>actions/fit_actual.png</file>
+        <file>actions/mag_plus.png</file>
+        <file>actions/mag_minus.png</file>
     </qresource>
     <qresource prefix="/licenses">
         <file>licenses/fontconfig.txt</file>
