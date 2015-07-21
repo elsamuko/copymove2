@@ -106,6 +106,16 @@ void ScrollArea::slotZoomActualPixels() {
     this->zoom();
 }
 
+void ScrollArea::slotZoomIn() {
+    mZoom *= 1.1;
+    this->zoom();
+}
+
+void ScrollArea::slotZoomOut() {
+    mZoom /= 1.1;
+    this->zoom();
+}
+
 void ScrollArea::centerZoom() {
     QPointF diff;
 

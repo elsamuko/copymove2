@@ -21,6 +21,8 @@ class ScrollArea : public QScrollArea {
         void slotSetFirstBlock( const PointI pos );
         void slotSetSecondBlock( const PointI pos );
         void slotZoomActualPixels();
+        void slotZoomIn();
+        void slotZoomOut();
 
     protected:
         virtual void wheelEvent( QWheelEvent* event );
