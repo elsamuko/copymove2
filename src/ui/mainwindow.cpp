@@ -50,7 +50,7 @@ MainWindow::MainWindow( QWidget* parent ) :
     this->setGeometry( QStyle::alignedRect( Qt::LeftToRight, Qt::AlignCenter, this->size(), qApp->desktop()->availableGeometry() ) );
 
     ui->actionRun->setDisabled( true );
-    ui->actionActual_Pixels->setDisabled( true );
+    ui->actionActualPixels->setDisabled( true );
 }
 
 MainWindow::~MainWindow() {
@@ -108,7 +108,7 @@ void MainWindow::slotOpenImage( QString filename ) {
         ui->widgetControl->setImage( image );
         this->mConnection->setImage( image );
         ui->actionRun->setEnabled( true );
-        ui->actionActual_Pixels->setEnabled( true );
+        ui->actionActualPixels->setEnabled( true );
 
         // set window title
         QFileInfo info( filename );
@@ -140,7 +140,7 @@ void MainWindow::on_actionAbout_triggered() {
     about.exec();
 }
 
-void MainWindow::on_actionActual_Pixels_triggered() {
+void MainWindow::on_actionActualPixels_triggered() {
     ui->scrollArea->slotZoomActualPixels();
 }
 
