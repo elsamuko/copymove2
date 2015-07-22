@@ -27,9 +27,11 @@ static inline void customMessageHandler( QtMsgType type, const QMessageLogContex
             logging::writeLog( LEVEL_DEBUG, cfile, context.line, function.c_str(), message.toStdString() );
             break;
 
-        case QtInfoMsg:
+#if ( QT_VERSION >= QT_VERSION_CHECK( 5, 5, 0 ) )
+    case QtInfoMsg:
             logging::writeLog( LEVEL_INFO, cfile, context.line, function.c_str(), message.toStdString() );
             break;
+#endif // QT_VERSION >= 5.5.0
 
         case QtWarningMsg:
             logging::writeLog( LEVEL_WARNING, cfile, context.line, function.c_str(), message.toStdString() );
