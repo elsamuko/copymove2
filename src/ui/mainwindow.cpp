@@ -50,6 +50,8 @@ MainWindow::MainWindow( QWidget* parent ) :
     this->setGeometry( QStyle::alignedRect( Qt::LeftToRight, Qt::AlignCenter, this->size(), qApp->desktop()->availableGeometry() ) );
 
     ui->actionRun->setDisabled( true );
+    ui->actionZoomIn->setDisabled( true );
+    ui->actionZoomOut->setDisabled( true );
     ui->actionActualPixels->setDisabled( true );
 }
 
@@ -108,6 +110,8 @@ void MainWindow::slotOpenImage( QString filename ) {
         ui->widgetControl->setImage( image );
         this->mConnection->setImage( image );
         ui->actionRun->setEnabled( true );
+        ui->actionZoomIn->setEnabled( true );
+        ui->actionZoomOut->setEnabled( true );
         ui->actionActualPixels->setEnabled( true );
 
         // set window title
