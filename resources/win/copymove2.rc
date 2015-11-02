@@ -1,0 +1,24 @@
+IDI_ICON1               ICON    DISCARDABLE     "logo.ico"
+
+#include <windows.h>
+
+VS_VERSION_INFO VERSIONINFO
+FILEVERSION COPYMOVE_VERSION_MAJOR,COPYMOVE_VERSION_MINOR,COPYMOVE_VERSION_RELEASE,0
+PRODUCTVERSION COPYMOVE_VERSION_MAJOR,COPYMOVE_VERSION_MINOR,COPYMOVE_VERSION_RELEASE,0
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904E4"
+        BEGIN
+            VALUE "CompanyName", "FD Imaging"
+            VALUE "FileDescription", "Image tamper detection"
+            VALUE "FileVersion", COPYMOVE_VERSION_STRING_WIN
+            VALUE "InternalName", "CopyMove 2"
+            VALUE "LegalCopyright", "(C) FD Imaging"
+            VALUE "LegalTrademarks1", "All rights reserved"
+            VALUE "OriginalFilename", "CopyMove 2"
+            VALUE "ProductName", "CopyMove 2"
+            VALUE "ProductVersion", COPYMOVE_VERSION_STRING_WIN
+        END
+    END
+END
