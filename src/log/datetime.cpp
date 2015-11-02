@@ -3,6 +3,7 @@
 #include <iostream>
 #include <sstream>
 #include <chrono>
+#include <iomanip>
 #include <mutex>
 
 #define HAS_STD_PUT_TIME 0
@@ -44,6 +45,8 @@ std::string datetime::now() {
 
 int datetime::compilationYear() {
     std::tm tm;
-    strptime( __DATE__, "%b %d %Y", &tm );
+    std::stringstream compiled;
+    compiled << __DATE__ << " " << __TIME__;
+    compiled >> std::get_time( &tm, "%b %d %Y %H:%M:%S" );
     return 1900 + tm.tm_year;
 }
