@@ -25,8 +25,8 @@ About::About( QWidget* parent ) :
     ui->labelVersion->setText( message );
 
     /* copyright information */
-    ui->labelCopyright->setText( "\u00A9 " + QString::number( datetime::compilationYear() )
-                                 + "\nFD Imaging UG (haftungsbeschr\u00E4nkt)" );
+    ui->labelCopyright->setText( "\xC2\xA9 " + QString::number( datetime::compilationYear() )
+                                 + "\nFD Imaging UG (haftungsbeschr\xC3\xA4nkt)" );
 
     /* logo */
     QPixmap pixmap( ":/icons/icons/logo.png" );
