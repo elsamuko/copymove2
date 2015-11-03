@@ -1,6 +1,9 @@
 #pragma once
 
 #include <string>
+#ifdef QT_CORE_LIB
+#include <QDebug>
+#endif // QT_CORE_LIB
 
 #define LEVEL_DEBUG   " Debug  "
 #define LEVEL_INFO    " Info   "
@@ -19,4 +22,7 @@
 namespace logging {
     bool            writeLog( const char* level, const char* cfile, int line, const char* function, std::string content );
     std::string     logFilename();
+#ifdef QT_CORE_LIB
+    void customMessageHandler( QtMsgType type, const QMessageLogContext& context, const QString& message );
+#endif // QT_CORE_LIB
 }

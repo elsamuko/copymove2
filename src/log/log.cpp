@@ -11,6 +11,9 @@
 #if __APPLE__
 #include <sys/stat.h>
 #endif
+#ifdef _WIN32
+#include <regex>
+#endif // _WIN32
 
 static std::mutex mutex;
 
@@ -121,3 +124,49 @@ bool logging::writeLog( const char* level, const char* cfile, int sourceline, co
     }
 }
 
+#ifdef QT_CORE_LIB
+
+void logging::customMessageHandler( QtMsgType type, const QMessageLogContext& context, const QString& message ) {
+
+    const char* cfile     = context.file ? context.file : "unknown";
+    const char* cfunction = context.function ? context.function : "a::unknown()";
+
+    // remove class and arguments
+    std::string function( cfunction );
+#ifdef _WIN32
+    function = std::regex_replace( function, std::regex( "\\<.*\\>.*" ), "[]{}" ); // shorten lambdas
+    function = std::regex_replace( function, std::regex( "\\(.*\\)" ), "" );       // clean arguments
+    function = std::regex_replace( function, std::regex( ".*\\s{1}" ), "" );       // clean return values
+    function = std::regex_replace( function, std::regex( ".*::" ), "" );           // clean namespaces
+#endif // _WIN32
+
+    switch( type ) {
+        case QtDebugMsg:
+            logging::writeLog( LEVEL_DEBUG, cfile, context.line, function.c_str(), message.toStdString() );
+            break;
+
+#if ( QT_VERSION >= QT_VERSION_CHECK( 5, 5, 0 ) )
+    case QtInfoMsg:
+            logging::writeLog( LEVEL_INFO, cfile, context.line, function.c_str(), message.toStdString() );
+            break;
+#endif // QT_VERSION >= 5.5.0
+
+        case QtWarningMsg:
+            logging::writeLog( LEVEL_WARNING, cfile, context.line, function.c_str(), message.toStdString() );
+            break;
+
+        case QtCriticalMsg:
+            logging::writeLog( LEVEL_ERROR, cfile, context.line, function.c_str(), message.toStdString() );
+            break;
+
+        case QtFatalMsg:
+            logging::writeLog( LEVEL_ERROR, cfile, context.line, function.c_str(), message.toStdString() );
+            logging::writeLog( LEVEL_ERROR, cfile, context.line, function.c_str(), "Aborting..." );
+    }
+
+    if( type == QtFatalMsg ) {
+        abort();
+    }
+}
+
+#endif // QT_CORE_LIB
