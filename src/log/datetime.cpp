@@ -45,8 +45,11 @@ std::string datetime::now() {
 
 int datetime::compilationYear() {
     std::tm tm;
-    std::stringstream compiled;
-    compiled << __DATE__ << " " << __TIME__;
-    compiled >> std::get_time( &tm, "%b %d %Y %H:%M:%S" );
+#ifdef _WIN32
+    std::stringstream compiled( __DATE__ );
+    compiled >> std::get_time( &tm, "%b %d %Y" );
+#else
+    strptime( __DATE__, "%b %d %Y", &tm );
+#endif // _WIN32
     return 1900 + tm.tm_year;
 }
