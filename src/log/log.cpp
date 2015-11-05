@@ -146,7 +146,8 @@ void logging::customMessageHandler( QtMsgType type, const QMessageLogContext& co
             break;
 
 #if ( QT_VERSION >= QT_VERSION_CHECK( 5, 5, 0 ) )
-    case QtInfoMsg:
+
+        case QtInfoMsg:
             logging::writeLog( LEVEL_INFO, cfile, context.line, function.c_str(), message.toStdString() );
             break;
 #endif // QT_VERSION >= 5.5.0
