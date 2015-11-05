@@ -67,6 +67,10 @@ void ControlWidget::setImage( QImage image ) {
     updateBlockStats();
 }
 
+QImage ControlWidget::getScreenshot() const {
+    return mScreenshot;
+}
+
 void ControlWidget::slotResults( std::vector<ShiftHit>::const_iterator begin, std::vector<ShiftHit>::const_iterator end ) {
 
     ui->buttonRun->show();
@@ -115,7 +119,7 @@ void ControlWidget::on_comboHits_currentIndexChanged( int index ) {
     ShiftHit hit = ui->comboHits->currentData().value<ShiftHit>();
     ui->textHit->setText( QString::fromStdString( hit.toString() ) );
 
-    QImage copy  = mImage.scaled( mImage.size() );
+    mScreenshot = mImage.scaled( mImage.size() );
     QImage overlay( mImage.size(), QImage::Format_ARGB32_Premultiplied );
     overlay.fill( 0 );
 
@@ -135,7 +139,7 @@ void ControlWidget::on_comboHits_currentIndexChanged( int index ) {
 
     {
         // paint hits
-        QPainter painter( &copy );
+        QPainter painter( &mScreenshot );
         painter.setOpacity( 0.5 );
         painter.setCompositionMode( QPainter::CompositionMode_ColorDodge );
         painter.drawImage( 0, 0, overlay );
@@ -188,7 +192,7 @@ void ControlWidget::on_comboHits_currentIndexChanged( int index ) {
     }
 
     LOG( "Sending hit " + hit.toString() );
-    emit signalImage( copy, false );
+    emit signalImage( mScreenshot, false );
 }
 
 void ControlWidget::on_buttonRun_clicked() {

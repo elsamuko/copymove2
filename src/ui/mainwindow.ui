@@ -68,7 +68,7 @@
      <x>0</x>
      <y>0</y>
      <width>1130</width>
-     <height>22</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -76,6 +76,7 @@
      <string>File</string>
     </property>
     <addaction name="actionOpen"/>
+    <addaction name="actionExportImage"/>
     <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuAnalysis">
@@ -199,6 +200,11 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+-</string>
+   </property>
+  </action>
+  <action name="actionExportImage">
+   <property name="text">
+    <string>Export Image</string>
    </property>
   </action>
  </widget>

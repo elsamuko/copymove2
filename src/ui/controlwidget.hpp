@@ -17,6 +17,7 @@ class ControlWidget : public QWidget {
         explicit ControlWidget( QWidget* parent = 0 );
         ~ControlWidget();
         void setImage( QImage image );
+        QImage getScreenshot() const;
 
     signals:
         void signalRun( SorterParams params );
@@ -49,4 +50,5 @@ class ControlWidget : public QWidget {
         void updateBlockStats();
         Ui::ControlWidget* ui;
         QImage mImage;
+        QImage mScreenshot;
 };

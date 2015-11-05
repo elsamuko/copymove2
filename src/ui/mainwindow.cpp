@@ -66,7 +66,7 @@ void MainWindow::on_actionExit_triggered() {
 void MainWindow::on_actionOpen_triggered() {
 
     QString filename;
-    bool ok;
+    bool ok = false;
     std::tie( ok, filename ) = mFileDealer->getOpenFilename();
 
     if( ok ) {
@@ -124,6 +124,21 @@ void MainWindow::slotOpenImage( QString filename ) {
     }
 }
 
+void MainWindow::slotExportImage( QString filename ) {
+
+    if( filename.isEmpty() ) {
+        qWarning() << "Empty filename";
+        return;
+    }
+
+    qDebug() << "Exporting screenshot to" << filename;
+    QImage image = ui->widgetControl->getScreenshot();
+
+    if( !image.save( filename ) ) {
+        qWarning() << "Could not save" << filename;
+    }
+}
+
 void MainWindow::setupRecentImagesMenu() {
     mFileDealer->setType( FileDealer::ImagesType );
     QMenu* recent = new QMenu( tr( "Recent" ), this->ui->menuFile );
@@ -131,8 +146,8 @@ void MainWindow::setupRecentImagesMenu() {
 
     connect( mFileDealer, &FileDealer::signalOpen, this, &MainWindow::slotOpenImage, Qt::UniqueConnection );
 
-    this->ui->menuFile->insertMenu( ui->actionExit, recent );
-    this->ui->menuFile->insertSeparator( ui->actionExit );
+    this->ui->menuFile->insertMenu( ui->actionExportImage, recent );
+    this->ui->menuFile->insertSeparator( ui->actionExportImage );
 }
 
 void MainWindow::on_actionRun_triggered() {
@@ -195,4 +210,14 @@ void MainWindow::on_actionZoomIn_triggered() {
 
 void MainWindow::on_actionZoomOut_triggered() {
     ui->scrollArea->slotZoomOut();
+}
+
+void MainWindow::on_actionExportImage_triggered() {
+    QString filename;
+    bool ok = false;
+    std::tie( ok, filename ) = mFileDealer->getSaveFilename();
+
+    if( ok ) {
+        this->slotExportImage( filename );
+    }
 }
