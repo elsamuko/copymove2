@@ -18,6 +18,7 @@ class ControlWidget : public QWidget {
         ~ControlWidget();
         void setImage( QImage image );
         QImage getScreenshot() const;
+        QString getData() const;
 
     signals:
         void signalRun( SorterParams params );

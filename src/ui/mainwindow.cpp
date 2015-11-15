@@ -32,6 +32,7 @@ MainWindow::MainWindow( QWidget* parent ) :
     CHECK_QT_CONNECT( connect( ui->widgetControl, &ControlWidget::signalStop, mConnection, &SorterConnection::slotStop, Qt::UniqueConnection ) );
     CHECK_QT_CONNECT( connect( ui->widgetControl, &ControlWidget::signalImage, ui->scrollArea, &ScrollArea::slotDrawImage, Qt::UniqueConnection ) );
     CHECK_QT_CONNECT( connect( mConnection, &SorterConnection::signalDone, ui->widgetControl, &ControlWidget::slotResults, Qt::QueuedConnection ) );
+    CHECK_QT_CONNECT( connect( mConnection, &SorterConnection::signalDone, this, &MainWindow::slotDone, Qt::QueuedConnection ) );
     CHECK_QT_CONNECT( connect( mConnection, &SorterConnection::signalReset, ui->widgetControl, &ControlWidget::slotReset, Qt::UniqueConnection ) );
     CHECK_QT_CONNECT( connect( mConnection, &SorterConnection::signalProgress, ui->widgetControl, &ControlWidget::slotProgress, Qt::QueuedConnection ) );
 
@@ -55,6 +56,9 @@ MainWindow::MainWindow( QWidget* parent ) :
     ui->actionZoomIn->setDisabled( true );
     ui->actionZoomOut->setDisabled( true );
     ui->actionActualPixels->setDisabled( true );
+
+    ui->actionExportImage->setDisabled( true );
+    ui->actionExportData->setDisabled( true );
 }
 
 MainWindow::~MainWindow() {
@@ -116,6 +120,10 @@ void MainWindow::slotOpenImage( QString filename ) {
         ui->actionZoomOut->setEnabled( true );
         ui->actionActualPixels->setEnabled( true );
 
+        // disable export functions
+        ui->actionExportImage->setDisabled( true );
+        ui->actionExportData->setDisabled( true );
+
         // set window title
         QFileInfo info( filename );
         QString windowTitle = "CopyMove2 - ";
@@ -150,8 +158,25 @@ void MainWindow::slotExportData( QString filename ) {
 
     qDebug() << "Exporting data to" << filename;
 
-    // get data
-    // save
+    QString data = ui->widgetControl->getData();
+
+    QFile file( filename );
+
+    if( !file.open(QIODevice::WriteOnly | QIODevice::Text) ) {
+        qWarning() << "Could not open" << filename;
+        return;
+    }
+
+    QTextStream out( &file );
+    out << data;
+
+    ui->statusBar->showMessage( filename + " successfully written", 2000 );
+}
+
+void MainWindow::slotDone() {
+    // enable export functions
+    ui->actionExportImage->setEnabled( true );
+    ui->actionExportData->setEnabled( true );
 }
 
 void MainWindow::setupRecentImagesMenu() {

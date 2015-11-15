@@ -2,6 +2,7 @@
 #include "ui_controlwidget.h"
 
 #include <QPainter>
+#include <QStringBuilder>
 
 #include "block.hpp"
 
@@ -69,6 +70,43 @@ void ControlWidget::setImage( QImage image ) {
 
 QImage ControlWidget::getScreenshot() const {
     return mScreenshot;
+}
+
+QString ControlWidget::getData() const {
+
+    QStringList data;
+    QString separator = "\t";
+    data.push_back( "Ranking" % separator %
+                    "Mean.x" % separator %
+                    "Mean.y" % separator %
+                    "Standard Deviation" % separator %
+                    "Geom. Average.x" % separator %
+                    "Geom. Average.y" % separator %
+                    "Geom. Average Deviation" % separator %
+                    "Shift.x" % separator %
+                    "Shift.y" % separator %
+                    "Hits"
+                  );
+    int count = ui->comboHits->count();
+
+    for( int i = 0; i < count; ++i ) {
+        ShiftHit hit = ui->comboHits->itemData( i ).value<ShiftHit>();
+        data.push_back( QString::number( hit.ranking() )    % separator %
+                        QString::number( hit.mean().x() )   % separator %
+                        QString::number( hit.mean().y() )   % separator %
+                        QString::number( hit.radius() )     % separator %
+                        QString::number( hit.x() )          % separator %
+                        QString::number( hit.y() )          % separator %
+                        QString::number( hit.distance() )   % separator %
+                        QString::number( hit.dx() )         % separator %
+                        QString::number( hit.dy() )         % separator %
+                        QString::number( hit.hits() )
+                      );
+    }
+
+    data.push_back( "\n" );
+
+    return data.join( "\n" );
 }
 
 void ControlWidget::slotResults( std::vector<ShiftHit>::const_iterator begin, std::vector<ShiftHit>::const_iterator end ) {

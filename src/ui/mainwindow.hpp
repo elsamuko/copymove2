@@ -23,6 +23,7 @@ class MainWindow : public QMainWindow {
         void slotOpenImage( QString filename );
         void slotExportImage( QString filename );
         void slotExportData( QString filename );
+        void slotDone();
         void on_actionRun_triggered();
         void on_actionAbout_triggered();
         void on_actionActualPixels_triggered();
