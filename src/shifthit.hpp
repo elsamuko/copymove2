@@ -37,11 +37,11 @@ class ShiftHit {
             return mStandardDeviation;
         }
         int distance() const {
-            assert( mMeanCalculated );
+            assert( mMedianCalculated );
             return mGeometricAverageDistance;
         }
         int distanceMinHits() const {
-            assert( mMeanCalculated );
+            assert( mMedianCalculated );
             return mMinHitsAverageDistance;
         }
         size_t hits() const {
