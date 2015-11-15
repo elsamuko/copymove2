@@ -34,6 +34,7 @@ void FileDealer::setType( FileType type ) {
             mPossibleSuffixes << "jpg" << "jpeg" << "png";
             break;
         }
+
         case DataType: {
             mLastDirectory = "lastDirectoryData";
             mSaveTitle = tr( "Save file" );
@@ -44,6 +45,7 @@ void FileDealer::setType( FileType type ) {
             mPossibleSuffixes << "csv" << "txt";
             break;
         }
+
         default:
             qWarning() << "No type set";
     }

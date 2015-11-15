@@ -162,7 +162,7 @@ void MainWindow::slotExportData( QString filename ) {
 
     QFile file( filename );
 
-    if( !file.open(QIODevice::WriteOnly | QIODevice::Text) ) {
+    if( !file.open( QIODevice::WriteOnly | QIODevice::Text ) ) {
         qWarning() << "Could not open" << filename;
         return;
     }
