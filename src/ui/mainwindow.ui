@@ -77,6 +77,7 @@
     </property>
     <addaction name="actionOpen"/>
     <addaction name="actionExportImage"/>
+    <addaction name="actionExportData"/>
     <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuAnalysis">
@@ -205,6 +206,17 @@
   <action name="actionExportImage">
    <property name="text">
     <string>Export Image</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionExportData">
+   <property name="text">
+    <string>Export Data</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+S</string>
    </property>
   </action>
  </widget>

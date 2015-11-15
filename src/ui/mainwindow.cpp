@@ -21,10 +21,12 @@ MainWindow::MainWindow( QWidget* parent ) :
     QMainWindow( parent ),
     ui( new Ui::MainWindow ),
     mConnection( new SorterConnection( this ) ),
-    mFileDealer( new FileDealer( this ) ) {
+    mImageDealer( new FileDealer( this ) ),
+    mDataDealer( new FileDealer( this ) ) {
 
     ui->setupUi( this );
     setupRecentImagesMenu();
+    mDataDealer->setType( FileDealer::DataType );
 
     CHECK_QT_CONNECT( connect( ui->widgetControl, &ControlWidget::signalRun, mConnection, &SorterConnection::slotRun, Qt::UniqueConnection ) );
     CHECK_QT_CONNECT( connect( ui->widgetControl, &ControlWidget::signalStop, mConnection, &SorterConnection::slotStop, Qt::UniqueConnection ) );
@@ -67,7 +69,7 @@ void MainWindow::on_actionOpen_triggered() {
 
     QString filename;
     bool ok = false;
-    std::tie( ok, filename ) = mFileDealer->getOpenFilename();
+    std::tie( ok, filename ) = mImageDealer->getOpenFilename();
 
     if( ok ) {
         this->slotOpenImage( filename );
@@ -139,12 +141,25 @@ void MainWindow::slotExportImage( QString filename ) {
     }
 }
 
-void MainWindow::setupRecentImagesMenu() {
-    mFileDealer->setType( FileDealer::ImagesType );
-    QMenu* recent = new QMenu( tr( "Recent" ), this->ui->menuFile );
-    mFileDealer->setupRecentMenu( recent );
+void MainWindow::slotExportData( QString filename ) {
 
-    connect( mFileDealer, &FileDealer::signalOpen, this, &MainWindow::slotOpenImage, Qt::UniqueConnection );
+    if( filename.isEmpty() ) {
+        qWarning() << "Empty filename";
+        return;
+    }
+
+    qDebug() << "Exporting data to" << filename;
+
+    // get data
+    // save
+}
+
+void MainWindow::setupRecentImagesMenu() {
+    mImageDealer->setType( FileDealer::ImagesType );
+    QMenu* recent = new QMenu( tr( "Recent" ), this->ui->menuFile );
+    mImageDealer->setupRecentMenu( recent );
+
+    connect( mImageDealer, &FileDealer::signalOpen, this, &MainWindow::slotOpenImage, Qt::UniqueConnection );
 
     this->ui->menuFile->insertMenu( ui->actionExportImage, recent );
     this->ui->menuFile->insertSeparator( ui->actionExportImage );
@@ -189,8 +204,8 @@ void MainWindow::dropEvent( QDropEvent* event ) {
 
             QFileInfo info( filename );
 
-            if( info.exists() && mFileDealer->knows( info.suffix() ) ) {
-                mFileDealer->setFilename( filename );
+            if( info.exists() && mImageDealer->knows( info.suffix() ) ) {
+                mImageDealer->setFilename( filename );
                 slotOpenImage( filename );
             } else {
                 qWarning() << "Cannot open " << filename;
@@ -215,9 +230,19 @@ void MainWindow::on_actionZoomOut_triggered() {
 void MainWindow::on_actionExportImage_triggered() {
     QString filename;
     bool ok = false;
-    std::tie( ok, filename ) = mFileDealer->getSaveFilename();
+    std::tie( ok, filename ) = mImageDealer->getSaveFilename();
 
     if( ok ) {
         this->slotExportImage( filename );
+    }
+}
+
+void MainWindow::on_actionExportData_triggered() {
+    QString filename;
+    bool ok = false;
+    std::tie( ok, filename ) = mDataDealer->getSaveFilename();
+
+    if( ok ) {
+        this->slotExportData( filename );
     }
 }

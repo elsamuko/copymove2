@@ -32,9 +32,18 @@ void FileDealer::setType( FileType type ) {
             mSettingsRecent = "recentImages";
             mDefaultSuffix = "jpg";
             mPossibleSuffixes << "jpg" << "jpeg" << "png";
+            break;
         }
-        break;
-
+        case DataType: {
+            mLastDirectory = "lastDirectoryData";
+            mSaveTitle = tr( "Save file" );
+            mOpenTitle = tr( "Open file" );
+            mIOSelection = tr( "Data (*.txt *.csv *.TXT *.CSV)" );
+            mSettingsRecent = "recentData";
+            mDefaultSuffix = "csv";
+            mPossibleSuffixes << "csv" << "txt";
+            break;
+        }
         default:
             qWarning() << "No type set";
     }

@@ -9,7 +9,7 @@
 class FileDealer : public QObject {
         Q_OBJECT
     public:
-        enum FileType { ImagesType };
+        enum FileType { ImagesType, DataType };
 
         explicit FileDealer( QObject* parent = 0 );
 

@@ -22,14 +22,15 @@ class MainWindow : public QMainWindow {
         void on_actionOpen_triggered();
         void slotOpenImage( QString filename );
         void slotExportImage( QString filename );
+        void slotExportData( QString filename );
         void on_actionRun_triggered();
         void on_actionAbout_triggered();
         void on_actionActualPixels_triggered();
         void on_actionShowLogfile_triggered();
         void on_actionZoomIn_triggered();
         void on_actionZoomOut_triggered();
-
         void on_actionExportImage_triggered();
+        void on_actionExportData_triggered();
 
     private:
         void scaleImage( QImage& image );
@@ -40,7 +41,8 @@ class MainWindow : public QMainWindow {
         SorterConnection* mConnection;
 
         /* io helper class */
-        FileDealer* mFileDealer;
+        FileDealer* mImageDealer;
+        FileDealer* mDataDealer;
 
         /* drag & drop */
         virtual void dropEvent( QDropEvent* event );
