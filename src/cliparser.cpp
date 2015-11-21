@@ -9,7 +9,10 @@ SorterParams cliparser::parseCLI( int argc, char** argv ) {
     SorterParams params;
 
     try {
-        TCLAP::CmdLine cmd( "", ' ', "0.1" );
+        std::string version = std::to_string( COPYMOVE_VERSION_MAJOR ) + "."
+                              + std::to_string( COPYMOVE_VERSION_MINOR ) + "."
+                              + std::to_string( COPYMOVE_VERSION_RELEASE );
+        TCLAP::CmdLine cmd( "", ' ', version );
 
         TCLAP::UnlabeledValueArg<std::string> filename( "input", "Image to analyse", true, "", "filename" );
         cmd.add( filename );

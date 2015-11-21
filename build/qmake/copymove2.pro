@@ -10,14 +10,16 @@ unix:!macx: PLATFORM=linux
 unix:!macx: CONFIG += linux
 
 MAIN_DIR = ../..
-DESTDIR  = $${MAIN_DIR}/bin
 PRI_DIR  = $${MAIN_DIR}/build/qmake
 SRC_DIR  = $${MAIN_DIR}/src
 
 include( $${PRI_DIR}/setup.pri )
+DESTDIR  = $${MAIN_DIR}/bin/$${COMPILE_MODE}
+
 include( $${PRI_DIR}/imagemagick.pri )
 include( $${PRI_DIR}/log.pri )
 include( $${PRI_DIR}/common.pri )
+include( $${PRI_DIR}/version.pri )
 mac:   include( $${PRI_DIR}/mac.pri )
 linux: include( $${PRI_DIR}/linux.pri )
 
