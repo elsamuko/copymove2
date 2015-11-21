@@ -44,6 +44,7 @@ class MainWindow : public QMainWindow {
         /* io helper class */
         FileDealer* mImageDealer;
         FileDealer* mDataDealer;
+        QString mImageFilename;
 
         /* drag & drop */
         virtual void dropEvent( QDropEvent* event );

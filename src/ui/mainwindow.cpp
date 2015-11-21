@@ -108,7 +108,8 @@ void MainWindow::slotOpenImage( QString filename ) {
             image = image.convertToFormat( QImage::Format_ARGB32_Premultiplied );
         }
 
-        qDebug() << "Open " << filename;
+        mImageFilename = filename;
+        qDebug() << "Open " << mImageFilename;
 
         // resize if bigger than 3 MP
         scaleImage( image );
@@ -125,7 +126,7 @@ void MainWindow::slotOpenImage( QString filename ) {
         ui->actionExportData->setDisabled( true );
 
         // set window title
-        QFileInfo info( filename );
+        QFileInfo info( mImageFilename );
         QString windowTitle = "CopyMove2 - ";
         windowTitle += info.fileName() + " ";
         windowTitle += QString::number( image.width() )  + "x";
@@ -168,7 +169,7 @@ void MainWindow::slotExportData( QString filename ) {
     }
 
     QTextStream out( &file );
-    out << data;
+    out << mImageFilename << "\n" << data;
 
     ui->statusBar->showMessage( filename + " successfully written", 2000 );
 }
