@@ -2,16 +2,20 @@
 
 OS=mac
 PROJECT=imagemagick
-VERSION="6.9.1-6"
-DL_URL="http://mirror.checkdomain.de/imagemagick/releases/ImageMagick-$VERSION.zip"
+VERSION="6.8.9-10"
+DL_URL="http://mirror.checkdomain.de/imagemagick/releases/ImageMagick-$VERSION.tar.xz"
 
 SCRIPT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 MAIN_DIR="$SCRIPT_DIR/.."
 TARGET_DIR="$MAIN_DIR/libs/$PROJECT"
 PROJECT_DIR="$MAIN_DIR/tmp/$PROJECT"
 BUILD_DIR="$MAIN_DIR/tmp/$PROJECT/build"
-DOWNLOAD="$PROJECT_DIR/$PROJECT-$VERSION.zip"
+DOWNLOAD="$PROJECT_DIR/$PROJECT-$VERSION.tar.xz"
 SRC_DIR="$PROJECT_DIR/src"
+
+function indent {
+    sed  's/^/     /'
+}
 
 function doPrepare {
     if [ -d "$SRC_DIR" ]; then
@@ -36,7 +40,7 @@ function doDownload {
 }
 
 function doUnzip {
-    unzip -q -o "$DOWNLOAD" -d "$SRC_DIR"
+    tar xJf "$DOWNLOAD" -C "$SRC_DIR"
     for FROM in "$SRC_DIR"/*; do
         echo $FROM
         mv "$FROM" "$SRC_DIR/$PROJECT-$VERSION"
@@ -105,8 +109,17 @@ function doCopy {
 }
 
 
-doPrepare
-doDownload
-doUnzip
-doBuild
-doCopy
+echo "Prepare"
+doPrepare | indent
+
+echo "Download"
+doDownload | indent
+
+echo "Unzip"
+doUnzip | indent
+
+echo "Build"
+doBuild 2>&1 | indent
+
+echo "Copy"
+doCopy | indent

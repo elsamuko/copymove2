@@ -111,20 +111,26 @@ QString ControlWidget::getData() const {
 
 void ControlWidget::slotResults( std::vector<ShiftHit>::const_iterator begin, std::vector<ShiftHit>::const_iterator end ) {
 
+    // enable
     ui->buttonRun->show();
     ui->progressBar->hide();
     ui->buttonStop->hide();
     ui->progressBar->reset();
     ui->tabHits->setEnabled( true );
 
+    // reset
     ui->comboHits->clear();
 
+    // fill
     for( auto it = begin; it != end; ++it ) {
         QString ranking = QString::number( it->ranking() ) + " : " + QString::number( it->hits() );
         QVariant data;
         data.setValue<ShiftHit>( *it );
         ui->comboHits->addItem( ranking, data );
     }
+
+    // switch to
+    ui->tabWidget->setCurrentWidget( ui->tabHits );
 }
 
 void ControlWidget::slotProgress( size_t progress ) {

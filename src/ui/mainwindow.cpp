@@ -147,6 +147,8 @@ void MainWindow::slotExportImage( QString filename ) {
 
     if( !image.save( filename ) ) {
         qWarning() << "Could not save" << filename;
+    } else {
+        ui->statusBar->showMessage( filename + " successfully written", 2000 );
     }
 }
 
@@ -165,7 +167,10 @@ void MainWindow::slotExportData( QString filename ) {
 
     if( !file.open( QIODevice::WriteOnly | QIODevice::Text ) ) {
         qWarning() << "Could not open" << filename;
-        return;
+    } else {
+        QTextStream out( &file );
+        out << data;
+        ui->statusBar->showMessage( filename + " successfully written", 2000 );
     }
 
     QTextStream out( &file );
