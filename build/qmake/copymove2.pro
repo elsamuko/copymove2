@@ -1,4 +1,4 @@
-TARGET = copymove2
+TARGET = copymove2-cli
 TEMPLATE = app
 CONFIG += console
 CONFIG -= app_bundle
