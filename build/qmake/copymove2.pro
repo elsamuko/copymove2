@@ -25,3 +25,11 @@ include( $${PRI_DIR}/tclap.pri )
 HEADERS += $${SRC_DIR}/cliparser.hpp
 SOURCES += $${SRC_DIR}/cliparser.cpp
 SOURCES += $${SRC_DIR}/main.cpp
+
+linux {
+    # reduce binary size
+    CONFIG(release, debug|release) { QMAKE_POST_LINK += strip --strip-all $${DESTDIR}/$${TARGET}; }
+
+    # search in lib first for missing shared libraries
+    QMAKE_LFLAGS += -Wl,--rpath=\\\$\$ORIGIN/lib
+}

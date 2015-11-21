@@ -55,7 +55,12 @@ win32 {
 }
 
 linux {
-    QMAKE_POST_LINK += strip --strip-all $${DESTDIR}/$${TARGET};
+    # reduce binary size
+    CONFIG(release, debug|release) { QMAKE_POST_LINK += strip --strip-all $${DESTDIR}/$${TARGET}; }
+
+    # search in lib first for missing shared libraries
     QMAKE_LFLAGS += -Wl,--rpath=\\\$\$ORIGIN/lib
+
+    # defines, where Qt searches for plugins
     RESOURCES += $${MAIN_DIR}/resources/qtconf.qrc
 }
