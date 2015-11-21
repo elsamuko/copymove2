@@ -55,6 +55,7 @@ win32 {
 }
 
 linux {
+    QMAKE_POST_LINK += strip --strip-all $${DESTDIR}/$${TARGET};
     QMAKE_LFLAGS += -Wl,--rpath=\\\$\$ORIGIN/lib
     RESOURCES += $${MAIN_DIR}/resources/qtconf.qrc
 }
