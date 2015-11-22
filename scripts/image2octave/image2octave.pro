@@ -3,6 +3,8 @@ CONFIG += console
 CONFIG -= app_bundle
 CONFIG -= qt
 
+unix:!macx: CONFIG += linux
+
 DESTDIR = bin
 OBJECTS_DIR = tmp
 MOC_DIR = tmp
@@ -10,12 +12,12 @@ UI_DIR = tmp
 RCC_DIR = tmp
 
 SOURCES += main.cpp
+MAIN_DIR = ../..
+PRI_DIR  = $${MAIN_DIR}/build/qmake
+SRC_DIR  = $${MAIN_DIR}/src
+include( $${PRI_DIR}/setup.pri )
 
-LIBS += -lMagick++ -lMagickCore
-QMAKE_CXXFLAGS += -fopenmp -I/usr/include/ImageMagick
-QMAKE_CXXFLAGS += -gdwarf-3
-
-# speed
-QMAKE_CXXFLAGS_RELEASE += -march=core2 -msse2 -O3 -finline
-QMAKE_LFLAGS_RELEASE += -flto
+include( $${PRI_DIR}/imagemagick.pri )
+mac:   include( $${PRI_DIR}/mac.pri )
+linux: include( $${PRI_DIR}/linux.pri )
 
