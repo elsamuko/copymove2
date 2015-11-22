@@ -16,6 +16,7 @@ SRC_DIR  = $${MAIN_DIR}/src
 include( $${PRI_DIR}/setup.pri )
 DESTDIR  = $${MAIN_DIR}/bin/$${COMPILE_MODE}
 
+CONFIG += ioimage
 include( $${PRI_DIR}/imagemagick.pri )
 include( $${PRI_DIR}/log.pri )
 include( $${PRI_DIR}/common.pri )

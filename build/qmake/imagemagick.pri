@@ -36,5 +36,7 @@ win32{
 # macx: QMAKE_POST_LINK += $${MAIN_DIR}/scripts/fix_deployment_mac.sh $${DESTDIR}/$${TARGET}.app;
 # macx: QMAKE_POST_LINK += macdeployqt $${DESTDIR}/$${TARGET}.$${TEMPLATE};
 
-HEADERS += $${SRC_DIR}/ioimage.hpp
-SOURCES += $${SRC_DIR}/ioimage.cpp
+ioimage {
+    HEADERS += $${SRC_DIR}/ioimage.hpp
+    SOURCES += $${SRC_DIR}/ioimage.cpp
+}
