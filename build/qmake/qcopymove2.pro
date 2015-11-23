@@ -29,6 +29,13 @@ mac {
     ICON = $${MAIN_DIR}/resources/icons/logo.icns
     QMAKE_POST_LINK += macdeployqt $${DESTDIR}/$${TARGET}.$${TEMPLATE};
     QMAKE_POST_LINK += $${MAIN_DIR}/scripts/fix_qt_frameworks_mac.sh $${DESTDIR}/$${TARGET}.$${TEMPLATE};
+
+    # deps for copymove-cli
+    INCLUDEPATH += /opt/local/include
+    LIBS += -L/opt/local/lib
+    LIBS += -llcms2 -ltiff -lfreetype -ljpeg -llzma \
+            -lbz2 -lxml2 -lz -lm -lpthread -lltdl -lpng16 \
+            -lfontconfig
 }
 
 win32 {
