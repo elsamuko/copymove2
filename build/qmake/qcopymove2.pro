@@ -52,8 +52,8 @@ win32 {
     QMAKE_POST_LINK += $$quote( echo \"Delete...\" & del \"$${DESTDIR_WIN}\\vcredist_x64.exe\" $$CRLF )
 
     # copy redistributables to dest (http://stackoverflow.com/a/3984180)
-    EXTRA_BINFILES = $$(SYSTEMROOT)\System32\msvcp140.dll \
-                     $$(SYSTEMROOT)\System32\vcruntime140.dll
+    EXTRA_BINFILES = $$(SYSTEMROOT)\Sysnative\msvcp140.dll \
+                     $$(SYSTEMROOT)\Sysnative\vcruntime140.dll
     EXTRA_BINFILES ~= s,/,\\,g
 
     for( FILE, EXTRA_BINFILES ) {
