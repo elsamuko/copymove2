@@ -31,6 +31,10 @@ HEADERS += $${SRC_DIR}/cliparser.hpp
 SOURCES += $${SRC_DIR}/cliparser.cpp
 SOURCES += $${SRC_DIR}/main.cpp
 
+win32 {
+    RC_FILE = $${MAIN_DIR}/resources/win/copymove2.rc
+}
+
 linux {
     # reduce binary size
     CONFIG(release, debug|release) { QMAKE_POST_LINK += strip --strip-all $${DESTDIR}/$${TARGET}; }
