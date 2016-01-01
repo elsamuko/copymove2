@@ -23,6 +23,8 @@ include( $${PRI_DIR}/common.pri )
 include( $${PRI_DIR}/version.pri )
 mac:   include( $${PRI_DIR}/mac.pri )
 linux: include( $${PRI_DIR}/linux.pri )
+win32: CONFIG += static
+win32: include( $${PRI_DIR}/win.pri )
 
 include( $${PRI_DIR}/tclap.pri )
 HEADERS += $${SRC_DIR}/cliparser.hpp
