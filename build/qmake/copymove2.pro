@@ -32,7 +32,7 @@ SOURCES += $${SRC_DIR}/cliparser.cpp
 SOURCES += $${SRC_DIR}/main.cpp
 
 win32 {
-    RC_FILE = $${MAIN_DIR}/resources/win/copymove2.rc
+    RC_FILE = $${MAIN_DIR}/resources/win/copymove2-cli.rc
 }
 
 linux {
