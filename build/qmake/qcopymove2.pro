@@ -59,6 +59,11 @@ win32 {
     for( FILE, EXTRA_BINFILES ) {
         QMAKE_POST_LINK += $$quote( echo \"Copy...\" & copy /y \"$${FILE}\" \"$${DESTDIR_WIN}\" $$CRLF )
     }
+
+    # copy ucrt redistributables to dest
+    # http://blogs.msdn.com/b/vcblog/archive/2015/03/03/introducing-the-universal-crt.aspx
+    REDIST_64 = C:\\Program Files (x86)\\Windows Kits\\10\\Redist\\ucrt\\DLLs\\x64
+    QMAKE_POST_LINK += $$quote( echo \"Copy ucrt...\" & xcopy /s /i /y \"$${REDIST_64}\" \"$${DESTDIR_WIN}\" $$CRLF )
 }
 
 linux {
