@@ -16,6 +16,7 @@ PRI_DIR  = $${MAIN_DIR}/build/qmake
 SRC_DIR  = $${MAIN_DIR}/src
 
 include( $${PRI_DIR}/setup.pri )
+CONFIG += ioimage
 include( $${PRI_DIR}/imagemagick.pri )
 include( $${PRI_DIR}/log.pri )
 macx: include( $${PRI_DIR}/mac.pri )

@@ -18,6 +18,7 @@ case $(uname) in
     Linux)
         SPEC="linux-g++-64"
         MAKE="make --silent -j8"
+        PATH="/opt/local/qt/bin:$PATH"
         ;;
     Darwin)
         SPEC="macx-clang"
