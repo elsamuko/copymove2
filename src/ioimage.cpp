@@ -117,7 +117,7 @@ void IOImage::setGrey( const GreyImage& grey ) {
     mImage.syncPixels();
 }
 
-void IOImage::drawHit( ShiftHit& hit ) {
+void IOImage::drawHit( const ShiftHit& hit ) {
 
     int x = hit.x() + Block::size / 2;
     int y = hit.y() + Block::size / 2;

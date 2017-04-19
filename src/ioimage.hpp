@@ -20,7 +20,7 @@ class IOImage {
         GreyImage getGrey();
         void setGrey( const GreyImage& grey );
 
-        void drawHit( ShiftHit& hit );
+        void drawHit( const ShiftHit& hit );
 
         size_t width() const;
         size_t height() const;
