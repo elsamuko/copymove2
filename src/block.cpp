@@ -33,7 +33,7 @@ void Block::assignFrequencies() {
     //  X  1  3  9
     //  X  2  4  6
     //  X  8  5  7
-    static int frequency_order[Block::frequencies][2] = {
+    const static int frequency_order[Block::frequencies][2] = {
         {1, 1}, // 1
         {1, 2}, // 2
         {2, 1}, // 3
