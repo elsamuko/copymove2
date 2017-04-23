@@ -122,19 +122,23 @@ void IOImage::drawHit( const ShiftHit& hit ) {
     int x = hit.x() + Block::size / 2;
     int y = hit.y() + Block::size / 2;
 
-    mImage.strokeColor( "red" );
-    mImage.fillColor( "transparent" );
-    mImage.strokeWidth( 1 );
-    // mImage.draw( Magick::DrawableCircle( x, y, x + hit.distance(),y ) );
-    mImage.draw( Magick::DrawableLine( x, y, x + hit.dx(), y + hit.dy() ) );
+    std::list<Magick::Drawable> drawList;
+    drawList.push_back( Magick::DrawableStrokeColor( "red" ) );
+    drawList.push_back( Magick::DrawableFillColor( "transparent" ) );
+    drawList.push_back( Magick::DrawableStrokeWidth( 1 ) );
+    // drawList.push_back( Magick::DrawableCircle( x, y, x + hit.distance(),y ) );
+    drawList.push_back( Magick::DrawableLine( x, y, x + hit.dx(), y + hit.dy() ) );
 
     std::string text = std::to_string( hit.ranking() );
-    mImage.strokeColor( "black" );
-    mImage.fillColor( "lime" );
-    mImage.draw( Magick::DrawableRectangle( x - 5, y - 10, x + 3 + text.size() * 8, y + 10 ) );
-    mImage.fillColor( "black" );
-    mImage.strokeWidth( 0 );
-    mImage.draw( Magick::DrawableText( x, y + 5, text ) );
+    drawList.push_back( Magick::DrawableStrokeColor( "black" ) );
+    drawList.push_back( Magick::DrawableFillColor( "lime" ) );
+    drawList.push_back( Magick::DrawableRectangle( x - 5, y - 10, x + 3 + text.size() * 8, y + 10 ) );
+
+    drawList.push_back( Magick::DrawableFillColor( "black" ) );
+    drawList.push_back( Magick::DrawableStrokeWidth( 0 ) );
+    drawList.push_back( Magick::DrawableText( x, y + 5, text ) );
+
+    mImage.draw( drawList );
 }
 
 //! \brief Load image
