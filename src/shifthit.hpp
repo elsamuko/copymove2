@@ -22,11 +22,11 @@ class ShiftHit {
 
         int x() const {
             assert( mMedianCalculated );
-            return mGeometricAverage.x();
+            return mMedian.GeometricAverage.x();
         }
         int y() const {
             assert( mMedianCalculated );
-            return mGeometricAverage.y();
+            return mMedian.GeometricAverage.y();
         }
         PointI mean() const {
             assert( mMeanCalculated );
@@ -38,11 +38,11 @@ class ShiftHit {
         }
         int distance() const {
             assert( mMedianCalculated );
-            return mGeometricAverageDistance;
+            return mMedian.GeometricAverageDistance;
         }
         int distanceMinHits() const {
             assert( mMedianCalculated );
-            return mMinHitsAverageDistance;
+            return mMedian.MinHitsAverageDistance;
         }
         size_t hits() const {
             return mHits.size();
@@ -65,7 +65,15 @@ class ShiftHit {
             return mRanking;
         }
 
-        static std::tuple<PointF, float, float> geometricMedian( const std::vector<PointF>& points , const size_t minHits );
+        struct Median {
+            Median() : GeometricAverage( PointF( 0, 0 ) ), GeometricAverageDistance( 0.F ), MinHitsAverageDistance( 0.F ) {}
+            Median( PointF gavg, float dist, float distmin ) : GeometricAverage( gavg ), GeometricAverageDistance( dist ), MinHitsAverageDistance( distmin ) {}
+            PointF GeometricAverage;
+            float GeometricAverageDistance;
+            float MinHitsAverageDistance;
+        };
+
+        Median geometricMedian( const std::vector<PointF>& points , const size_t minHits );
 
     private:
         void calculateStandardDeviation();
@@ -90,8 +98,6 @@ class ShiftHit {
         float mStandardDeviation;
 
         // geometric median + distance
-        PointF mGeometricAverage;
+        Median mMedian;
         size_t mWithinGeometricAverage;
-        float mGeometricAverageDistance;
-        float mMinHitsAverageDistance;
 };

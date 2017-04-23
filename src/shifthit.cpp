@@ -29,18 +29,18 @@ bool ShiftHit::operator <( const ShiftHit& that ) const {
 }
 
 std::ostream& operator <<( std::ostream& stream, const ShiftHit& b ) {
-    stream << "#"        << std::setw( 2 ) << std::round( b.mRanking );
-    stream << " ["       << std::setw( 4 ) << std::round( b.mMean.x() );
-    stream << ", "       << std::setw( 4 ) << std::round( b.mMean.y() );
-    stream << "] +- "    << std::setw( 4 ) << std::round( b.mStandardDeviation );
-    stream << "   ["     << std::setw( 4 ) << std::round( b.mGeometricAverage.x() );
-    stream << ", "       << std::setw( 4 ) << std::round( b.mGeometricAverage.y() );
-    stream << "] +- "    << std::setw( 4 ) << std::round( b.mGeometricAverageDistance );
-    stream << "  [min "  << std::setw( 4 ) << std::round( b.mMinHitsAverageDistance );
-    stream << "]  [dgm " << std::setw( 4 ) << std::round( b.mMean.distance( b.mGeometricAverage ) );
-    stream << "]  -> ["  << std::setw( 5 ) << b.mShift.dx();
-    stream << ", "       << std::setw( 5 ) << b.mShift.dy();
-    stream << "] w/ "    << std::setw( 4 ) << b.mHits.size() << " hits";
+    stream << "#"           << std::setw( 4 ) << std::round( b.mRanking );
+    stream << "     AVG["   << std::setw( 4 ) << std::round( b.mMean.x() );
+    stream << ", "          << std::setw( 4 ) << std::round( b.mMean.y() );
+    stream << "] +- "       << std::setw( 4 ) << std::round( b.mStandardDeviation );
+    stream << "     MED["   << std::setw( 4 ) << std::round( b.mMedian.GeometricAverage.x() );
+    stream << ", "          << std::setw( 4 ) << std::round( b.mMedian.GeometricAverage.y() );
+    stream << "] +- "       << std::setw( 4 ) << std::round( b.mMedian.GeometricAverageDistance );
+    stream << "|"           << std::setw( 4 ) << std::round( b.mMedian.MinHitsAverageDistance );
+    stream << "     [Δ"     << std::setw( 4 ) << std::round( b.mMean.distance( b.mMedian.GeometricAverage ) );
+    stream << "]    SHIFT[" << std::setw( 5 ) << b.mShift.dx();
+    stream << ", "          << std::setw( 5 ) << b.mShift.dy();
+    stream << "] w/ "       << std::setw( 4 ) << b.mHits.size() << " hits";
 
     if( b.mVerbose ) {
         stream << ": { ";
@@ -67,7 +67,7 @@ void ShiftHit::setVerbosity( bool verbose ) {
     mVerbose = verbose;
 }
 
-std::tuple<PointF, float, float> ShiftHit::geometricMedian( const std::vector<PointF>& points, const size_t minHits ) {
+ShiftHit::Median ShiftHit::geometricMedian( const std::vector<PointF>& points, const size_t minHits ) {
     float currentMin = FLT_MAX;
     PointF result;
     std::vector<PointF> copy = points;
@@ -98,7 +98,7 @@ std::tuple<PointF, float, float> ShiftHit::geometricMedian( const std::vector<Po
         return sum + p.distance( result );
     } );
 
-    return std::make_tuple( result, currentMin / points.size(), distance / copy.size() );
+    return ShiftHit::Median( result, currentMin / points.size(), distance / copy.size() );
 }
 
 void ShiftHit::calculateGeometricDistance() {
@@ -112,17 +112,11 @@ void ShiftHit::calculateGeometricDistance() {
         points.emplace_back( fromTo.first );
     }
 
-    std::tuple<PointF, float, float> median = ShiftHit::geometricMedian( points, mMinHits );
-    mGeometricAverage = std::get<0>( median );
-    mGeometricAverageDistance = std::get<1>( median );
-    mMinHitsAverageDistance = std::get<2>( median );
+    mMedian = ShiftHit::geometricMedian( points, mMinHits );
 
-    mWithinGeometricAverage = std::accumulate( points.cbegin(), points.cend(), 0, [this]( const int sum, const PointF & p ) {
-        if( mGeometricAverage.distance( p ) < mGeometricAverageDistance ) {
-            return sum + 1;
-        } else {
-            return sum;
-        }
+    mWithinGeometricAverage = std::count_if( points.cbegin(), points.cend(), [this]( const PointF & p ) {
+        bool within = mMedian.GeometricAverage.distance( p ) < mMedian.GeometricAverageDistance;
+        return within;
     } );
 
     mMedianCalculated = true;
@@ -171,7 +165,7 @@ bool ShiftHit::looksGood() const {
     assert( mMedianCalculated );
     // bool centerCriterium = mMean.distance( mGeometricAverage ) < mImageSize.abs() / 8; // arith. mean and geometric median are close
     // bool spreadCriterium = mGeometricAverageDistance < mImageSize.abs() / 8;           // hit is not too spread
-    bool clusterCriterium = mMinHitsAverageDistance < mImageSize.abs() / 16;           // best <minHits> hits are not too spread
+    bool clusterCriterium = mMedian.MinHitsAverageDistance < mImageSize.abs() / 16;           // best <minHits> hits are not too spread
     bool sizeCriterium   = mHits.size() > mMinHits;                                    // minimum of hits
     return /*centerCriterium && spreadCriterium &&*/ clusterCriterium && sizeCriterium;
 }
