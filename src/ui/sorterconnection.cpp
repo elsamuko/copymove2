@@ -92,8 +92,8 @@ GreyImage SorterConnection::getGrey() const {
     int c = 4;
     Q_ASSERT_X( mImage.format() == QImage::Format_ARGB32_Premultiplied, "getGrey", "Input image must have RGBA channels" );
 
-    for( int y = 0; y < mImage.height(); y++ ) {
-        for( int x = 0; x < mImage.width(); x++ ) {
+    for( int y = 0; y < h; y++ ) {
+        for( int x = 0; x < w; x++ ) {
             grey[x][y] = bits[ y*w*c + x*c + 1 ]; // green value BGRA
                                                   //             0123
         }
