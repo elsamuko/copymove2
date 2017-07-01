@@ -12,7 +12,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectName>CORE_filters</ProjectName>
-    <ProjectGuid>{F400E8AE-4737-4ABD-906D-F8775C67940B}</ProjectGuid>
+    <ProjectGuid>{940293CF-734C-4BED-9B18-046F864FA2CC}</ProjectGuid>
     <Keyword>x64Proj</Keyword>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -39,9 +39,10 @@
       <WarningLevel>Level4</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <CompileAs>Default</CompileAs>
-      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
       <OpenMPSupport>false</OpenMPSupport>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <OmitFramePointers>false</OmitFramePointers>
       <Optimization>Disabled</Optimization>
@@ -70,6 +71,7 @@
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <OpenMPSupport>false</OpenMPSupport>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <OmitFramePointers>true</OmitFramePointers>
       <Optimization>Full</Optimization>
@@ -93,8 +95,8 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\magick\CORE_magick_StaticMT.vcxproj">
-      <Project>{47B15FCB-B420-4111-987F-8F692B8B8D24}</Project>
+    <ProjectReference Include="..\MagickCore\CORE_MagickCore_StaticMT.vcxproj">
+      <Project>{CE0A66B4-5C22-41BF-BDC8-0E8ED73DF2C2}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
   </ItemGroup>

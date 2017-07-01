@@ -14,7 +14,7 @@ xwd.c
 IM_MOD
 
 [DEPENDENCIES]
-magick
+MagickCore
 
 [WARNING_LEVEL]
 4

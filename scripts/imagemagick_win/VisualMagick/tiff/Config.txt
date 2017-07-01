@@ -2,20 +2,17 @@
 
 [DEFINES]
 _TIFFLIB_
-CHECK_JPEG_YCBCR_SUBSAMPLING
 DEFAULT_EXTRASAMPLE_AS_ALPHA
-STRIPCHOP_DEFAULT=TIFF_STRIPCHOP
 LOGLUV_SUPPORT
 NEXT_SUPPORT
 THUNDER_SUPPORT
 LZW_SUPPORT
 PACKBITS_SUPPORT
 CCITT_SUPPORT
-TIF_PLATFORM_CONSOLE
-FILLODER_LSB2MSB
 
 [DIRECTORIES]
 ..\..\tiff\libtiff
+..\..\tiff\port
 
 [INCLUDES]
 ..\..\jpeg
@@ -37,6 +34,11 @@ tif_msdos.c
 tif_win32.c
 tif_vms.c
 tif_win3.c
+getopt.c
+lfind.c
+strtoul.c
+strtoull.c
+strcasecmp.c
 
 [DEPENDENCIES]
 jpeg

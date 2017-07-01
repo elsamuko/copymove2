@@ -12,7 +12,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectName>CORE_tiff</ProjectName>
-    <ProjectGuid>{9D51E2D1-A3E0-4677-B976-3930A1E8C7B8}</ProjectGuid>
+    <ProjectGuid>{AD154A20-50C3-4A5A-AE9E-762BF0243E83}</ProjectGuid>
     <Keyword>x64Proj</Keyword>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -39,14 +39,15 @@
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <CompileAs>Default</CompileAs>
-      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
       <OpenMPSupport>false</OpenMPSupport>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <OmitFramePointers>false</OmitFramePointers>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>;..\..\tiff\libtiff;..\..\jpeg;..\..\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_DEBUG;_WINDOWS;WIN32;_VISUALC_;NeedFunctionPrototypes;_TIFFLIB_;CHECK_JPEG_YCBCR_SUBSAMPLING;DEFAULT_EXTRASAMPLE_AS_ALPHA;STRIPCHOP_DEFAULT=TIFF_STRIPCHOP;LOGLUV_SUPPORT;NEXT_SUPPORT;THUNDER_SUPPORT;LZW_SUPPORT;PACKBITS_SUPPORT;CCITT_SUPPORT;TIF_PLATFORM_CONSOLE;FILLODER_LSB2MSB;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>;..\..\tiff\libtiff;..\..\tiff\port;..\..\jpeg;..\..\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;WIN32;_VISUALC_;NeedFunctionPrototypes;_TIFFLIB_;DEFAULT_EXTRASAMPLE_AS_ALPHA;LOGLUV_SUPPORT;NEXT_SUPPORT;THUNDER_SUPPORT;LZW_SUPPORT;PACKBITS_SUPPORT;CCITT_SUPPORT;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <ResourceCompile>
@@ -70,11 +71,12 @@
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <OpenMPSupport>false</OpenMPSupport>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <OmitFramePointers>true</OmitFramePointers>
       <Optimization>Full</Optimization>
-      <AdditionalIncludeDirectories>;..\..\tiff\libtiff;..\..\jpeg;..\..\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>NDEBUG;_WINDOWS;WIN32;_VISUALC_;NeedFunctionPrototypes;_TIFFLIB_;CHECK_JPEG_YCBCR_SUBSAMPLING;DEFAULT_EXTRASAMPLE_AS_ALPHA;STRIPCHOP_DEFAULT=TIFF_STRIPCHOP;LOGLUV_SUPPORT;NEXT_SUPPORT;THUNDER_SUPPORT;LZW_SUPPORT;PACKBITS_SUPPORT;CCITT_SUPPORT;TIF_PLATFORM_CONSOLE;FILLODER_LSB2MSB;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>;..\..\tiff\libtiff;..\..\tiff\port;..\..\jpeg;..\..\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NDEBUG;_WINDOWS;WIN32;_VISUALC_;NeedFunctionPrototypes;_TIFFLIB_;DEFAULT_EXTRASAMPLE_AS_ALPHA;LOGLUV_SUPPORT;NEXT_SUPPORT;THUNDER_SUPPORT;LZW_SUPPORT;PACKBITS_SUPPORT;CCITT_SUPPORT;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <ResourceCompile>
@@ -205,6 +207,12 @@
     <ClCompile Include="..\..\tiff\libtiff\tif_zip.c">
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
+    <ClCompile Include="..\..\tiff\port\dummy.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\tiff\port\snprintf.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\tiff\libtiff\t4.h" />
@@ -222,17 +230,15 @@
     <ClInclude Include="..\..\tiff\libtiff\tif_fax3.h" />
     <ClInclude Include="..\..\tiff\libtiff\tif_predict.h" />
     <ClInclude Include="..\..\tiff\libtiff\uvcode.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="..\tiff\Resource.rc" />
+    <ClInclude Include="..\..\tiff\port\libport.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\jpeg\CORE_jpeg_StaticMT.vcxproj">
-      <Project>{44184BBA-0AC6-46B7-B00B-5B0FF6361AC5}</Project>
+      <Project>{4AAF3635-D863-4455-8C22-16716DC7E780}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
     <ProjectReference Include="..\zlib\CORE_zlib_StaticMT.vcxproj">
-      <Project>{9A07491D-0F88-4E76-8E01-05E3611E80B4}</Project>
+      <Project>{AE173116-234E-43D4-A3A5-16AE700059E0}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
   </ItemGroup>

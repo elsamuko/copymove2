@@ -12,7 +12,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectName>CORE_png</ProjectName>
-    <ProjectGuid>{F5F38ABE-F021-4C59-882A-36C772740C37}</ProjectGuid>
+    <ProjectGuid>{37749349-95E1-4562-B208-549E27F01052}</ProjectGuid>
     <Keyword>x64Proj</Keyword>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -39,9 +39,10 @@
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <CompileAs>Default</CompileAs>
-      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
       <OpenMPSupport>false</OpenMPSupport>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <OmitFramePointers>false</OmitFramePointers>
       <Optimization>Disabled</Optimization>
@@ -70,6 +71,7 @@
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <OpenMPSupport>false</OpenMPSupport>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <OmitFramePointers>true</OmitFramePointers>
       <Optimization>Full</Optimization>
@@ -144,11 +146,11 @@
     <ClInclude Include="..\..\png\pngstruct.h" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="..\..\png\ImageMagick.rc" />
+    <ResourceCompile Include="..\..\png\ImageMagick\Resource.rc" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\zlib\CORE_zlib_StaticMT.vcxproj">
-      <Project>{9A07491D-0F88-4E76-8E01-05E3611E80B4}</Project>
+      <Project>{AE173116-234E-43D4-A3A5-16AE700059E0}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
   </ItemGroup>

@@ -12,7 +12,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectName>CORE_jpeg</ProjectName>
-    <ProjectGuid>{44184BBA-0AC6-46B7-B00B-5B0FF6361AC5}</ProjectGuid>
+    <ProjectGuid>{4AAF3635-D863-4455-8C22-16716DC7E780}</ProjectGuid>
     <Keyword>x64Proj</Keyword>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -39,9 +39,10 @@
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <CompileAs>Default</CompileAs>
-      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
       <OpenMPSupport>false</OpenMPSupport>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <OmitFramePointers>false</OmitFramePointers>
       <Optimization>Disabled</Optimization>
@@ -70,6 +71,7 @@
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <OpenMPSupport>false</OpenMPSupport>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <OmitFramePointers>true</OmitFramePointers>
       <Optimization>Full</Optimization>
@@ -250,63 +252,71 @@
     <ClCompile Include="..\..\jpeg\turbojpeg.c">
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
-    <CustomBuild Include="..\..\jpeg\simd\jccolss2-64.nasm">
+    <CustomBuild Include="..\..\jpeg\simd\jccolor-sse2-64.asm">
       <Command>..\build\nasm -fwin64 -DWIN64 -D__x86_64__ -I..\..\jpeg\simd\ -o "$(IntDir)%(Filename).obj" "%(FullPath)"</Command>
       <Outputs>$(IntDir)%(Filename).obj;%(Outputs)</Outputs>
     </CustomBuild>
-    <CustomBuild Include="..\..\jpeg\simd\jcgrass2-64.nasm">
+    <CustomBuild Include="..\..\jpeg\simd\jcgray-sse2-64.asm">
       <Command>..\build\nasm -fwin64 -DWIN64 -D__x86_64__ -I..\..\jpeg\simd\ -o "$(IntDir)%(Filename).obj" "%(FullPath)"</Command>
       <Outputs>$(IntDir)%(Filename).obj;%(Outputs)</Outputs>
     </CustomBuild>
-    <CustomBuild Include="..\..\jpeg\simd\jcqnts2f-64.nasm">
+    <CustomBuild Include="..\..\jpeg\simd\jchuff-sse2-64.asm">
       <Command>..\build\nasm -fwin64 -DWIN64 -D__x86_64__ -I..\..\jpeg\simd\ -o "$(IntDir)%(Filename).obj" "%(FullPath)"</Command>
       <Outputs>$(IntDir)%(Filename).obj;%(Outputs)</Outputs>
     </CustomBuild>
-    <CustomBuild Include="..\..\jpeg\simd\jcqnts2i-64.nasm">
+    <CustomBuild Include="..\..\jpeg\simd\jcsample-sse2-64.asm">
       <Command>..\build\nasm -fwin64 -DWIN64 -D__x86_64__ -I..\..\jpeg\simd\ -o "$(IntDir)%(Filename).obj" "%(FullPath)"</Command>
       <Outputs>$(IntDir)%(Filename).obj;%(Outputs)</Outputs>
     </CustomBuild>
-    <CustomBuild Include="..\..\jpeg\simd\jcsamss2-64.nasm">
+    <CustomBuild Include="..\..\jpeg\simd\jdcolor-sse2-64.asm">
       <Command>..\build\nasm -fwin64 -DWIN64 -D__x86_64__ -I..\..\jpeg\simd\ -o "$(IntDir)%(Filename).obj" "%(FullPath)"</Command>
       <Outputs>$(IntDir)%(Filename).obj;%(Outputs)</Outputs>
     </CustomBuild>
-    <CustomBuild Include="..\..\jpeg\simd\jdcolss2-64.nasm">
+    <CustomBuild Include="..\..\jpeg\simd\jdmerge-sse2-64.asm">
       <Command>..\build\nasm -fwin64 -DWIN64 -D__x86_64__ -I..\..\jpeg\simd\ -o "$(IntDir)%(Filename).obj" "%(FullPath)"</Command>
       <Outputs>$(IntDir)%(Filename).obj;%(Outputs)</Outputs>
     </CustomBuild>
-    <CustomBuild Include="..\..\jpeg\simd\jdmerss2-64.nasm">
+    <CustomBuild Include="..\..\jpeg\simd\jdsample-sse2-64.asm">
       <Command>..\build\nasm -fwin64 -DWIN64 -D__x86_64__ -I..\..\jpeg\simd\ -o "$(IntDir)%(Filename).obj" "%(FullPath)"</Command>
       <Outputs>$(IntDir)%(Filename).obj;%(Outputs)</Outputs>
     </CustomBuild>
-    <CustomBuild Include="..\..\jpeg\simd\jdsamss2-64.nasm">
+    <CustomBuild Include="..\..\jpeg\simd\jfdctflt-sse-64.asm">
       <Command>..\build\nasm -fwin64 -DWIN64 -D__x86_64__ -I..\..\jpeg\simd\ -o "$(IntDir)%(Filename).obj" "%(FullPath)"</Command>
       <Outputs>$(IntDir)%(Filename).obj;%(Outputs)</Outputs>
     </CustomBuild>
-    <CustomBuild Include="..\..\jpeg\simd\jfss2fst-64.nasm">
+    <CustomBuild Include="..\..\jpeg\simd\jfdctfst-sse2-64.asm">
       <Command>..\build\nasm -fwin64 -DWIN64 -D__x86_64__ -I..\..\jpeg\simd\ -o "$(IntDir)%(Filename).obj" "%(FullPath)"</Command>
       <Outputs>$(IntDir)%(Filename).obj;%(Outputs)</Outputs>
     </CustomBuild>
-    <CustomBuild Include="..\..\jpeg\simd\jfss2int-64.nasm">
+    <CustomBuild Include="..\..\jpeg\simd\jfdctint-sse2-64.asm">
       <Command>..\build\nasm -fwin64 -DWIN64 -D__x86_64__ -I..\..\jpeg\simd\ -o "$(IntDir)%(Filename).obj" "%(FullPath)"</Command>
       <Outputs>$(IntDir)%(Filename).obj;%(Outputs)</Outputs>
     </CustomBuild>
-    <CustomBuild Include="..\..\jpeg\simd\jfsseflt-64.nasm">
+    <CustomBuild Include="..\..\jpeg\simd\jidctflt-sse2-64.asm">
       <Command>..\build\nasm -fwin64 -DWIN64 -D__x86_64__ -I..\..\jpeg\simd\ -o "$(IntDir)%(Filename).obj" "%(FullPath)"</Command>
       <Outputs>$(IntDir)%(Filename).obj;%(Outputs)</Outputs>
     </CustomBuild>
-    <CustomBuild Include="..\..\jpeg\simd\jiss2flt-64.nasm">
+    <CustomBuild Include="..\..\jpeg\simd\jidctfst-sse2-64.asm">
       <Command>..\build\nasm -fwin64 -DWIN64 -D__x86_64__ -I..\..\jpeg\simd\ -o "$(IntDir)%(Filename).obj" "%(FullPath)"</Command>
       <Outputs>$(IntDir)%(Filename).obj;%(Outputs)</Outputs>
     </CustomBuild>
-    <CustomBuild Include="..\..\jpeg\simd\jiss2fst-64.nasm">
+    <CustomBuild Include="..\..\jpeg\simd\jidctint-sse2-64.asm">
       <Command>..\build\nasm -fwin64 -DWIN64 -D__x86_64__ -I..\..\jpeg\simd\ -o "$(IntDir)%(Filename).obj" "%(FullPath)"</Command>
       <Outputs>$(IntDir)%(Filename).obj;%(Outputs)</Outputs>
     </CustomBuild>
-    <CustomBuild Include="..\..\jpeg\simd\jiss2int-64.nasm">
+    <CustomBuild Include="..\..\jpeg\simd\jidctred-sse2-64.asm">
       <Command>..\build\nasm -fwin64 -DWIN64 -D__x86_64__ -I..\..\jpeg\simd\ -o "$(IntDir)%(Filename).obj" "%(FullPath)"</Command>
       <Outputs>$(IntDir)%(Filename).obj;%(Outputs)</Outputs>
     </CustomBuild>
-    <CustomBuild Include="..\..\jpeg\simd\jiss2red-64.nasm">
+    <CustomBuild Include="..\..\jpeg\simd\jquantf-sse2-64.asm">
+      <Command>..\build\nasm -fwin64 -DWIN64 -D__x86_64__ -I..\..\jpeg\simd\ -o "$(IntDir)%(Filename).obj" "%(FullPath)"</Command>
+      <Outputs>$(IntDir)%(Filename).obj;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\jpeg\simd\jquanti-sse2-64.asm">
+      <Command>..\build\nasm -fwin64 -DWIN64 -D__x86_64__ -I..\..\jpeg\simd\ -o "$(IntDir)%(Filename).obj" "%(FullPath)"</Command>
+      <Outputs>$(IntDir)%(Filename).obj;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="..\..\jpeg\simd\jsimdcpu.asm">
       <Command>..\build\nasm -fwin64 -DWIN64 -D__x86_64__ -I..\..\jpeg\simd\ -o "$(IntDir)%(Filename).obj" "%(FullPath)"</Command>
       <Outputs>$(IntDir)%(Filename).obj;%(Outputs)</Outputs>
     </CustomBuild>
@@ -318,11 +328,15 @@
     <ClInclude Include="..\..\jpeg\bmp.h" />
     <ClInclude Include="..\..\jpeg\cderror.h" />
     <ClInclude Include="..\..\jpeg\cdjpeg.h" />
-    <ClInclude Include="..\..\jpeg\config.h" />
     <ClInclude Include="..\..\jpeg\jchuff.h" />
     <ClInclude Include="..\..\jpeg\jconfig.h" />
+    <ClInclude Include="..\..\jpeg\jconfigint.h" />
+    <ClInclude Include="..\..\jpeg\jdcoefct.h" />
     <ClInclude Include="..\..\jpeg\jdct.h" />
     <ClInclude Include="..\..\jpeg\jdhuff.h" />
+    <ClInclude Include="..\..\jpeg\jdmainct.h" />
+    <ClInclude Include="..\..\jpeg\jdmaster.h" />
+    <ClInclude Include="..\..\jpeg\jdsample.h" />
     <ClInclude Include="..\..\jpeg\jerror.h" />
     <ClInclude Include="..\..\jpeg\jinclude.h" />
     <ClInclude Include="..\..\jpeg\jmemsys.h" />
@@ -330,17 +344,21 @@
     <ClInclude Include="..\..\jpeg\jpegcomp.h" />
     <ClInclude Include="..\..\jpeg\jpegint.h" />
     <ClInclude Include="..\..\jpeg\jpeglib.h" />
+    <ClInclude Include="..\..\jpeg\jpeg_nbits_table.h" />
     <ClInclude Include="..\..\jpeg\jsimd.h" />
     <ClInclude Include="..\..\jpeg\jsimddct.h" />
     <ClInclude Include="..\..\jpeg\jversion.h" />
     <ClInclude Include="..\..\jpeg\tjutil.h" />
     <ClInclude Include="..\..\jpeg\transupp.h" />
     <ClInclude Include="..\..\jpeg\turbojpeg.h" />
+    <ClInclude Include="..\..\jpeg\wrppm.h" />
+    <ClInclude Include="..\..\jpeg\simd\jcsample.h" />
     <ClInclude Include="..\..\jpeg\simd\jsimd.h" />
     <ClInclude Include="..\..\jpeg\simd\jsimdcfg.inc.h" />
+    <ClInclude Include="..\..\jpeg\simd\jsimd_mips_dspr2_asm.h" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="..\jpeg\Resource.rc" />
+    <ResourceCompile Include="..\..\jpeg\ImageMagick\Resource.rc" />
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>

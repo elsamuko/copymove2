@@ -6,11 +6,11 @@
 
 [INCLUDES]
 ..\..\ImageMagick
-..\..\ImageMagick\magick
+..\..\ImageMagick\MagickCore
 
 [DEPENDENCIES]
-magick
-wand
+MagickCore
+MagickWand
 
 [WARNING_LEVEL]
 4

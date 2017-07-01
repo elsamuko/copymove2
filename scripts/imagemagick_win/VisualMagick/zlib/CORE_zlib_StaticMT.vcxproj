@@ -12,7 +12,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectName>CORE_zlib</ProjectName>
-    <ProjectGuid>{9A07491D-0F88-4E76-8E01-05E3611E80B4}</ProjectGuid>
+    <ProjectGuid>{AE173116-234E-43D4-A3A5-16AE700059E0}</ProjectGuid>
     <Keyword>x64Proj</Keyword>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -39,9 +39,10 @@
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <CompileAs>Default</CompileAs>
-      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
       <OpenMPSupport>false</OpenMPSupport>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <OmitFramePointers>false</OmitFramePointers>
       <Optimization>Disabled</Optimization>
@@ -70,6 +71,7 @@
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <OpenMPSupport>false</OpenMPSupport>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <OmitFramePointers>true</OmitFramePointers>
       <Optimization>Full</Optimization>
@@ -138,16 +140,17 @@
     <ClInclude Include="..\..\zlib\crc32.h" />
     <ClInclude Include="..\..\zlib\deflate.h" />
     <ClInclude Include="..\..\zlib\gzguts.h" />
-    <ClInclude Include="..\..\zlib\infcodes.h" />
     <ClInclude Include="..\..\zlib\inffast.h" />
     <ClInclude Include="..\..\zlib\inffixed.h" />
     <ClInclude Include="..\..\zlib\inflate.h" />
     <ClInclude Include="..\..\zlib\inftrees.h" />
     <ClInclude Include="..\..\zlib\trees.h" />
     <ClInclude Include="..\..\zlib\zconf.h" />
-    <ClInclude Include="..\..\zlib\zconf.in.h" />
     <ClInclude Include="..\..\zlib\zlib.h" />
     <ClInclude Include="..\..\zlib\zutil.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\..\zlib\ImageMagick\Resource.rc" />
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>

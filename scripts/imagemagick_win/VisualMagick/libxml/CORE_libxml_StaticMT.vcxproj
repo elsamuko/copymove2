@@ -12,7 +12,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectName>CORE_libxml</ProjectName>
-    <ProjectGuid>{2EB386AE-E6F3-45A7-94D5-E66664712A87}</ProjectGuid>
+    <ProjectGuid>{2ECF73A0-7DF3-4115-BAA7-5F89E4EADB97}</ProjectGuid>
     <Keyword>x64Proj</Keyword>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -39,9 +39,10 @@
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <CompileAs>Default</CompileAs>
-      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
       <OpenMPSupport>false</OpenMPSupport>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <OmitFramePointers>false</OmitFramePointers>
       <Optimization>Disabled</Optimization>
@@ -70,6 +71,7 @@
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <OpenMPSupport>false</OpenMPSupport>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <OmitFramePointers>true</OmitFramePointers>
       <Optimization>Full</Optimization>
@@ -222,7 +224,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\libxml\acconfig.h" />
     <ClInclude Include="..\..\libxml\buf.h" />
     <ClInclude Include="..\..\libxml\config.h" />
     <ClInclude Include="..\..\libxml\elfgcchack.h" />
@@ -281,11 +282,13 @@
     <ClInclude Include="..\..\libxml\include\libxml\xmlstring.h" />
     <ClInclude Include="..\..\libxml\include\libxml\xmlunicode.h" />
     <ClInclude Include="..\..\libxml\include\libxml\xmlversion.h" />
-    <ClInclude Include="..\..\libxml\include\libxml\xmlwin32version.h" />
     <ClInclude Include="..\..\libxml\include\libxml\xmlwriter.h" />
     <ClInclude Include="..\..\libxml\include\libxml\xpath.h" />
     <ClInclude Include="..\..\libxml\include\libxml\xpathInternals.h" />
     <ClInclude Include="..\..\libxml\include\libxml\xpointer.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\..\libxml\ImageMagick\Resource.rc" />
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>

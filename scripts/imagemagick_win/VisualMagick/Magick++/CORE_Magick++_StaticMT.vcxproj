@@ -12,7 +12,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectName>CORE_Magick++</ProjectName>
-    <ProjectGuid>{6DC8AE00-C6AD-49D2-807C-44F950EEEA02}</ProjectGuid>
+    <ProjectGuid>{F3414A03-9D85-4AF7-A382-02C96EB50B37}</ProjectGuid>
     <Keyword>x64Proj</Keyword>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -39,13 +39,14 @@
       <WarningLevel>Level4</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <CompileAs>Default</CompileAs>
-      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
       <OpenMPSupport>false</OpenMPSupport>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <OmitFramePointers>false</OmitFramePointers>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>;..\..\ImageMagick\Magick++\lib;..\..\ImageMagick\Magick++\lib\Magick++;..\..\ImageMagick;..\..\ImageMagick\magick;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>;..\..\ImageMagick\Magick++\lib;..\..\ImageMagick\Magick++\lib\Magick++;..\..\ImageMagick;..\..\ImageMagick\MagickCore;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;WIN32;_VISUALC_;NeedFunctionPrototypes;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -70,10 +71,11 @@
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <OpenMPSupport>false</OpenMPSupport>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <OmitFramePointers>true</OmitFramePointers>
       <Optimization>Full</Optimization>
-      <AdditionalIncludeDirectories>;..\..\ImageMagick\Magick++\lib;..\..\ImageMagick\Magick++\lib\Magick++;..\..\ImageMagick;..\..\ImageMagick\magick;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>;..\..\ImageMagick\Magick++\lib;..\..\ImageMagick\Magick++\lib\Magick++;..\..\ImageMagick;..\..\ImageMagick\MagickCore;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;WIN32;_VISUALC_;NeedFunctionPrototypes;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -92,9 +94,6 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <ClCompile Include="..\..\ImageMagick\Magick++\lib\BlobRef.cpp">
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-    </ClCompile>
-    <ClCompile Include="..\..\ImageMagick\Magick++\lib\ChannelMoments.cpp">
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <ClCompile Include="..\..\ImageMagick\Magick++\lib\CoderInfo.cpp">
@@ -133,6 +132,9 @@
     <ClCompile Include="..\..\ImageMagick\Magick++\lib\ResourceLimits.cpp">
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\Magick++\lib\Statistic.cpp">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
     <ClCompile Include="..\..\ImageMagick\Magick++\lib\STL.cpp">
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -147,7 +149,6 @@
     <ClInclude Include="..\..\ImageMagick\Magick++\lib\Magick++.h" />
     <ClInclude Include="..\..\ImageMagick\Magick++\lib\Magick++\Blob.h" />
     <ClInclude Include="..\..\ImageMagick\Magick++\lib\Magick++\BlobRef.h" />
-    <ClInclude Include="..\..\ImageMagick\Magick++\lib\Magick++\ChannelMoments.h" />
     <ClInclude Include="..\..\ImageMagick\Magick++\lib\Magick++\CoderInfo.h" />
     <ClInclude Include="..\..\ImageMagick\Magick++\lib\Magick++\Color.h" />
     <ClInclude Include="..\..\ImageMagick\Magick++\lib\Magick++\Drawable.h" />
@@ -161,6 +162,7 @@
     <ClInclude Include="..\..\ImageMagick\Magick++\lib\Magick++\Options.h" />
     <ClInclude Include="..\..\ImageMagick\Magick++\lib\Magick++\Pixels.h" />
     <ClInclude Include="..\..\ImageMagick\Magick++\lib\Magick++\ResourceLimits.h" />
+    <ClInclude Include="..\..\ImageMagick\Magick++\lib\Magick++\Statistic.h" />
     <ClInclude Include="..\..\ImageMagick\Magick++\lib\Magick++\STL.h" />
     <ClInclude Include="..\..\ImageMagick\Magick++\lib\Magick++\Thread.h" />
     <ClInclude Include="..\..\ImageMagick\Magick++\lib\Magick++\TypeMetric.h" />
@@ -169,12 +171,12 @@
     <ResourceCompile Include="..\Magick++\Resource.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\magick\CORE_magick_StaticMT.vcxproj">
-      <Project>{47B15FCB-B420-4111-987F-8F692B8B8D24}</Project>
+    <ProjectReference Include="..\MagickCore\CORE_MagickCore_StaticMT.vcxproj">
+      <Project>{CE0A66B4-5C22-41BF-BDC8-0E8ED73DF2C2}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-    <ProjectReference Include="..\wand\CORE_wand_StaticMT.vcxproj">
-      <Project>{9FBC860D-5CF2-49FB-931B-66B10871DCB7}</Project>
+    <ProjectReference Include="..\MagickWand\CORE_MagickWand_StaticMT.vcxproj">
+      <Project>{4D6FD339-8564-4C36-8F5E-7999B39A395C}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
   </ItemGroup>

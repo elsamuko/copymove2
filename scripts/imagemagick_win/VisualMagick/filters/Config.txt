@@ -10,7 +10,7 @@
 FILTER
 
 [DEPENDENCIES]
-magick
+MagickCore
 
 [WARNING_LEVEL]
 4

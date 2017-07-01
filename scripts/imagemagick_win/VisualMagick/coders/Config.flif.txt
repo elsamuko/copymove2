@@ -1,0 +1,8 @@
+[INCLUDES]
+..\..\flif\src\library
+
+[DEPENDENCIES]
+flif
+
+[VISUAL_STUDIO]
+2013

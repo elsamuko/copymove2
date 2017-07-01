@@ -2,7 +2,7 @@
 
 OS=win
 PROJECT=imagemagick
-VERSION="6.9.2-10"
+VERSION="7.0.6-0"
 DL_URL="http://www.imagemagick.org/download/windows/releases/ImageMagick-$VERSION.7z"
 
 SCRIPT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
@@ -37,8 +37,8 @@ function doPrepare {
     fi
     mkdir -p "$PROJECT_DIR"
     mkdir -p "$TARGET_DIR"
-	mkdir -p "$TARGET_DIR/include/magick"
-	mkdir -p "$TARGET_DIR/include/wand"
+	mkdir -p "$TARGET_DIR/include/MagickCore"
+	mkdir -p "$TARGET_DIR/include/MagickWand"
     mkdir -p "$SRC_DIR"
 }
 
@@ -97,8 +97,8 @@ function doCopy {
     cp -r "$BUILD_DIR/VisualMagick/lib_release"/* "$TARGET_DIR/bin/$OS/release"
     cp -r "$BUILD_DIR/ImageMagick/Magick++/lib/Magick++" "$TARGET_DIR/include"
 	cp -r "$BUILD_DIR/ImageMagick/Magick++/lib/Magick++.h" "$TARGET_DIR/include"
-	cp -r "$BUILD_DIR/ImageMagick/magick"/*.h "$TARGET_DIR/include/magick"
-	cp -r "$BUILD_DIR/ImageMagick/wand"/*.h "$TARGET_DIR/include/wand"
+	cp -r "$BUILD_DIR/ImageMagick/MagickCore"/*.h "$TARGET_DIR/include/MagickCore"
+	cp -r "$BUILD_DIR/ImageMagick/MagickWand"/*.h "$TARGET_DIR/include/MagickWand"
 }
 
 echo "Prepare"

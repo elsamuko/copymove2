@@ -4,18 +4,18 @@
 _MAGICKLIB_
 
 [DIRECTORIES]
-..\..\ImageMagick\Wand
+..\..\ImageMagick\MagickWand
 
 [INCLUDES]
 ..\..\ImageMagick
-..\..\ImageMagick\Magick
+..\..\ImageMagick\MagickCore
 
 [EXCLUDES]
 drawtest.c
 wandtest.c
 
 [DEPENDENCIES]
-magick
+MagickCore
 
 [WARNING_LEVEL]
 4

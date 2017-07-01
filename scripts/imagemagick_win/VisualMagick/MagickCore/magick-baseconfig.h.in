@@ -39,11 +39,6 @@
 //#define ProvideDllMain
 
 /*
-  Exclude deprecated methods in MagickCore API
-*/
-#define MAGICKCORE_EXCLUDE_DEPRECATED
-
-/*
   Permit enciphering and deciphering image pixels.
 */
 #define MAGICKCORE_CIPHER_SUPPORT
@@ -54,6 +49,11 @@ $$CONFIG$$
   Define to use the Windows GDI32 library (for clipboard and emf modules)
 */
 #define MAGICKCORE_WINGDI32_DELEGATE
+
+/*
+  Define to only use the built-in (in-memory) settings.
+*/
+//#define MAGICKCORE_ZERO_CONFIGURATION_SUPPORT
 
 /*
   Hard Coded Paths
@@ -124,8 +124,20 @@ $$CONFIG$$
 #endif
 
 /*
-  Visual C++ does not define ssize_t by default.
+  Visual C++ does not define double_t, float_t, or ssize_t by default.
 */
+#if !defined(double_t)
+#define MAGICKCORE_HAVE_DOUBLE_T
+#if !defined(__MINGW32__) && !defined(__MINGW64__)
+typedef double double_t;
+#endif
+#endif
+#if !defined(float_t)
+#define MAGICKCORE_HAVE_FLOAT_T
+#if !defined(__MINGW32__) && !defined(__MINGW64__)
+typedef float float_t;
+#endif
+#endif
 #if !defined(ssize_t) && !defined(__MINGW32__) && !defined(__MINGW64__)
 #if defined(_WIN64) 
 typedef __int64 ssize_t;
@@ -240,6 +252,7 @@ typedef long ssize_t;
 #define MAGICKCORE_HAVE_RAISE 1
 #define MAGICKCORE_HAVE_PROCESS_H 1
 #define MAGICKCORE_HAVE_SPAWNVP 1
+#define MAGICKCORE_HAVE_UTIME 1
 #define MAGICKCORE_STDC_HEADERS 1
 #define MAGICKCORE_HAVE_LOCALE_H 1
 #define MAGICKCORE_HAVE_LOCALE_T 1
@@ -300,8 +313,17 @@ typedef long ssize_t;
   Disable specific warnings.
 */
 #ifdef _MSC_VER
-#pragma warning(disable: 4054)
-#pragma warning(disable: 4055)
-#pragma warning(disable: 4100)
-#pragma warning(disable: 4130)
+#if _MSC_VER < 1910
+#pragma warning(disable: 4054) /* 'conversion' : from function pointer 'type1' to data pointer 'type2' */
+#pragma warning(disable: 4055) /* 'conversion' : from data pointer 'type1' to function pointer 'type2' */
 #endif
+#pragma warning(disable: 4101) /* 'identifier' : unreferenced local variable */
+#pragma warning(disable: 4201) /* nonstandard extension used : nameless struct/union */
+#pragma warning(disable: 4130) /* 'operator' : logical operation on address of string constant */
+#pragma warning(disable: 4459) /* 'identifier' : declaration of 'foo' hides global declaration */
+#endif
+
+/* only report these warnings once per file */
+#pragma warning(once: 4100) /* 'identifier' : unreferenced formal parameter */
+#pragma warning(once: 4456) /* 'identifier' : declaration of 'foo' hides previous local declaration */
+#pragma warning(once: 4459) /* 'identifier' : declaration of 'foo' hides global declaration */

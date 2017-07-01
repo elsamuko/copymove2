@@ -11,8 +11,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectName>CORE_wand</ProjectName>
-    <ProjectGuid>{9FBC860D-5CF2-49FB-931B-66B10871DCB7}</ProjectGuid>
+    <ProjectName>CORE_MagickWand</ProjectName>
+    <ProjectGuid>{4D6FD339-8564-4C36-8F5E-7999B39A395C}</ProjectGuid>
     <Keyword>x64Proj</Keyword>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -26,10 +26,10 @@
   <PropertyGroup>
     <LinkIncremental>false</LinkIncremental>
     <OutDir>..\lib\</OutDir>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CORE_DB_wand_</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CORE_RL_wand_</TargetName>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\Debug\StaticMT-x64\CORE_wand\</IntDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\Release\StaticMT-x64\CORE_wand\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CORE_DB_MagickWand_</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CORE_RL_MagickWand_</TargetName>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\Debug\StaticMT-x64\CORE_MagickWand\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\Release\StaticMT-x64\CORE_MagickWand\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -39,13 +39,14 @@
       <WarningLevel>Level4</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <CompileAs>Default</CompileAs>
-      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
       <OpenMPSupport>false</OpenMPSupport>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <OmitFramePointers>false</OmitFramePointers>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>;..\..\ImageMagick\Wand;..\..\ImageMagick;..\..\ImageMagick\Magick;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>;..\..\ImageMagick\MagickWand;..\..\ImageMagick;..\..\ImageMagick\MagickCore;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;WIN32;_VISUALC_;NeedFunctionPrototypes;_MAGICKLIB_;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -70,10 +71,11 @@
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <OpenMPSupport>false</OpenMPSupport>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <OmitFramePointers>true</OmitFramePointers>
       <Optimization>Full</Optimization>
-      <AdditionalIncludeDirectories>;..\..\ImageMagick\Wand;..\..\ImageMagick;..\..\ImageMagick\Magick;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>;..\..\ImageMagick\MagickWand;..\..\ImageMagick;..\..\ImageMagick\MagickCore;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;WIN32;_VISUALC_;NeedFunctionPrototypes;_MAGICKLIB_;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -88,102 +90,118 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\ImageMagick\Wand\animate.c">
+    <ClCompile Include="..\..\ImageMagick\MagickWand\animate.c">
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
-    <ClCompile Include="..\..\ImageMagick\Wand\compare.c">
+    <ClCompile Include="..\..\ImageMagick\MagickWand\compare.c">
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
-    <ClCompile Include="..\..\ImageMagick\Wand\composite.c">
+    <ClCompile Include="..\..\ImageMagick\MagickWand\composite.c">
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
-    <ClCompile Include="..\..\ImageMagick\Wand\conjure.c">
+    <ClCompile Include="..\..\ImageMagick\MagickWand\conjure.c">
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
-    <ClCompile Include="..\..\ImageMagick\Wand\convert.c">
+    <ClCompile Include="..\..\ImageMagick\MagickWand\convert.c">
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
-    <ClCompile Include="..\..\ImageMagick\Wand\deprecate.c">
+    <ClCompile Include="..\..\ImageMagick\MagickWand\deprecate.c">
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
-    <ClCompile Include="..\..\ImageMagick\Wand\display.c">
+    <ClCompile Include="..\..\ImageMagick\MagickWand\display.c">
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
-    <ClCompile Include="..\..\ImageMagick\Wand\drawing-wand.c">
+    <ClCompile Include="..\..\ImageMagick\MagickWand\drawing-wand.c">
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
-    <ClCompile Include="..\..\ImageMagick\Wand\identify.c">
+    <ClCompile Include="..\..\ImageMagick\MagickWand\identify.c">
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
-    <ClCompile Include="..\..\ImageMagick\Wand\import.c">
+    <ClCompile Include="..\..\ImageMagick\MagickWand\import.c">
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
-    <ClCompile Include="..\..\ImageMagick\Wand\magick-image.c">
+    <ClCompile Include="..\..\ImageMagick\MagickWand\magick-cli.c">
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
-    <ClCompile Include="..\..\ImageMagick\Wand\magick-property.c">
+    <ClCompile Include="..\..\ImageMagick\MagickWand\magick-image.c">
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
-    <ClCompile Include="..\..\ImageMagick\Wand\magick-wand.c">
+    <ClCompile Include="..\..\ImageMagick\MagickWand\magick-property.c">
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
-    <ClCompile Include="..\..\ImageMagick\Wand\mogrify.c">
+    <ClCompile Include="..\..\ImageMagick\MagickWand\magick-wand.c">
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
-    <ClCompile Include="..\..\ImageMagick\Wand\montage.c">
+    <ClCompile Include="..\..\ImageMagick\MagickWand\mogrify.c">
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
-    <ClCompile Include="..\..\ImageMagick\Wand\pixel-iterator.c">
+    <ClCompile Include="..\..\ImageMagick\MagickWand\montage.c">
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
-    <ClCompile Include="..\..\ImageMagick\Wand\pixel-wand.c">
+    <ClCompile Include="..\..\ImageMagick\MagickWand\operation.c">
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
-    <ClCompile Include="..\..\ImageMagick\Wand\stream.c">
+    <ClCompile Include="..\..\ImageMagick\MagickWand\pixel-iterator.c">
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
-    <ClCompile Include="..\..\ImageMagick\Wand\wand-view.c">
+    <ClCompile Include="..\..\ImageMagick\MagickWand\pixel-wand.c">
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
-    <ClCompile Include="..\..\ImageMagick\Wand\wand.c">
+    <ClCompile Include="..\..\ImageMagick\MagickWand\script-token.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickWand\stream.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickWand\wand-view.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickWand\wand.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickWand\wandcli.c">
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\ImageMagick\Wand\animate.h" />
-    <ClInclude Include="..\..\ImageMagick\Wand\compare.h" />
-    <ClInclude Include="..\..\ImageMagick\Wand\composite.h" />
-    <ClInclude Include="..\..\ImageMagick\Wand\conjure.h" />
-    <ClInclude Include="..\..\ImageMagick\Wand\convert.h" />
-    <ClInclude Include="..\..\ImageMagick\Wand\deprecate.h" />
-    <ClInclude Include="..\..\ImageMagick\Wand\display.h" />
-    <ClInclude Include="..\..\ImageMagick\Wand\drawing-wand.h" />
-    <ClInclude Include="..\..\ImageMagick\Wand\identify.h" />
-    <ClInclude Include="..\..\ImageMagick\Wand\import.h" />
-    <ClInclude Include="..\..\ImageMagick\Wand\magick-image.h" />
-    <ClInclude Include="..\..\ImageMagick\Wand\magick-property.h" />
-    <ClInclude Include="..\..\ImageMagick\Wand\magick-wand-private.h" />
-    <ClInclude Include="..\..\ImageMagick\Wand\magick-wand.h" />
-    <ClInclude Include="..\..\ImageMagick\Wand\MagickWand.h" />
-    <ClInclude Include="..\..\ImageMagick\Wand\magick_wand.h" />
-    <ClInclude Include="..\..\ImageMagick\Wand\method-attribute.h" />
-    <ClInclude Include="..\..\ImageMagick\Wand\mogrify-private.h" />
-    <ClInclude Include="..\..\ImageMagick\Wand\mogrify.h" />
-    <ClInclude Include="..\..\ImageMagick\Wand\montage.h" />
-    <ClInclude Include="..\..\ImageMagick\Wand\pixel-iterator.h" />
-    <ClInclude Include="..\..\ImageMagick\Wand\pixel-wand-private.h" />
-    <ClInclude Include="..\..\ImageMagick\Wand\pixel-wand.h" />
-    <ClInclude Include="..\..\ImageMagick\Wand\stream.h" />
-    <ClInclude Include="..\..\ImageMagick\Wand\studio.h" />
-    <ClInclude Include="..\..\ImageMagick\Wand\wand-view.h" />
-    <ClInclude Include="..\..\ImageMagick\Wand\wand.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickWand\animate.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickWand\compare.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickWand\composite.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickWand\conjure.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickWand\convert.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickWand\deprecate.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickWand\display.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickWand\drawing-wand.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickWand\identify.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickWand\import.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickWand\magick-cli.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickWand\magick-image.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickWand\magick-property.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickWand\magick-wand-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickWand\MagickWand.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickWand\method-attribute.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickWand\mogrify-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickWand\mogrify.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickWand\montage.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickWand\operation-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickWand\operation.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickWand\pixel-iterator.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickWand\pixel-wand-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickWand\pixel-wand.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickWand\script-token.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickWand\stream.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickWand\studio.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickWand\wand-view.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickWand\wand.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickWand\wandcli-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickWand\wandcli.h" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="..\wand\Resource.rc" />
+    <ResourceCompile Include="..\MagickWand\Resource.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\magick\CORE_magick_StaticMT.vcxproj">
-      <Project>{47B15FCB-B420-4111-987F-8F692B8B8D24}</Project>
+    <ProjectReference Include="..\MagickCore\CORE_MagickCore_StaticMT.vcxproj">
+      <Project>{CE0A66B4-5C22-41BF-BDC8-0E8ED73DF2C2}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
   </ItemGroup>

@@ -1,0 +1,547 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectName>CORE_MagickCore</ProjectName>
+    <ProjectGuid>{CE0A66B4-5C22-41BF-BDC8-0E8ED73DF2C2}</ProjectGuid>
+    <Keyword>x64Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v140_xp</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <PropertyGroup>
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>..\lib\</OutDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CORE_DB_MagickCore_</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CORE_RL_MagickCore_</TargetName>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\Debug\StaticMT-x64\CORE_MagickCore\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\Release\StaticMT-x64\CORE_MagickCore\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <StringPooling>true</StringPooling>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <WarningLevel>Level4</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <CompileAs>Default</CompileAs>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <OpenMPSupport>false</OpenMPSupport>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <OmitFramePointers>false</OmitFramePointers>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>;..\..\ImageMagick\MagickCore;..\..\ImageMagick;..\..\bzlib;..\..\glib;..\..\glib\glib;..\..\lcms\include;..\..\lqr;..\..\lqr\lqr;..\..\ttf\include;..\..\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;WIN32;_VISUALC_;NeedFunctionPrototypes;_MAGICKLIB_;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Lib>
+      <AdditionalLibraryDirectories>..\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>/MACHINE:AMD64;%(AdditionalDependencies)</AdditionalDependencies>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <StringPooling>true</StringPooling>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <WarningLevel>Level4</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <CompileAs>Default</CompileAs>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <OpenMPSupport>false</OpenMPSupport>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <OmitFramePointers>true</OmitFramePointers>
+      <Optimization>Full</Optimization>
+      <AdditionalIncludeDirectories>;..\..\ImageMagick\MagickCore;..\..\ImageMagick;..\..\bzlib;..\..\glib;..\..\glib\glib;..\..\lcms\include;..\..\lqr;..\..\lqr\lqr;..\..\ttf\include;..\..\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NDEBUG;_WINDOWS;WIN32;_VISUALC_;NeedFunctionPrototypes;_MAGICKLIB_;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Lib>
+      <AdditionalLibraryDirectories>..\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>/MACHINE:AMD64;%(AdditionalDependencies)</AdditionalDependencies>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\accelerate.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\animate.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\annotate.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\artifact.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\attribute.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\blob.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\cache-view.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\cache.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\channel.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\cipher.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\client.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\coder.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\color.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\colormap.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\colorspace.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\compare.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\composite.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\compress.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\configure.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\constitute.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\decorate.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\delegate.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\deprecate.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\display.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\distort.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\distribute-cache.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\draw.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\effect.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\enhance.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\exception.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\feature.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\fourier.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\fx.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\gem.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\geometry.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\histogram.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\identify.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\image-view.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\image.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\layer.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\linked-list.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\list.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\locale.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\log.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\magic.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\magick.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\matrix.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\memory.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\mime.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\module.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\monitor.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\montage.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\morphology.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\nt-base.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\nt-feature.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\opencl.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\option.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\paint.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\pixel.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\policy.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\prepress.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\profile.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\property.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\quantize.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\quantum-export.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\quantum-import.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\quantum.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\random.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\registry.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\resample.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\resize.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\resource.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\segment.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\semaphore.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\shear.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\signature.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\splay-tree.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\static.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\statistic.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\stream.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\string.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\thread.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\threshold.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\timer.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\token.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\transform.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\type.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\utility.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\version.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\vision.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\xml-tree.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\MagickCore\xwindow.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\ImageMagick\MagickCore\accelerate-kernels-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\accelerate-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\animate-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\animate.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\annotate-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\annotate.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\artifact.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\attribute.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\blob-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\blob.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\cache-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\cache-view.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\cache.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\channel.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\cipher.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\client.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\coder-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\coder.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\color-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\color.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\colormap-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\colormap.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\colorspace-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\colorspace.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\compare.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\composite-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\composite.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\compress.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\configure-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\configure.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\constitute-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\constitute.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\decorate.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\delegate-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\delegate.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\deprecate.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\display-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\display.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\distort.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\distribute-cache-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\distribute-cache.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\draw-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\draw.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\effect.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\enhance.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\exception-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\exception.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\feature.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\fourier.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\fx-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\fx.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\gem-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\gem.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\geometry.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\histogram.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\identify.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\image-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\image-view.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\image.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\layer.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\linked-list.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\list.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\locale-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\locale_.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\log-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\log.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\magic-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\magic.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\magick-baseconfig.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\magick-config.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\magick-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\magick-type.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\magick.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\MagickCore.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\matrix-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\matrix.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\memory-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\memory_.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\method-attribute.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\methods-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\methods.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\mime-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\mime.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\module-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\module.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\monitor-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\monitor.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\montage.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\morphology-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\morphology.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\nt-base-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\nt-base.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\nt-feature.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\opencl-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\opencl.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\option-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\option.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\paint.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\pixel-accessor.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\pixel-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\pixel.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\policy-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\policy.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\prepress.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\profile-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\profile.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\property.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\quantize.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\quantum-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\quantum.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\random-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\random_-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\random_.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\registry-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\registry.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\resample-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\resample.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\resize-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\resize.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\resource-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\resource_.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\segment.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\semaphore-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\semaphore.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\shear.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\signature-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\signature.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\splay-tree.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\static.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\statistic.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\stream-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\stream.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\string-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\string_.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\studio.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\thread-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\thread_.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\threshold.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\timer.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\token-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\token.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\transform-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\transform.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\type-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\type.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\utility-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\utility.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\version-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\version.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\vision.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\vms.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\widget-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\widget.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\xml-tree-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\xml-tree.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\xwindow-private.h" />
+    <ClInclude Include="..\..\ImageMagick\MagickCore\xwindow.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\MagickCore\Resource.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\bzlib\CORE_bzlib_StaticMT.vcxproj">
+      <Project>{4D064B06-1716-4E17-90D2-38F2C9E7C55F}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\lcms\CORE_lcms_StaticMT.vcxproj">
+      <Project>{7CD50463-28F8-42A0-8120-55B56121B497}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\zlib\CORE_zlib_StaticMT.vcxproj">
+      <Project>{AE173116-234E-43D4-A3A5-16AE700059E0}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+</Project>

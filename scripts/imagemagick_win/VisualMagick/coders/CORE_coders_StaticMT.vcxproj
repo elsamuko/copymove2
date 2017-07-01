@@ -12,7 +12,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectName>CORE_coders</ProjectName>
-    <ProjectGuid>{5E1CD743-214C-4856-8F6D-CC89C70DC304}</ProjectGuid>
+    <ProjectGuid>{57515395-A200-4EA4-80E6-988AF71F37F8}</ProjectGuid>
     <Keyword>x64Proj</Keyword>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -39,13 +39,14 @@
       <WarningLevel>Level4</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <CompileAs>Default</CompileAs>
-      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
       <OpenMPSupport>false</OpenMPSupport>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <OmitFramePointers>false</OmitFramePointers>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>;..\..\ImageMagick\coders;..\..\ImageMagick;..\..\exr\openexr\IlmImf;..\..\jbig\libjbig;..\..\openjpeg\src\lib\openjp2;..\..\jpeg;..\..\zlib;..\..\bzlib;..\..\libxml\include;..\..\cairo\src;..\..\glib;..\..\glib\glib;..\..\pango;..\..\png;..\..;..\..\glib\gmodule;..\..\librsvg;..\..\librsvg\gdk-pixbuf;..\..\tiff\libtiff;..\..\ttf\include;..\..\webp\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>;..\..\ImageMagick\coders;..\..\ImageMagick;..\..\exr\openexr\IlmImf;..\..\flif\src\library;..\..\jbig\libjbig;..\..\openjpeg\src\lib\openjp2;..\..\jpeg;..\..\zlib;..\..\bzlib;..\..\libxml\include;..\..\cairo\src;..\..\glib;..\..\glib\glib;..\..\pango;..\..\png;..\..;..\..\glib\gmodule;..\..\librsvg;..\..\librsvg\gdk-pixbuf;..\..\tiff\libtiff;..\..\ttf\include;..\..\webp\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;WIN32;_VISUALC_;NeedFunctionPrototypes;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -70,10 +71,11 @@
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <OpenMPSupport>false</OpenMPSupport>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <OmitFramePointers>true</OmitFramePointers>
       <Optimization>Full</Optimization>
-      <AdditionalIncludeDirectories>;..\..\ImageMagick\coders;..\..\ImageMagick;..\..\exr\openexr\IlmImf;..\..\jbig\libjbig;..\..\openjpeg\src\lib\openjp2;..\..\jpeg;..\..\zlib;..\..\bzlib;..\..\libxml\include;..\..\cairo\src;..\..\glib;..\..\glib\glib;..\..\pango;..\..\png;..\..;..\..\glib\gmodule;..\..\librsvg;..\..\librsvg\gdk-pixbuf;..\..\tiff\libtiff;..\..\ttf\include;..\..\webp\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>;..\..\ImageMagick\coders;..\..\ImageMagick;..\..\exr\openexr\IlmImf;..\..\flif\src\library;..\..\jbig\libjbig;..\..\openjpeg\src\lib\openjp2;..\..\jpeg;..\..\zlib;..\..\bzlib;..\..\libxml\include;..\..\cairo\src;..\..\glib;..\..\glib\glib;..\..\pango;..\..\png;..\..;..\..\glib\gmodule;..\..\librsvg;..\..\librsvg\gdk-pixbuf;..\..\tiff\libtiff;..\..\ttf\include;..\..\webp\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;WIN32;_VISUALC_;NeedFunctionPrototypes;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -174,6 +176,9 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <ClCompile Include="..\..\ImageMagick\coders\fits.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\coders\flif.c">
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <ClCompile Include="..\..\ImageMagick\coders\fpx.c">
@@ -311,6 +316,9 @@
     <ClCompile Include="..\..\ImageMagick\coders\pes.c">
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
+    <ClCompile Include="..\..\ImageMagick\coders\pgx.c">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
     <ClCompile Include="..\..\ImageMagick\coders\pict.c">
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -324,9 +332,6 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <ClCompile Include="..\..\ImageMagick\coders\pnm.c">
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-    </ClCompile>
-    <ClCompile Include="..\..\ImageMagick\coders\preview.c">
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <ClCompile Include="..\..\ImageMagick\coders\ps.c">
@@ -469,32 +474,32 @@
     <ClInclude Include="..\..\ImageMagick\coders\psd-private.h" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\magick\CORE_magick_StaticMT.vcxproj">
-      <Project>{47B15FCB-B420-4111-987F-8F692B8B8D24}</Project>
+    <ProjectReference Include="..\MagickCore\CORE_MagickCore_StaticMT.vcxproj">
+      <Project>{CE0A66B4-5C22-41BF-BDC8-0E8ED73DF2C2}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
     <ProjectReference Include="..\jpeg\CORE_jpeg_StaticMT.vcxproj">
-      <Project>{44184BBA-0AC6-46B7-B00B-5B0FF6361AC5}</Project>
+      <Project>{4AAF3635-D863-4455-8C22-16716DC7E780}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
     <ProjectReference Include="..\zlib\CORE_zlib_StaticMT.vcxproj">
-      <Project>{9A07491D-0F88-4E76-8E01-05E3611E80B4}</Project>
+      <Project>{AE173116-234E-43D4-A3A5-16AE700059E0}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
     <ProjectReference Include="..\bzlib\CORE_bzlib_StaticMT.vcxproj">
-      <Project>{867F6926-C0A4-4CEF-9B24-115346F67E66}</Project>
+      <Project>{4D064B06-1716-4E17-90D2-38F2C9E7C55F}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
     <ProjectReference Include="..\libxml\CORE_libxml_StaticMT.vcxproj">
-      <Project>{2EB386AE-E6F3-45A7-94D5-E66664712A87}</Project>
+      <Project>{2ECF73A0-7DF3-4115-BAA7-5F89E4EADB97}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
     <ProjectReference Include="..\png\CORE_png_StaticMT.vcxproj">
-      <Project>{F5F38ABE-F021-4C59-882A-36C772740C37}</Project>
+      <Project>{37749349-95E1-4562-B208-549E27F01052}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
     <ProjectReference Include="..\tiff\CORE_tiff_StaticMT.vcxproj">
-      <Project>{9D51E2D1-A3E0-4677-B976-3930A1E8C7B8}</Project>
+      <Project>{AD154A20-50C3-4A5A-AE9E-762BF0243E83}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
   </ItemGroup>
