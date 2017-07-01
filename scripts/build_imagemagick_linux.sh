@@ -2,7 +2,7 @@
 
 OS=linux
 PROJECT=imagemagick
-VERSION="6.8.9-10"
+VERSION="7.0.6-0"
 DL_URL="http://mirror.checkdomain.de/imagemagick/releases/ImageMagick-$VERSION.tar.xz"
 
 SCRIPT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
@@ -53,6 +53,7 @@ function doConfigure {
     ./configure \
             --prefix="$BUILD_DIR" \
             --enable-shared=no \
+            --enable-hdri=no \
             --enable-static=yes \
             --with-quantum-depth=16 \
             --without-fftw \
@@ -98,7 +99,7 @@ function doCopy {
     mkdir -p "$TARGET_DIR/include"
     cp -r "$BUILD_DIR/debug/lib"/* "$TARGET_DIR/bin/$OS/debug"
     cp -r "$BUILD_DIR/release/lib"/* "$TARGET_DIR/bin/$OS/release"
-    cp -r "$BUILD_DIR/include/ImageMagick-6"/* "$TARGET_DIR/include"
+    cp -r "$BUILD_DIR/include/ImageMagick-7"/* "$TARGET_DIR/include"
 }
 
 
