@@ -8,9 +8,9 @@ LIBS += -L$${MAGICK_DIR}
 
 unix{
     LIBS += -L/usr/lib
-    LIBS += $${MAGICK_DIR}/libMagick++-6.Q16.a \
-            $${MAGICK_DIR}/libMagickWand-6.Q16.a \
-            $${MAGICK_DIR}/libMagickCore-6.Q16.a \
+    LIBS += $${MAGICK_DIR}/libMagick++-7.Q16.a \
+            $${MAGICK_DIR}/libMagickWand-7.Q16.a \
+            $${MAGICK_DIR}/libMagickCore-7.Q16.a \
             -llcms2 -ltiff -lfreetype -ljpeg -llzma \
             -lbz2 -lxml2 -lz -lm -lpthread -lltdl -lfontconfig
 }
