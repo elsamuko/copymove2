@@ -25,8 +25,8 @@ win32{
     DEFINES += STATIC_MAGICK
     LIBS += User32.lib Advapi32.lib OleAut32.lib Gdi32.lib
     LIBS += -lCORE_$${IM_FLAG}_coders_ -lCORE_$${IM_FLAG}_ffi_ -lCORE_$${IM_FLAG}_filters_ -lCORE_$${IM_FLAG}_jpeg_ \
-            -lCORE_$${IM_FLAG}_lcms_ -lCORE_$${IM_FLAG}_libxml_ -lCORE_$${IM_FLAG}_magick_ -lCORE_$${IM_FLAG}_Magick++_ \
-            -lCORE_$${IM_FLAG}_png_ -lCORE_$${IM_FLAG}_tiff_ -lCORE_$${IM_FLAG}_wand_ -lCORE_$${IM_FLAG}_zlib_
+            -lCORE_$${IM_FLAG}_lcms_ -lCORE_$${IM_FLAG}_libxml_ -lCORE_$${IM_FLAG}_MagickCore_ -lCORE_$${IM_FLAG}_Magick++_ \
+            -lCORE_$${IM_FLAG}_png_ -lCORE_$${IM_FLAG}_tiff_ -lCORE_$${IM_FLAG}_MagickWand_ -lCORE_$${IM_FLAG}_zlib_
 }
 
 # set library search path to ./libImageMagick
