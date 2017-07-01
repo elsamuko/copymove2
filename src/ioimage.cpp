@@ -80,11 +80,13 @@ GreyImage IOImage::getGrey() {
     mImage.type( Magick::TrueColorType );
 
     // Request pixel region
-    Magick::PixelPacket* pixel_cache = ( Magick::PixelPacket* ) mImage.getPixels( 0, 0, w, h );
+    Magick::Quantum* pixel_cache = mImage.getPixels( 0, 0, w, h );
 
     for( size_t y = 0; y < h; ++y ) {
         for( size_t x = 0; x < w; ++x ) {
-            grey[x][y] = pixel_cache->green / 256;
+            ++pixel_cache;
+            grey[x][y] = *pixel_cache / 256;
+            ++pixel_cache;
             ++pixel_cache;
         }
     }
@@ -103,14 +105,13 @@ void IOImage::setGrey( const GreyImage& grey ) {
     mImage.type( Magick::TrueColorType );
 
     // Request pixel region
-    Magick::PixelPacket* pixel_cache = ( Magick::PixelPacket* ) mImage.getPixels( 0, 0, w, h );
+    Magick::Quantum* pixel_cache = mImage.getPixels( 0, 0, w, h );
 
     for( size_t y = 0; y < h; ++y ) {
         for( size_t x = 0; x < w; ++x ) {
-            pixel_cache->red = 256 * CLAMP<int, 0, 256>( grey[x][y] );
-            pixel_cache->green = 256 * CLAMP<int, 0, 256>( grey[x][y] );
-            pixel_cache->blue = 256 * CLAMP<int, 0, 256>( grey[x][y] );
-            ++pixel_cache;
+            *pixel_cache++ = 256 * CLAMP<int, 0, 256>( grey[x][y] );
+            *pixel_cache++ = 256 * CLAMP<int, 0, 256>( grey[x][y] );
+            *pixel_cache++ = 256 * CLAMP<int, 0, 256>( grey[x][y] );
         }
     }
 
@@ -122,7 +123,7 @@ void IOImage::drawHit( const ShiftHit& hit ) {
     int x = hit.x() + Block::size / 2;
     int y = hit.y() + Block::size / 2;
 
-    std::list<Magick::Drawable> drawList;
+    std::vector<Magick::Drawable> drawList;
     drawList.push_back( Magick::DrawableStrokeColor( "red" ) );
     drawList.push_back( Magick::DrawableFillColor( "transparent" ) );
     drawList.push_back( Magick::DrawableStrokeWidth( 1 ) );
@@ -175,7 +176,7 @@ bool IOImage::save( const std::string filename, int quality ) {
     if( mImage.isValid() ) {
 
         /* no alpha */
-        mImage.matte( false );
+        mImage.alpha( false );
         mImage.quality( quality );
 
         try {

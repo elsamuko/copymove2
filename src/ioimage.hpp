@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Magick++.h>
+#undef _ASSERT_H_DECLS
 
 #include "block.hpp"
 #include "greyimage.hpp"
