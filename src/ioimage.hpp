@@ -1,11 +1,14 @@
 #pragma once
 
-#include <Magick++.h>
-#undef _ASSERT_H_DECLS
+#include <memory>
 
 #include "block.hpp"
 #include "greyimage.hpp"
 #include "shifthit.hpp"
+
+namespace Magick {
+    class Image;
+}
 
 class IOImage {
     public:
@@ -32,5 +35,5 @@ class IOImage {
 
     private:
         /* the wrapped image */
-        Magick::Image mImage;
+        std::shared_ptr<Magick::Image> mImage;
 };
