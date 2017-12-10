@@ -9,8 +9,8 @@ win32:      PLATFORM=win
 unix:!macx: PLATFORM=linux
 unix:!macx: CONFIG += linux
 
-MAIN_DIR = ../..
-PRI_DIR  = $${MAIN_DIR}/build/qmake
+MAIN_DIR = ..
+PRI_DIR  = $${MAIN_DIR}/qmake/include
 SRC_DIR  = $${MAIN_DIR}/src
 
 include( $${PRI_DIR}/setup.pri )
