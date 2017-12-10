@@ -16,9 +16,10 @@ silent_remove results.txt
 
 case $(uname) in
     Linux)
+        QTDIR="$HOME/Qt5.9.3/5.9.3/gcc_64"
         SPEC="linux-g++-64"
         MAKE="make --silent -j8"
-        PATH="/opt/local/qt/bin:$PATH"
+        PATH="$QTDIR/bin:$PATH"
         ;;
     Darwin)
         SPEC="macx-clang"

@@ -4,10 +4,10 @@
 
 #include <fstream>
 
-#include <Magick++.h>
-
 #include "shifthit.hpp"
 #include "log/log.hpp"
+
+#include <Magick++.h>
 
 class ShiftHit_test : public QObject {
         Q_OBJECT
@@ -27,8 +27,8 @@ ShiftHit_test::ShiftHit_test() {
 }
 
 void ShiftHit_test::paint( const std::vector<PointF>& points, const std::string& filename ) {
-    std::tuple<PointF, float, float> median = ShiftHit::geometricMedian( points, 10 );
-    PointF center = std::get<0>( median );
+    ShiftHit::Median median = ShiftHit::geometricMedian( points, 10 );
+    PointF center = median.GeometricAverage;
     LOG( center.toString() );
 
     // draw
