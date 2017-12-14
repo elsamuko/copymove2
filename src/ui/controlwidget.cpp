@@ -317,11 +317,33 @@ void ControlWidget::updateBlockStats() {
     float similarity = first.cosineSimilarity( second );
     ui->labelSimilarityValue->setText( QString::number( similarity ) );
 
-    QImage previewFirst = mImage.copy( first.x(), first.y(), Block::size, Block::size ).scaledToHeight( 48, Qt::FastTransformation );
+    QImage previewFirst = mImage.copy( first.x(), first.y(), Block::size, Block::size ).scaledToHeight( 96, Qt::FastTransformation );
     ui->labelFirstPreview->setPixmap( QPixmap::fromImage( previewFirst ) );
 
-    QImage previewSecond = mImage.copy( second.x(), second.y(), Block::size, Block::size ).scaledToHeight( 48, Qt::FastTransformation );
+    QImage previewSecond = mImage.copy( second.x(), second.y(), Block::size, Block::size ).scaledToHeight( 96, Qt::FastTransformation );
     ui->labelSecondPreview->setPixmap( QPixmap::fromImage( previewSecond ) );
+
+    QImage dctFirst( Block::size, Block::size, QImage::Format_Grayscale8 );
+    QImage dctSecond( Block::size, Block::size, QImage::Format_Grayscale8 );
+    QImage dctDiff( Block::size, Block::size, QImage::Format_Grayscale8 );
+
+    memcpy( dctFirst.bits(), first.grey().data(), Block::size*Block::size);
+    memcpy( dctSecond.bits(), second.grey().data(), Block::size*Block::size);
+
+    for( int y = 0; y < Block::size; ++y ) {
+        for( int x = 0; x < Block::size; ++x ) {
+            dctDiff.bits()[y * Block::size + x] = std::abs( dctFirst.bits()[y * Block::size + x] - dctSecond.bits()[y * Block::size + x] );
+        }
+    }
+
+    dctFirst = dctFirst.scaledToHeight( 96, Qt::FastTransformation );
+    ui->labelFirstDCT->setPixmap( QPixmap::fromImage( dctFirst ) );
+
+    dctSecond = dctSecond.scaledToHeight( 96, Qt::FastTransformation );
+    ui->labelSecondDCT->setPixmap( QPixmap::fromImage( dctSecond ) );
+
+    dctDiff = dctDiff.scaledToHeight( 96, Qt::FastTransformation );
+    ui->labelDiffDCT->setPixmap( QPixmap::fromImage( dctDiff ) );
 
     if( similarity < 0.9 ) {
         // red

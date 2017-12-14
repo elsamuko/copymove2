@@ -218,6 +218,9 @@
           </item>
           <item row="0" column="2" rowspan="2">
            <widget class="QLabel" name="labelFirstPreview">
+            <property name="toolTip">
+             <string>Preview</string>
+            </property>
             <property name="text">
              <string>Preview</string>
             </property>
@@ -229,8 +232,21 @@
             </property>
            </widget>
           </item>
-          <item row="2" column="0" colspan="3">
+          <item row="2" column="0" colspan="4">
            <widget class="QLineEdit" name="lineEditFirst"/>
+          </item>
+          <item row="0" column="3" rowspan="2">
+           <widget class="QLabel" name="labelFirstDCT">
+            <property name="toolTip">
+             <string>DCT</string>
+            </property>
+            <property name="text">
+             <string>DCT</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
           </item>
          </layout>
         </widget>
@@ -246,6 +262,9 @@
           </item>
           <item row="0" column="2" rowspan="2">
            <widget class="QLabel" name="labelSecondPreview">
+            <property name="toolTip">
+             <string>Preview</string>
+            </property>
             <property name="text">
              <string>Preview</string>
             </property>
@@ -274,7 +293,20 @@
             </property>
            </widget>
           </item>
-          <item row="2" column="0" colspan="3">
+          <item row="0" column="3" rowspan="2">
+           <widget class="QLabel" name="labelSecondDCT">
+            <property name="toolTip">
+             <string>DCT</string>
+            </property>
+            <property name="text">
+             <string>DCT</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0" colspan="4">
            <widget class="QLineEdit" name="lineEditSecond"/>
           </item>
          </layout>
@@ -334,6 +366,19 @@
            <widget class="QLabel" name="labelSimilarityValue">
             <property name="text">
              <string>similarity</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="3" rowspan="2">
+           <widget class="QLabel" name="labelDiffDCT">
+            <property name="toolTip">
+             <string>Difference</string>
+            </property>
+            <property name="text">
+             <string>Diff</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignCenter</set>
