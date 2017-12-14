@@ -39,6 +39,9 @@ class Block {
             mQuality = 0.9 + float( quality ) / 100.f;
         }
 
+        //! returns a scaled grey image
+        std::vector<uint8_t> grey();
+
         int frequency( size_t position ) const;
 
         int manhattanDistance( const Block& that ) const;

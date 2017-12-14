@@ -3,6 +3,7 @@
 #include <cassert>
 #include <sstream>
 #include <array>
+#include <limits>
 
 #include "ooura/shrtdct.hpp"
 #include "log/log.hpp"
@@ -197,6 +198,41 @@ PointI Block::pos() const {
 
 void Block::setPos( const PointI& pos ) {
     mPos = pos;
+}
+
+std::vector<uint8_t> Block::grey() {
+    assert( !mData.empty() );
+
+    std::vector<std::vector<float>> logarithmic = mData;
+
+    for( int y = 0; y < Block::size; ++y ) {
+        for( int x = 0; x < Block::size; ++x ) {
+            logarithmic[x][y] = logf( mData[x][y] );
+        }
+    }
+
+    float min = std::numeric_limits<float>::max();
+    float max = std::numeric_limits<float>::min();
+
+    for( int y = 0; y < Block::size; ++y ) {
+        for( int x = 0; x < Block::size; ++x ) {
+            min = std::min( min, logarithmic[x][y] );
+            max = std::max( max, logarithmic[x][y] );
+        }
+    }
+
+    float scale = 255.f/(max-min);
+
+
+    std::vector<uint8_t> grey( Block::size * Block::size, 0 );
+
+    for( int y = 0; y < Block::size; ++y ) {
+        for( int x = 0; x < Block::size; ++x ) {
+            grey[y * Block::size + x] = scale * (logarithmic[x][y]-min);
+        }
+    }
+
+    return grey;
 }
 
 int Block::frequency( size_t position ) const {
