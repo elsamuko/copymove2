@@ -1,6 +1,5 @@
 #include "block.hpp"
 
-#include <cassert>
 #include <sstream>
 #include <array>
 #include <limits>
@@ -14,6 +13,7 @@ Block::Block( float color, size_t quality, bool initializeData ) {
     mMeanCalculated = false;
     mDataCleared = false;
     mDataReceived = false;
+    mInterestingCalculated = false;
     mMean = 0.f;
     mStandardDeviation = 0.f;
     mQuantization = 20.f;
@@ -259,10 +259,8 @@ bool Block::transformed() const {
 }
 
 bool Block::interesting() const {
-    assert( mMeanCalculated );
-
-    float tmp = std::max( 1.f, mMean * 0.1f );
-    return mStandardDeviation > tmp;
+    assert( mInterestingCalculated );
+    return mInteresting;
 }
 
 void Block::calculateStandardDeviation() {
@@ -291,6 +289,11 @@ void Block::calculateStandardDeviation() {
 
     mStandardDeviation /= ( float )( Block::size * Block::size );
     mStandardDeviation = std::sqrt( mStandardDeviation );
+
+    // block is 'interesting' if it's not flat
+    STATE_CHECK( mInterestingCalculated );
+    float tmp = std::max( 1.f, mMean * 0.1f );
+    mInteresting = mStandardDeviation > tmp;
 }
 
 

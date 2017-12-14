@@ -68,6 +68,10 @@ class Block {
         bool mDataReceived;
         bool mTransformed;
         bool mMeanCalculated;
+        bool mInterestingCalculated;
+
+        // block contains enough stddev
+        bool mInteresting;
 
         // quant steps of freqs
         float mQuantization;
