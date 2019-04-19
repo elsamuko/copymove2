@@ -2,7 +2,7 @@
 
 OS=mac
 PROJECT=imagemagick
-VERSION="7.0.6-0"
+VERSION="7.0.8-40"
 DL_URL="http://mirror.checkdomain.de/imagemagick/releases/ImageMagick-$VERSION.tar.xz"
 
 SCRIPT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
@@ -82,10 +82,9 @@ function doBuild {
 
     export CC="clang"
     export CXX="clang++"
-    export LDFLAGS="-L/opt/local/lib -lc++"
-    export CPPFLAGS="-I/opt/local/include"
-    export CXXFLAGS="-std=c++11 -stdlib=libc++ -mmacosx-version-min=10.7"
-    export CFLAGS="-I/opt/local/include -mmacosx-version-min=10.7"
+    export LDFLAGS="-lc++"
+    export CXXFLAGS="-std=c++1z -stdlib=libc++ -mmacosx-version-min=10.10"
+    export CFLAGS="-mmacosx-version-min=10.10"
 
     # debug
     (export CXXFLAGS="$CXXFLAGS -g -O0"; \

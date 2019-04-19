@@ -6,20 +6,24 @@ DEFINES += 'MAGICKCORE_QUANTUM_DEPTH=16'
 INCLUDEPATH += $${MAIN_DIR}/libs/imagemagick/include
 LIBS += -L$${MAGICK_DIR}
 
-unix{
-    LIBS += -L/usr/lib
+unix {
     LIBS += $${MAGICK_DIR}/libMagick++-7.Q16.a \
             $${MAGICK_DIR}/libMagickWand-7.Q16.a \
             $${MAGICK_DIR}/libMagickCore-7.Q16.a \
-            -llcms2 -ltiff -lfreetype -ljpeg -llzma \
-            -lbz2 -lxml2 -lz -lm -lpthread -lltdl -lfontconfig
+            -lbz2 -ljpeg -ltiff
 }
-macx{
-    INCLUDEPATH += /opt/local/include
-    LIBS += -L/opt/local/lib
-    LIBS += -lpng16
+
+linux {
+    LIBS += -L/usr/lib
+    LIBS += -llcms2 -lfreetype -llzma \
+            -lxml2 -lz -lm -lpthread -lltdl -lfontconfig \
+            -lpng -lX11 -lXext
 }
-unix: !macx: LIBS += -lpng -lX11 -lXext
+
+macx {
+    # brew install libtiff libjpeg
+    LIBS += -L/usr/local/lib
+}
 
 win32{
     DEFINES += STATIC_MAGICK
@@ -28,13 +32,6 @@ win32{
             -lCORE_$${IM_FLAG}_lcms_ -lCORE_$${IM_FLAG}_libxml_ -lCORE_$${IM_FLAG}_MagickCore_ -lCORE_$${IM_FLAG}_Magick++_ \
             -lCORE_$${IM_FLAG}_png_ -lCORE_$${IM_FLAG}_tiff_ -lCORE_$${IM_FLAG}_MagickWand_ -lCORE_$${IM_FLAG}_zlib_
 }
-
-# set library search path to ./libImageMagick
-# unix:!macx: QMAKE_LFLAGS += -Wl,--rpath=\\\$\$ORIGIN/libImageMagick
-
-# build app package for mac
-# macx: QMAKE_POST_LINK += $${MAIN_DIR}/scripts/fix_deployment_mac.sh $${DESTDIR}/$${TARGET}.app;
-# macx: QMAKE_POST_LINK += macdeployqt $${DESTDIR}/$${TARGET}.$${TEMPLATE};
 
 ioimage {
     HEADERS += $${SRC_DIR}/ioimage.hpp

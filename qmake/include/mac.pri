@@ -1,12 +1,9 @@
 
-LIBS += -framework CoreServices -framework Carbon -framework ApplicationServices
+LIBS += -framework CoreServices \
+        -framework Carbon \
+        -framework ApplicationServices
 
-# c++11 specials
-LIBS += -lc++
-# INCLUDEPATH += /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/c++/v1
-QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.7
-QMAKE_CXXFLAGS += -std=c++1y -stdlib=libc++
-QMAKE_MAC_SDK = macosx10.11
+QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.10
 
 QMAKE_CXXFLAGS_RELEASE += -msse2 -Ofast -finline -ffast-math -funsafe-math-optimizations
 
