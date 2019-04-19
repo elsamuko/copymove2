@@ -15,7 +15,7 @@ Compared to the original copymove, CopyMove2 has some huge performance and memor
 CopyMove2 comes with a GUI version, which eases inspection of suspicious images. You can export screenshots or data of found shift vectors.
 
 ## Building
-You need your systems build environment (Linux: GCC, Mac: XCode, Windows: VS2015), [Qt 5.9.1](http://download.qt.io/archive/qt/5.9/5.9.1/) and bash.
+You need your systems build environment (Linux: GCC, Mac: brew, Xcode, Windows: VS2015), [Qt 5.12.3](http://download.qt.io/archive/qt/5.12/5.12.3/) and bash.
 
 ### GUI version
 Open [qcopymove2.pro](https://github.com/elsamuko/copymove2/blob/master/build/qmake/qcopymove2.pro) and build with Qt Creator.
@@ -23,7 +23,7 @@ Open [qcopymove2.pro](https://github.com/elsamuko/copymove2/blob/master/build/qm
 ### CLI version
 Before building, you need a static build of ImageMagick. Just run the build_imagemagick_linux/mac/win.sh in the scripts folder, they deploy ImageMagick to the libs folder automatically.
 The static build is dependent on some imaging libraries (libjpeg, libpng, ...), which can be resolved with
-Mac: sudo port install imagemagick
+Mac: brew install libtiff libjpeg
 Linux: sudo apt-get build-dep imagemagick
 Windows: All deps are included in the imagemagick distribution
 

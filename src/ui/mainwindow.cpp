@@ -7,6 +7,7 @@
 #include <QDragEnterEvent>
 #include <QDesktopWidget>
 #include <QMimeData>
+#include <QStyle>
 
 #include "sorterconnection.hpp"
 #include "ui/filedealer.hpp"
