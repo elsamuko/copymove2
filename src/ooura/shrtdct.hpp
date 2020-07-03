@@ -13,15 +13,6 @@ Copyright
 namespace ooura {
 
 template<int i>
-void ddct( int, std::vector<std::vector<float>>& );
-
-template<>
-void ddct<8>( int isgn, std::vector<std::vector<float>>& a );
-
-template<>
-void ddct<16>( int isgn, std::vector<std::vector<float>>& a );
-
-template<int i>
 void ddct( int, Block& a );
 
 template<>
