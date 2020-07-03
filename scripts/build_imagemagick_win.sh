@@ -2,8 +2,8 @@
 
 OS=win
 PROJECT=imagemagick
-VERSION="7.0.6-0"
-DL_URL="http://www.imagemagick.org/download/windows/releases/ImageMagick-$VERSION.7z"
+VERSION="7.0.10-9"
+DL_URL="https://www.imagemagick.org/download/windows/releases/ImageMagick-$VERSION.7z"
 
 SCRIPT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 MAIN_DIR="$SCRIPT_DIR/.."

@@ -2,8 +2,8 @@
 
 OS=mac
 PROJECT=imagemagick
-VERSION="7.0.8-40"
-DL_URL="http://mirror.checkdomain.de/imagemagick/releases/ImageMagick-$VERSION.tar.xz"
+VERSION="7.0.10-9"
+DL_URL="https://mirror.checkdomain.de/imagemagick/releases/ImageMagick-$VERSION.tar.xz"
 
 SCRIPT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 MAIN_DIR="$SCRIPT_DIR/.."
