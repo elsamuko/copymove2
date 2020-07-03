@@ -1,4 +1,5 @@
 /*
+http://www.kurims.kyoto-u.ac.jp/~ooura/fft.html
 Copyright
     Copyright(C) 1997,2001 Takuya OOURA (email: ooura@kurims.kyoto-u.ac.jp).
     You may use, copy, modify this code for any purpose and
