@@ -4,6 +4,9 @@ CopyMove2 is a rewrite of [copymove](https://sites.google.com/site/elsamuko/fore
 
 The idea behind all these, is to split up the image in square blocks, [DCT](https://en.wikipedia.org/wiki/Discrete_cosine_transform) them, and use some of the DCT frequencies as a characteristic vector for this block. Then you can sort and compare these vectors and calculate shift vectors over the image.
 
+# Screenshot
+![](resources/screenshots/screenshot.png)
+
 ## Features
 ### Multiplatform
 Thanks to C++, Qt and ImageMagick CopyMove2 runs on Linux, Mac and Windows.
@@ -15,7 +18,7 @@ Compared to the original copymove, CopyMove2 has some huge performance and memor
 CopyMove2 comes with a GUI version, which eases inspection of suspicious images. You can export screenshots or data of found shift vectors.
 
 ## Building
-You need your systems build environment (Linux: GCC, Mac: brew, Xcode, Windows: VS2015), [Qt 5.12.3](http://download.qt.io/archive/qt/5.12/5.12.3/) and bash.
+You need your systems build environment (Linux: GCC, Mac: brew, Xcode, Windows: VS2015), [Qt](https://www.qt.io/download) and bash.
 
 ### GUI version
 Open [qcopymove2.pro](https://github.com/elsamuko/copymove2/blob/master/build/qmake/qcopymove2.pro) and build with Qt Creator.
