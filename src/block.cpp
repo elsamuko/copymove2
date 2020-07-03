@@ -54,7 +54,7 @@ void Block::assignFrequencies() {
     for( int i = 0; i < Block::frequencies; ++i ) {
         int x = frequency_order[i][0];
         int y = frequency_order[i][1];
-        float amp = this->mData[x][y];//(1.f + i); // TODO!
+        float amp = this->operator[]( x )[y]; //(1.f + i); // TODO!
         max = std::max( max, std::abs( amp ) );
         tmp[i] = amp;
     }
@@ -72,7 +72,7 @@ void Block::dct() {
     assert( !mDataCleared );
     STATE_CHECK( mTransformed );
 
-    ooura::ddct<Block::size>( -1, mData );
+    ooura::ddct<Block::size>( -1, *this );
     assignFrequencies();
 }
 
@@ -81,7 +81,7 @@ void Block::idct() {
     assert( mTransformed );
     mTransformed = false;
 
-    ooura::ddct<Block::size>( 1, mData );
+    ooura::ddct<Block::size>( 1, *this );
 }
 
 bool Block::operator <( const Block& that ) const {
@@ -104,15 +104,15 @@ bool Block::operator >( const Block& b ) const {
     return !( *this < b );
 }
 
-std::vector<float>& Block::operator[]( const size_t pos ) {
+float* Block::operator[]( const size_t pos ) {
     assert( !mDataCleared );
     mDataReceived = true;
-    return mData[pos];
+    return &mData[pos * size];
 }
 
-const std::vector<float>& Block::operator[]( const size_t pos ) const {
+const float* Block::operator[]( const size_t pos ) const {
     assert( !mDataCleared );
-    return mData[pos];
+    return &mData[pos * size];
 }
 
 std::ostream& operator<< ( std::ostream& stream, const Block& b ) {
@@ -153,22 +153,21 @@ std::string Block::toString() const {
     return ss.str();
 }
 
-std::vector<std::vector<float> > Block::data() const {
+std::vector<float> Block::data() const {
     assert( !mDataCleared );
     return mData;
 }
 
 //! \brief Set image data
-void Block::setData( const std::vector<std::vector<float> >& data ) {
-    assert( data.size() == Block::size );
-    assert( data[0].size() == Block::size );
+void Block::setData( const std::vector<float>& data ) {
+    assert( data.size() == Block::size * Block::size );
     mData = data;
     mTransformed = false;
     mDataCleared = false;
 }
 
 void Block::initData( float color ) {
-    mData = std::vector<std::vector<float>>( Block::size, std::vector<float>( Block::size, color ) );
+    mData = std::vector<float>( Block::size * Block::size, color );
 }
 
 void Block::clearData() {
@@ -203,33 +202,31 @@ void Block::setPos( const PointI& pos ) {
 std::vector<uint8_t> Block::grey() {
     assert( !mData.empty() );
 
-    std::vector<std::vector<float>> logarithmic = mData;
+    size_t size = mData.size();
+    std::vector<float> logarithmic = mData;
+    std::vector<uint8_t> grey( Block::size * Block::size, 0 );
 
-    for( int y = 0; y < Block::size; ++y ) {
-        for( int x = 0; x < Block::size; ++x ) {
-            logarithmic[x][y] = logf( mData[x][y] );
-        }
+    for( float& f : logarithmic ) {
+        f = logf( f );
     }
 
     float min = std::numeric_limits<float>::max();
     float max = std::numeric_limits<float>::min();
 
-    for( int y = 0; y < Block::size; ++y ) {
-        for( int x = 0; x < Block::size; ++x ) {
-            min = std::min( min, logarithmic[x][y] );
-            max = std::max( max, logarithmic[x][y] );
-        }
+    for( const float& f : logarithmic ) {
+        min = std::min( min, f );
+        max = std::max( max, f );
     }
 
     float scale = 255.f / ( max - min );
 
+    for( const float& f : logarithmic ) {
+        min = std::min( min, f );
+        max = std::max( max, f );
+    }
 
-    std::vector<uint8_t> grey( Block::size * Block::size, 0 );
-
-    for( int y = 0; y < Block::size; ++y ) {
-        for( int x = 0; x < Block::size; ++x ) {
-            grey[y * Block::size + x] = scale * ( logarithmic[x][y] - min );
-        }
+    for( size_t i = 0; i < size; ++i ) {
+        grey[i] = scale * ( logarithmic[i] - min );
     }
 
     return grey;
@@ -274,7 +271,7 @@ void Block::calculateStandardDeviation() {
 
     for( int y = 0; y < Block::size; ++y ) {
         for( int x = 0; x < Block::size; ++x ) {
-            mMean += mData[x][y];
+            mMean += this->operator[]( x )[y];
         }
     }
 
@@ -282,7 +279,7 @@ void Block::calculateStandardDeviation() {
 
     for( int y = 0; y < Block::size; ++y ) {
         for( int x = 0; x < Block::size; ++x ) {
-            diff = mData[x][y] - mMean;
+            diff = this->operator[]( x )[y] - mMean;
             mStandardDeviation += diff * diff;
         }
     }

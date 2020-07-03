@@ -18,14 +18,14 @@ class Block {
 
         bool operator <( const Block& b ) const;
         bool operator >( const Block& b ) const;
-        std::vector<float>& operator[]( const size_t pos );
-        const std::vector<float>& operator[]( const size_t pos ) const;
+        float* operator[]( const size_t pos );
+        const float* operator[]( const size_t pos ) const;
 
         friend std::ostream& operator << ( std::ostream& stream, const Block& b );
         std::string toString() const;
 
-        std::vector<std::vector<float>> data() const;
-        void setData( const std::vector<std::vector<float>>& data );
+        std::vector<float> data() const;
+        void setData( const std::vector<float>& data );
         void initData( float color = 0.f );
         void clearData();
 
@@ -91,7 +91,7 @@ class Block {
         PointI mPos;
 
         // data at x/y
-        std::vector<std::vector<float>> mData;
+        std::vector<float> mData;
         std::vector<int> mFrequencies;
 };
 
