@@ -221,14 +221,14 @@ std::vector<uint8_t> Block::grey() {
         }
     }
 
-    float scale = 255.f/(max-min);
+    float scale = 255.f / ( max - min );
 
 
     std::vector<uint8_t> grey( Block::size * Block::size, 0 );
 
     for( int y = 0; y < Block::size; ++y ) {
         for( int x = 0; x < Block::size; ++x ) {
-            grey[y * Block::size + x] = scale * (logarithmic[x][y]-min);
+            grey[y * Block::size + x] = scale * ( logarithmic[x][y] - min );
         }
     }
 

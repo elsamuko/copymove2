@@ -7,7 +7,7 @@
 #include "shifthit.hpp"
 
 namespace Ui {
-    class ControlWidget;
+class ControlWidget;
 }
 
 class ControlWidget : public QWidget {

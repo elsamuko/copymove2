@@ -20,9 +20,9 @@
 
 
 namespace logging {
-    bool            writeLog( const char* level, const char* cfile, int line, const char* function, std::string content );
-    std::string     logFilename();
+bool            writeLog( const char* level, const char* cfile, int line, const char* function, std::string content );
+std::string     logFilename();
 #ifdef QT_CORE_LIB
-    void customMessageHandler( QtMsgType type, const QMessageLogContext& context, const QString& message );
+void customMessageHandler( QtMsgType type, const QMessageLogContext& context, const QString& message );
 #endif // QT_CORE_LIB
 }

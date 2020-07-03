@@ -17,7 +17,7 @@ class ScrollArea : public QScrollArea {
         void signalOpenImage();
 
     public slots:
-        void slotDrawImage( QImage image , bool fit );
+        void slotDrawImage( QImage image, bool fit );
         void slotSetFirstBlock( const PointI pos );
         void slotSetSecondBlock( const PointI pos );
         void slotZoomActualPixels();

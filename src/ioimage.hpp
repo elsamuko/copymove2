@@ -7,7 +7,7 @@
 #include "shifthit.hpp"
 
 namespace Magick {
-    class Image;
+class Image;
 }
 
 class IOImage {

@@ -1,5 +1,5 @@
 #include <string>
 
 namespace fileutils {
-    bool fileExists( const std::string& filename );
+bool fileExists( const std::string& filename );
 }

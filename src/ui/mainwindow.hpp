@@ -7,7 +7,7 @@ class SorterConnection;
 class FileDealer;
 
 namespace Ui {
-    class MainWindow;
+class MainWindow;
 }
 
 class MainWindow : public QMainWindow {

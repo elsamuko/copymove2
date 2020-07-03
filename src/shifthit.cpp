@@ -7,7 +7,7 @@
 
 #include "shifthit.hpp"
 
-ShiftHit::ShiftHit( Shift shift, PointI size , size_t minHits ) :
+ShiftHit::ShiftHit( Shift shift, PointI size, size_t minHits ) :
     mShift( shift ),
     mImageSize( size ),
     mMinHits( minHits ),

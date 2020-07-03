@@ -94,8 +94,8 @@ GreyImage SorterConnection::getGrey() const {
 
     for( int y = 0; y < h; y++ ) {
         for( int x = 0; x < w; x++ ) {
-            grey[x][y] = bits[ y*w*c + x*c + 1 ]; // green value BGRA
-                                                  //             0123
+            grey[x][y] = bits[ y * w * c + x * c + 1 ]; // green value BGRA
+            //             0123
         }
     }
 

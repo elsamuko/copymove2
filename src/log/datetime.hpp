@@ -3,6 +3,6 @@
 #include <string>
 
 namespace datetime {
-    std::string now();
-    int compilationYear();
+std::string now();
+int compilationYear();
 }

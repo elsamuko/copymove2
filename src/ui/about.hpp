@@ -3,7 +3,7 @@
 #include <QDialog>
 
 namespace Ui {
-    class About;
+class About;
 }
 
 //! \brief QDialog class to show the about and license texts

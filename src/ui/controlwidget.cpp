@@ -327,8 +327,8 @@ void ControlWidget::updateBlockStats() {
     QImage dctSecond( Block::size, Block::size, QImage::Format_Grayscale8 );
     QImage dctDiff( Block::size, Block::size, QImage::Format_Grayscale8 );
 
-    memcpy( dctFirst.bits(), first.grey().data(), Block::size*Block::size);
-    memcpy( dctSecond.bits(), second.grey().data(), Block::size*Block::size);
+    memcpy( dctFirst.bits(), first.grey().data(), Block::size * Block::size );
+    memcpy( dctSecond.bits(), second.grey().data(), Block::size * Block::size );
 
     for( int y = 0; y < Block::size; ++y ) {
         for( int x = 0; x < Block::size; ++x ) {

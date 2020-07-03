@@ -73,7 +73,7 @@ class ShiftHit {
             float MinHitsAverageDistance;
         };
 
-        static Median geometricMedian( const std::vector<PointF>& points , const size_t minHits );
+        static Median geometricMedian( const std::vector<PointF>& points, const size_t minHits );
 
     private:
         void calculateStandardDeviation();
