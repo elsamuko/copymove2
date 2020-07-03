@@ -3,13 +3,14 @@
 #include <QtTest>
 #include <QFileInfo>
 
-#include<fstream>
+#include <fstream>
 
 #include "block.hpp"
 #include "sample.hpp"
 #include "ioimage.hpp"
 #include "greyimage.hpp"
 #include "log/log.hpp"
+#include "ooura/shrtdct.hpp"
 
 class Block_test : public QObject {
         Q_OBJECT
@@ -20,6 +21,7 @@ class Block_test : public QObject {
     private Q_SLOTS:
         void testComparison();
         void testDCT();
+        void testDCT2();
         void testSort();
         void testOctave();
 };
@@ -60,6 +62,32 @@ void Block_test::testDCT() {
     }
 
     b1.idct();
+    QVERIFY( Block::roundBy<7>( b1[2][1] ) == 1 );
+    QVERIFY( Block::roundBy<7>( b1[2][2] ) == 0 );
+}
+
+void Block_test::testDCT2() {
+
+    Array b1;
+    b1[2][1] = 1;
+    ooura::ddct<Array::size>( -1, b1 );
+
+    // compare with Octave:
+    if( Array::size == 8 ) {
+        // clear; data=zeros(8,8); data(2,3)=1; dct2(data)
+        QVERIFY( Block::roundBy<7>( b1[2][1] ) == -0.0795474 );
+        QVERIFY( Block::roundBy<7>( b1[2][2] ) == -0.0366117 );
+        QVERIFY( Block::roundBy<7>( b1[2][3] ) == 0.0186645 );
+        QVERIFY( Block::roundBy<7>( b1[7][7] ) == -0.1154849 );
+    } else if( Array::size == 16 ) {
+        // clear; data=zeros(16,16); data(2,3)=1; dct2(data)
+        QVERIFY2( Block::roundBy<7>( b1[2][1] ) == 0.0664559f, std::to_string( Block::roundBy<7>( b1[2][1] ) ).c_str() );
+        QVERIFY( Block::roundBy<7>( b1[2][2] ) == 0.0577425f );
+        QVERIFY( Block::roundBy<7>( b1[2][3] ) == 0.0440563f );
+        QVERIFY( Block::roundBy<7>( b1[15][15] ) == -0.0171049f );
+    }
+
+    ooura::ddct<Array::size>( 1, b1 );
     QVERIFY( Block::roundBy<7>( b1[2][1] ) == 1 );
     QVERIFY( Block::roundBy<7>( b1[2][2] ) == 0 );
 }
