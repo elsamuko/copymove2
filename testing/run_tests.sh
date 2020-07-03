@@ -16,7 +16,7 @@ silent_remove results.txt
 
 case $(uname) in
     Linux)
-        QTDIR="$HOME/Qt5.9.3/5.9.3/gcc_64"
+        QTDIR="$HOME/Qt5.14.2/5.14.2/gcc_64"
         SPEC="linux-g++-64"
         MAKE="make --silent -j8"
         PATH="$QTDIR/bin:$PATH"
@@ -47,9 +47,9 @@ do
 
     qmake $TEST.pro -r -spec "$SPEC" CONFIG+=Release CONFIG-=Debug CONFIG+=x86_64
 
-    $MAKE clean > /dev/null 2>&1
+    $MAKE clean > make.log 2>&1
     echo "Clean"
-    $MAKE > /dev/null 2>&1
+    $MAKE > make.log 2>&1
     echo "Compile"
 
     if [ -f ./bin/$TEST ]; then
@@ -59,6 +59,7 @@ do
         cd ..
     else
         echo "Error: $TEST did not build"
+        cat make.log
     fi
     echo "" >> ../results.txt
     cd ..
