@@ -8,12 +8,7 @@ Copyright
 
 
 #include <vector>
-
-struct Array {
-    enum : int { size = 16 };
-    float* operator[]( const size_t pos ) { return &data[pos * size];}
-    std::vector<float> data = std::vector<float>( size* size );
-};
+#include "block.hpp"
 
 namespace ooura {
 
@@ -27,9 +22,12 @@ template<>
 void ddct<16>( int isgn, std::vector<std::vector<float>>& a );
 
 template<int i>
-void ddct( int, Array& a );
+void ddct( int, Block& a );
 
 template<>
-void ddct<8>( int isgn, Array& a );
+void ddct<8>( int isgn, Block& a );
+
+template<>
+void ddct<16>( int isgn, Block& a );
 
 }

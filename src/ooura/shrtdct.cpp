@@ -140,7 +140,7 @@ void ooura::ddct<8>( int isgn, std::vector<std::vector<float>>& a ) {
 }
 
 template<>
-void ooura::ddct<8>( int isgn, Array& a ) {
+void ooura::ddct<8>( int isgn, Block& a ) {
     int j;
     float x0r, x0i, x1r, x1i, x2r, x2i, x3r, x3i;
     float xr, xi;
@@ -600,7 +600,7 @@ void ooura::ddct<16>( int isgn, std::vector<std::vector<float>>& a ) {
 }
 
 template<>
-void ooura::ddct<16>( int isgn, Array& a ) {
+void ooura::ddct<16>( int isgn, Block& a ) {
 
     int j;
     float x0r, x0i, x1r, x1i, x2r, x2i, x3r, x3i;
