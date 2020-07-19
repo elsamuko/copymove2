@@ -62,15 +62,25 @@ function doUnzip {
 }
 
 function create_helper {
-	# VS 2015	
-	echo -ne '@echo off\r\n\r\ncall "%VS140COMNTOOLS%..\\..\\VC\\bin\\vcvars32.bat"\r\n' > "$BUILD_HELPER_DEBUG"
+    local EDITIONS=("BuildTools" "Community" "Professional" "Enterprise")
+
+    for EDITION in "${EDITIONS[@]}"; do
+        local VCVARS_DIR="C:/Program Files (x86)/Microsoft Visual Studio/2019/$EDITION/VC/Auxiliary/Build"
+        if [ -d "$VCVARS_DIR" ]; then
+            export VSNEWCOMNTOOLS="${VCVARS_DIR////\\}"
+            break 2
+        fi
+    done
+    
+	# VS 2019
+    echo -ne "@echo off\r\n\r\ncall \"$VSNEWCOMNTOOLS\\\\vcvars64.bat\"\r\n" > "$BUILD_HELPER_DEBUG"
 	echo -ne '\r\n' >> "$BUILD_HELPER_DEBUG"
-	echo -ne 'msbuild VisualStaticMT.sln /p:configuration=debug /p:platform=x64 /p:PlatformToolset=v140 /p:PreferredToolArchitecture=x64\r\n' >> "$BUILD_HELPER_DEBUG"
+	echo -ne 'msbuild VisualStaticMT.sln /p:configuration=debug /p:platform=x64 /p:PlatformToolset=v142 /p:PreferredToolArchitecture=x64\r\n' >> "$BUILD_HELPER_DEBUG"
     chmod +x "$BUILD_HELPER_DEBUG"
 
-	echo -ne '@echo off\r\n\r\ncall "%VS140COMNTOOLS%..\\..\\VC\\bin\\vcvars32.bat"\r\n' > "$BUILD_HELPER_RELEASE"
+	echo -ne "@echo off\r\n\r\ncall \"$VSNEWCOMNTOOLS\\\\vcvars64.bat\"\r\n" > "$BUILD_HELPER_RELEASE"
 	echo -ne '\r\n' >> "$BUILD_HELPER_RELEASE"
-	echo -ne 'msbuild VisualStaticMT.sln /p:configuration=release /p:platform=x64 /p:PlatformToolset=v140 /p:PreferredToolArchitecture=x64\r\n' >> "$BUILD_HELPER_RELEASE"
+	echo -ne 'msbuild VisualStaticMT.sln /p:configuration=release /p:platform=x64 /p:PlatformToolset=v142 /p:PreferredToolArchitecture=x64\r\n' >> "$BUILD_HELPER_RELEASE"
     chmod +x "$BUILD_HELPER_RELEASE"
 }
 
