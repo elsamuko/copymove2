@@ -137,10 +137,9 @@ void DCTSorter::readGreyToBlocks() {
     mBlocks = std::vector<Block>( hB * wB, Block( 0.f, mParams.quality(), false ) );
 
     // send small progress steps from 10-70 %
-    std::mutex m;
     int size = hB * wB;
     std::atomic_int pos( 0 );
-    std::function<void()> step( [&m, &pos, &size, this] {
+    std::function<void()> step( [&pos, &size, this] {
         if( ( pos++ % 25000 ) == 0 ) {
             float progress = ( float ) pos.load() / size;
             int percent = 10 + progress * 60.f;
