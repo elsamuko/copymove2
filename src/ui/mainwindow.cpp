@@ -8,6 +8,7 @@
 #include <QDesktopWidget>
 #include <QMimeData>
 #include <QStyle>
+#include <QScreen>
 
 #include "sorterconnection.hpp"
 #include "ui/filedealer.hpp"
@@ -51,7 +52,7 @@ MainWindow::MainWindow( QWidget* parent ) :
 
     // center app
     // \sa https://wiki.qt.io/Center_a_Window_on_the_Screen
-    this->setGeometry( QStyle::alignedRect( Qt::LeftToRight, Qt::AlignCenter, this->size(), qApp->desktop()->availableGeometry() ) );
+    this->setGeometry( QStyle::alignedRect( Qt::LeftToRight, Qt::AlignCenter, this->size(), QGuiApplication::screens().first()->geometry() ) );
 
     ui->actionRun->setDisabled( true );
     ui->actionZoomIn->setDisabled( true );
