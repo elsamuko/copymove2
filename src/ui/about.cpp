@@ -1,6 +1,7 @@
 #include <QDesktopServices>
 #include <QMessageBox>
 #include <QDebug>
+#include <QFile>
 
 #include "ui_about.h"
 #include "about.hpp"

@@ -5,7 +5,6 @@
 #include <QStandardPaths>
 #include <QDesktopServices>
 #include <QDragEnterEvent>
-#include <QDesktopWidget>
 #include <QMimeData>
 #include <QStyle>
 #include <QScreen>

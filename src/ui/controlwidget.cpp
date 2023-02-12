@@ -125,7 +125,7 @@ void ControlWidget::slotResults( std::vector<ShiftHit>::const_iterator begin, st
     for( auto it = begin; it != end; ++it ) {
         QString ranking = QString::number( it->ranking() ) + " : " + QString::number( it->hits() );
         QVariant data;
-        data.setValue<ShiftHit>( *it );
+        data.setValue( *it );
         ui->comboHits->addItem( ranking, data );
     }
 

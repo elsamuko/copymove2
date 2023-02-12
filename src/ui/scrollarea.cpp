@@ -131,10 +131,10 @@ void ScrollArea::centerZoom() {
 
 void ScrollArea::wheelEvent( QWheelEvent* event ) {
 
-    if( mLabel->pixmap() ) {
+    if( !mPixmap.isNull() ) {
 
         this->setWidgetResizable( false );
-        float delta = event->delta();
+        float delta = event->angleDelta().y();
 
         // clip range from -1..1
         delta /= 120.f;
@@ -252,8 +252,8 @@ void ScrollArea::contextMenu( const QPoint& pos ) {
 }
 
 void ScrollArea::zoom() {
-    if( mLabel->pixmap() ) {
-        mLabel->resize( mZoom * mLabel->pixmap()->size() );
+    if( !mPixmap.isNull() ) {
+        mLabel->resize( mZoom * mLabel->pixmap().size() );
         centerZoom();
     }
 }
